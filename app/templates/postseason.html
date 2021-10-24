@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="content-section">
+        <h3 style="text-align: center">Post Season Stats</h3>
+        <br>
+        <h5>Number of Times Won Division: </h5><br>
+        <h5>Number of Times Won Conference: </h5><br>
+        <h5>Number of World Series Appearances: </h5><br>
+        <h5>World Series Wins</h5>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Year</th>
+                  <th scope="col">Opponent</th>
+                  <th scope="col"># Games in Series</th>
+                  <th scope="col">World Series MVP</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">2017</th>
+                  <td>Los Angeles Dodgers</td>
+                  <td>7</td>
+                  <td>George Springer</td>
+                </tr>
+                <tr>
+                  <th scope="row">N/A</th>
+                  <td>N/A</td>
+                  <td>N/A</td>
+                  <td>N/A</td>
+                </tr>
+              </tbody>
+            </table>
+    </div>
+{% endblock %}

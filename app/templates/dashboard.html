@@ -1,0 +1,151 @@
+<!-- Extend the base.html file -->
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="content-section">
+    <!-- Check if the user is authenticated -->
+    {% if current_user.is_authenticated %}
+        <h1 style="text-align: center">Logged in as {{ current_user.username }}</h1><br>
+        <h6>Change Year</h6>
+        <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Year" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Submit</button>
+        </form>
+        <!-- The section that controls the division standings -->
+        <h4>Division Standings for 2021</h4>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Team</th>
+              <th scope="col">Wins</th>
+              <th scope="col">Losses</th>
+              <th scope="col">PCT</th>
+              <th scope="col">GB</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Houston Astros</th>
+              <td>95</td>
+              <td>67</td>
+              <td>.586</td>
+              <td>-</td>
+            </tr>
+            <tr>
+              <th scope="row">Seattle Mariners</th>
+              <td>90</td>
+              <td>72</td>
+              <td>.556</td>
+              <td>5.0</td>
+            </tr>
+            <tr>
+              <th scope="row">Oakland Athletics</th>
+              <td>86</td>
+              <td>76</td>
+              <td>.531</td>
+              <td>9.0</td>
+            </tr>
+          </tbody>
+        </table>
+        <hr>
+        <!-- The section to control the team's roster -->
+        <h4>Team Roster</h4>
+        <h6>Current Year: 2021</h6>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Position</th>
+              <th scope="col">Age</th>
+              <th scope="col">Height</th>
+              <th scope="col">Weight</th>
+              <th scope="col">Birth Place</th>
+              <th scope="col">Stats</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Jose Altuve</th>
+              <td>2B</td>
+              <td>31</td>
+              <td>5' 6"</td>
+              <td>166 lbs</td>
+              <td>Maracay, Venezuela</td>
+              <td><button data-bs-toggle="offcanvas" href="#offcanvasStats">More</button></td>
+            </tr>
+            <tr>
+              <th scope="row">Zack Grenke</th>
+              <td>SP</td>
+              <td>37</td>
+              <td>6' 2"</td>
+              <td>200 lbs</td>
+              <td>Orlando, FL</td>
+              <td><button data-bs-toggle="offcanvas" href="#offcanvasStats">More</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- The section to control the more information button for each player on roster -->
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasStats">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title">2021 Stats for Player Name</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+              <h6>Batting Stats</h6>
+              <ul class="list-group">
+                 <li class="list-group-item">Runs</li>
+                 <li class="list-group-item">Hits</li>
+                 <li class="list-group-item">Doubles</li>
+                 <li class="list-group-item">Triples</li>
+                 <li class="list-group-item">Home Runs</li>
+                 <li class="list-group-item">RBIs</li>
+              </ul><br>
+              <h6>Pitching Stats</h6>
+              <ul class="list-group">
+                 <li class="list-group-item">Wins</li>
+                 <li class="list-group-item">ERA</li>
+                 <li class="list-group-item">WHIP</li>
+                 <li class="list-group-item">Strike Outs</li>
+              </ul>
+          </div>
+        </div>
+
+    {% else %}
+        <!-- The homepage if the user is not logged in -->
+        <h1>Guest Home</h1>
+        <h4 style="text-align: center">Current World Series Champion</h4>
+        <h5 style="text-align: center">The Los Angeles Dodgers defeated the Tampa Bay Rays in 6 games</h5><br>
+        <h5 style="text-align: center">World Series MVP: Corey Seager</h5>
+        <hr>
+        <!-- Display the top highest salaries in current year -->
+        <h4>Top 5 Highest Salaries in 2021</h4>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Team</th>
+              <th scope="col">Position</th>
+              <th scope="col">Age</th>
+              <th scope="col">Salary</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Mike Trout</th>
+              <td>Los Angeles Angels</td>
+              <td>OF</td>
+              <td>30</td>
+              <td>$37.12 Million</td>
+            </tr>
+            <tr>
+              <th scope="row">Sheldon Smith</th>
+              <td>Houston Astros</td>
+              <td>1B</td>
+              <td>20</td>
+              <td>$1</td>
+            </tr>
+          </tbody>
+        </table>
+    {% endif %}
+    </div>
+{% endblock %}

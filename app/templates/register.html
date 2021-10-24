@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="content-section">
+    <!-- The form to create an account for the application -->
+    <form method="POST" action="" class="needs-validation">
+    {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Register</legend>
+                <div class="form-group">
+                    {{ form.username.label(class="form-control-label") }}
+                    {{ form.username(class="form-control form-control-lg") }}
+                    {% for error in form.username.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                <br>
+                </div>
+                <div class="form-group">
+                    {{ form.email.label(class="form-control-label") }}
+                    {{ form.email(class="form-control form-control-lg") }}
+                    {% for error in form.email.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                <br>
+                </div>
+                <div class="form-group">
+                    {{ form.password.label(class="form-control-label") }}
+                    {{ form.password(class="form-control form-control-lg") }}
+                    <small id="passwordHelpBlock" class="form-text text-muted">
+                      Your password must be 8-20 characters long, contain at least one number, uppercase letter, and special character.
+                    </small><br>
+                    {% for error in form.password.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                <br><br>
+                </div>
+                <div class="form-group">
+                    {{ form.passwordRepeat.label(class="form-control-label") }}
+                    {{ form.passwordRepeat(class="form-control form-control-lg") }}
+                    {% for error in form.passwordRepeat.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                <br><br>
+                </div>
+                <div class="form-group">
+                    {{ form.fav_team.label(class="form-control-label") }}<br>
+                    {{ form.fav_team(size=4) }}<br>
+                    {% for error in form.fav_team.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                <br>
+                </div>
+                <div>By creating an account you agree to our <a href="#">Terms & Privacy</a></div>
+        </fieldset>
+        <hr>
+        <div class="form-group">{{ form.submit(class="btn btn-outline-info") }}</div>
+    </form>
+    </div>
+    <div class="border-top pt-3">
+        <!-- A link to the login page if the user already has an account -->
+        <small class="text-muted">
+            Already have an account? <a class="ml-2" href="{{ url_for('login') }}">Sign in</a><br>
+        </small>
+    </div>
+{% endblock content %}
