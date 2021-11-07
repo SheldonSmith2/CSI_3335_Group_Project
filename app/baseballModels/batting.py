@@ -1,10 +1,8 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import Column, Integer, String, Numeric, create_engine
+from sqlalchemy import Column, Integer, String
 
 Base = declarative_base()
 
-import sys
 
 class Batting(Base):
 	__tablename__ = "batting" # required
@@ -12,6 +10,7 @@ class Batting(Base):
 	ID = Column(Integer, primary_key=True)  # required
 	playerid = Column(String(9))
 	yearID = Column(Integer)
+	stint = Column(Integer)
 	teamID = Column(String(3))
 	lgID = Column(String(2))
 	G = Column(Integer)
@@ -21,6 +20,7 @@ class Batting(Base):
 	HR = Column(Integer)
 	RBI = Column(Integer)
 	SB = Column(Integer)
+	# Add 2B, 3B
 	CS = Column(Integer)
 	BB = Column(Integer)
 	SO = Column(Integer)

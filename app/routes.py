@@ -2,16 +2,18 @@
 from app import app, db, bcrypt, mail
 from app.forms import LoginForm, RegisterForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
 from flask import render_template, flash, redirect, url_for, request
-from app.models import User
+from app.userModel import User
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
+from app.baseballModels.modelConnection import getRoster
 
 
 # The main page for the website
 @app.route('/')
 @app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html', title='Home')
+    roster = getRoster("Hou", 2019)
+    return render_template('dashboard.html', title='Home', roster=roster)
 
 
 # The route to control the login functionality

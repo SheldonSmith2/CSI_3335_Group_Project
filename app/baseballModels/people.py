@@ -1,12 +1,8 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import Column, Integer, String, Numeric, create_engine
-from battingModel import Batting
-import dbconfig as cfg
+from sqlalchemy import Column, Integer, String
 
 Base = declarative_base()
 
-import sys
 
 class People(Base):
 	__tablename__ = "people" # required
@@ -32,13 +28,3 @@ class People(Base):
 	bats = Column(String(255))
 	throws = Column(String(255))
 	debut = Column(String(255))
-
-enginestr = "mysql+pymysql://" +cfg.mysql['user']+":" +cfg.mysql['password']+"@" +cfg.mysql['host']+":3306/" +cfg.mysql['db']
-
-engine = create_engine(enginestr)
-
-Session = sessionmaker(bind=engine)
-session = Session()
-
-for p, b in session.query(People, Batting).filter(People.playerid == Batting.playerid, Batting.teamID == sys.argv[1], Batting.yearID == sys.argv[2]).all():
-	print(p.nameFirst, p.nameLast, b.R, b.AB)

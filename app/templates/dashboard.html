@@ -56,7 +56,7 @@
             <tr>
               <th scope="col">Name</th>
               <th scope="col">Position</th>
-              <th scope="col">Age</th>
+              <th scope="col">Birth Year</th>
               <th scope="col">Height</th>
               <th scope="col">Weight</th>
               <th scope="col">Birth Place</th>
@@ -64,30 +64,24 @@
             </tr>
           </thead>
           <tbody>
+          {% for player in roster %}
             <tr>
-              <th scope="row">Jose Altuve</th>
-              <td>2B</td>
-              <td>31</td>
-              <td>5' 6"</td>
-              <td>166 lbs</td>
-              <td>Maracay, Venezuela</td>
-              <td><button data-bs-toggle="offcanvas" href="#offcanvasStats">More</button></td>
+              <th scope="row">{{ player[0].nameFirst }} {{ player[0].nameLast }}</th>
+              <td>NEEDS CHANGE</td>
+              <td>{{ player[0].birthYear }}</td>
+              <td>{{ player[0].height//12 }}' {{ player[0].height%12 }}"</td>
+              <td>{{ player[0].weight }} Ib</td>
+              <td>{{ player[0].birthCity }}, {{ player[0].birthCountry }}</td>
+              <td><button onclick="myFunction({{ player[0].playerid }})" class="morebutton" data-bs-toggle="offcanvas" href="#offcanvasStats">More</button></td>
             </tr>
-            <tr>
-              <th scope="row">Zack Grenke</th>
-              <td>SP</td>
-              <td>37</td>
-              <td>6' 2"</td>
-              <td>200 lbs</td>
-              <td>Orlando, FL</td>
-              <td><button data-bs-toggle="offcanvas" href="#offcanvasStats">More</button></td>
-            </tr>
+        {% endfor %}
           </tbody>
         </table>
         <!-- The section to control the more information button for each player on roster -->
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasStats">
           <div class="offcanvas-header">
-            <h5 class="offcanvas-title">2021 Stats for Player Name</h5>
+
+            <h5 class="offcanvas-title">2021 Stats for<div id="displayName"></div></h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
           <div class="offcanvas-body">
@@ -109,6 +103,11 @@
               </ul>
           </div>
         </div>
+        <script>
+                function myFunction(playerid) {
+                  document.getElementById("displayName").innerHTML = playerid;
+                }
+                </script>
 
     {% else %}
         <!-- The homepage if the user is not logged in -->
