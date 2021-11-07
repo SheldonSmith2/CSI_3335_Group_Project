@@ -5,15 +5,16 @@ from flask import render_template, flash, redirect, url_for, request
 from app.userModel import User
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
-from app.baseballModels.modelConnection import getRoster
+from app.baseballModels.modelConnection import getRoster, getStandings
 
 
 # The main page for the website
 @app.route('/')
 @app.route('/dashboard')
 def dashboard():
-    roster = getRoster("Hou", 2019)
-    return render_template('dashboard.html', title='Home', roster=roster)
+    roster = getRoster(current_user.fav_team, 2019)
+    standings = getStandings(2019, "AL", "W")
+    return render_template('dashboard.html', title='Home', roster=roster, standings=standings)
 
 
 # The route to control the login functionality

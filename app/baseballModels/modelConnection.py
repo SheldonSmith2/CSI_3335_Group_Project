@@ -3,6 +3,7 @@ from sqlalchemy import create_engine
 import app.baseballModels.dbconfig as cfg
 from app.baseballModels.people import People
 from app.baseballModels.batting import Batting
+from app.baseballModels.teams import Teams
 
 
 def createConnection():
@@ -17,5 +18,14 @@ def createConnection():
 
 def getRoster(team, year):
 	session = createConnection()
-	players = session.query(People, Batting).filter(People.playerid == Batting.playerid, Batting.teamID == team, Batting.yearID == year).all()
+	players = session.query(People, Batting, Teams)\
+		.filter(People.playerid == Batting.playerid, Teams.teamID == Batting.teamID, Teams.yearID == Batting.yearID,
+				Teams.name == team, Batting.yearID == year).order_by(People.nameLast).all()
 	return players
+
+
+def getStandings(year, league, division):
+	session = createConnection()
+	teams = session.query(Teams)\
+		.filter(Teams.lgID == league, Teams.divID == division, Teams.yearID == year).order_by(Teams.W.desc()).all()
+	return teams

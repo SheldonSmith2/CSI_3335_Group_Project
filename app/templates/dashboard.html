@@ -24,33 +24,21 @@
             </tr>
           </thead>
           <tbody>
+            {% for team in standings %}
             <tr>
-              <th scope="row">Houston Astros</th>
-              <td>95</td>
-              <td>67</td>
-              <td>.586</td>
-              <td>-</td>
+              <th scope="row">{{ team.name }}</th>
+              <td>{{ team.W }}</td>
+              <td>{{ team.L }}</td>
+              <td>{{ "{:.3f}".format(team.W/team.G,2) }}</td>
+              <td>CHANGE</td>
             </tr>
-            <tr>
-              <th scope="row">Seattle Mariners</th>
-              <td>90</td>
-              <td>72</td>
-              <td>.556</td>
-              <td>5.0</td>
-            </tr>
-            <tr>
-              <th scope="row">Oakland Athletics</th>
-              <td>86</td>
-              <td>76</td>
-              <td>.531</td>
-              <td>9.0</td>
-            </tr>
+        {% endfor %}
           </tbody>
         </table>
         <hr>
         <!-- The section to control the team's roster -->
-        <h4>Team Roster</h4>
-        <h6>Current Year: 2021</h6>
+        <h4>Team Roster for the {{ current_user.fav_team }}</h4>
+        <h6>Current Year: 2019</h6>
         <table class="table table-striped">
           <thead>
             <tr>
@@ -71,7 +59,7 @@
               <td>{{ player[0].birthYear }}</td>
               <td>{{ player[0].height//12 }}' {{ player[0].height%12 }}"</td>
               <td>{{ player[0].weight }} Ib</td>
-              <td>{{ player[0].birthCity }}, {{ player[0].birthCountry }}</td>
+              <td>{{ player[0].birthState }}, {{ player[0].birthCountry }}</td>
               <td><button onclick="myFunction({{ player[0].playerid }})" class="morebutton" data-bs-toggle="offcanvas" href="#offcanvasStats">More</button></td>
             </tr>
         {% endfor %}
