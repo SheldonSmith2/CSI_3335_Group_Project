@@ -5,7 +5,7 @@ from flask import render_template, flash, redirect, url_for, request
 from app.userModel import User
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
-from app.baseballModels.modelConnection import getRoster, getStandings
+from app.baseballModels.modelConnection import getRoster, getStandings, getManagers, getTopSalaries
 
 
 # The main page for the website
@@ -13,6 +13,7 @@ from app.baseballModels.modelConnection import getRoster, getStandings
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     form = ChangeYearForm()
+    formSalary = ChangeYearForm()
     if form.validate_on_submit():
         year = form.changeYear.data
     elif request.method == 'GET':
@@ -21,7 +22,13 @@ def dashboard():
         roster = getRoster(current_user.fav_team, year)
     else:
         roster = ""
-    return render_template('dashboard.html', title='Home', roster=roster, form=form, year=year)
+    if formSalary.validate_on_submit():
+        yearSalary = formSalary.changeYear.data
+    elif request.method == 'GET':
+        yearSalary = 2016
+    salaries = getTopSalaries(yearSalary)
+    return render_template('dashboard.html', title='Home', roster=roster, form=form,
+                           year=year, salaries=salaries, yearSalary=yearSalary, formSalary=formSalary)
 
 
 # The route to control the login functionality

@@ -75,13 +75,19 @@
 
     {% else %}
         <!-- The homepage if the user is not logged in -->
-        <h1>Guest Home</h1>
+        <h1 style="text-align: center">Guest Home</h1>
         <h4 style="text-align: center">Current World Series Champion</h4>
         <h5 style="text-align: center">The Los Angeles Dodgers defeated the Tampa Bay Rays in 6 games</h5><br>
         <h5 style="text-align: center">World Series MVP: Corey Seager</h5>
         <hr>
         <!-- Display the top highest salaries in current year -->
-        <h4>Top 5 Highest Salaries in 2021</h4>
+        <h4>Top 5 Highest Salaries in {{ yearSalary }}</h4>
+        <h6>Change Year</h6>
+        <form method="POST" action="" class="d-flex">
+            {{ formSalary.hidden_tag() }}
+            {{ formSalary.changeYear(class="form-control me-2") }}
+            {{ formSalary.submit(class="btn btn-outline-success") }}
+        </form>
         <table class="table table-striped">
           <thead>
             <tr>
@@ -93,20 +99,15 @@
             </tr>
           </thead>
           <tbody>
+            {% for team in salaries %}
             <tr>
-              <th scope="row">Mike Trout</th>
-              <td>Los Angeles Angels</td>
-              <td>OF</td>
-              <td>30</td>
-              <td>$37.12 Million</td>
+              <th scope="row">{{ team[0].nameFirst }} {{ team[0].nameLast }}</th>
+              <td>{{ team[2].name }}</td>
+              <td>{{ CHANGE }}</td>
+              <td>{{ 2021 - team[0].birthYear }}</td>
+              <td>${{ "{:.1f}".format(team[1].salary/1000000)}} Million</td>
             </tr>
-            <tr>
-              <th scope="row">Sheldon Smith</th>
-              <td>Houston Astros</td>
-              <td>1B</td>
-              <td>20</td>
-              <td>$1</td>
-            </tr>
+        {% endfor %}
           </tbody>
         </table>
     {% endif %}
