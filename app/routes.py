@@ -1,6 +1,6 @@
 # The file to control the different routes within the application
 from app import app, db, bcrypt, mail
-from app.forms import LoginForm, RegisterForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
+from app.forms import LoginForm, RegisterForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm, ChangeYearForm
 from flask import render_template, flash, redirect, url_for, request
 from app.userModel import User
 from flask_login import login_user, current_user, logout_user, login_required
@@ -13,8 +13,7 @@ from app.baseballModels.modelConnection import getRoster, getStandings
 @app.route('/dashboard')
 def dashboard():
     roster = getRoster(current_user.fav_team, 2019)
-    standings = getStandings(2019, "AL", "W")
-    return render_template('dashboard.html', title='Home', roster=roster, standings=standings)
+    return render_template('dashboard.html', title='Home', roster=roster)
 
 
 # The route to control the login functionality
@@ -99,6 +98,17 @@ def managers():
 @app.route('/postseason')
 def postseason():
     return render_template('postseason.html', title='Post Season Stats')
+
+
+@app.route('/standings', methods=['GET', 'POST'])
+def standings():
+    form = ChangeYearForm()
+    if form.validate_on_submit():
+        year = form.changeYear.data
+    elif request.method == 'GET':
+        year = 2019
+    standings = getStandings(year, "AL", "W")
+    return render_template('standings.html', title='Standings', standings=standings, form=form)
 
 
 # The function to send the reset password email

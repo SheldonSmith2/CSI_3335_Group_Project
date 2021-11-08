@@ -92,3 +92,8 @@ class ResetPasswordForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     passwordRepeat = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset Password')
+
+
+class ChangeYearForm(FlaskForm):
+    changeYear = StringField('Year', validators=[DataRequired()])
+    submit = SubmitField('Change Year')

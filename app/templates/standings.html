@@ -1,0 +1,41 @@
+<!-- Extend the base.html file -->
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="content-section">
+    <!-- Check if the user is authenticated -->
+        <h1 style="text-align: center">Team Standings for 2019</h1><br>
+        <h6>Change Year</h6>
+        <form method="POST" action="" class="needs-validation">
+            {{ form.hidden_tag() }}
+            <div>
+            {{ form.changeYear(class="form-control form-control-lg") }}
+            {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+        <!-- The section that controls the division standings -->
+        <h5>American League West</h5>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Team</th>
+              <th scope="col">Wins</th>
+              <th scope="col">Losses</th>
+              <th scope="col">PCT</th>
+              <th scope="col">GB</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for team in standings %}
+            <tr>
+              <th scope="row">{{ team.name }}</th>
+              <td>{{ team.W }}</td>
+              <td>{{ team.L }}</td>
+              <td>{{ "{:.3f}".format(team.W/team.G,2) }}</td>
+              <td>CHANGE</td>
+            </tr>
+        {% endfor %}
+          </tbody>
+        </table>
+    </div>
+{% endblock %}
