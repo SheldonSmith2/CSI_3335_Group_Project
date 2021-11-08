@@ -107,7 +107,8 @@ def about():
 
 @app.route('/managers')
 def managers():
-    return render_template('managers.html', title='Managers')
+    managerList = getManagers(current_user.fav_team)
+    return render_template('managers.html', title='Managers', managerList=managerList)
 
 
 @app.route('/postseason')

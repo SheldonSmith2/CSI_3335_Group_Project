@@ -1,11 +1,12 @@
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, func
 import app.baseballModels.dbconfig as cfg
 from app.baseballModels.people import People
 from app.baseballModels.batting import Batting
 from app.baseballModels.teams import Teams
 from app.baseballModels.salaries import Salaries
 from app.baseballModels.managers import Managers
+from app.baseballModels.fielding import Fielding
 
 
 def createConnection():
@@ -35,13 +36,18 @@ def getStandings(year, league, division):
 
 def getManagers(team):
 	session = createConnection()
-	managers = session.query(Managers, Teams).filter(Managers.teamID == Teams.teamID, Teams.name == team).limit(10).all()
+	managers = session.query(Managers, func.max(Managers.yearID), func.min(Managers.yearID), func.sum(Managers.W),
+							 People, func.sum(Managers.G))\
+		.filter(Managers.teamID == Teams.teamID, Teams.name == team, People.playerid == Managers.playerid)\
+		.group_by(Managers.playerid).order_by(func.max(Managers.yearID).desc()).limit(10).all()
 	return managers
 
 
 def getTopSalaries(year):
 	session = createConnection()
-	salaries = session.query(People, Salaries, Teams)\
-		.filter(Salaries.playerid == People.playerid, Salaries.yearID == year, Teams.yearID == Salaries.yearID, Teams.teamID == Salaries.teamID)\
+	salaries = session.query(People, Salaries, Teams, Fielding)\
+		.filter(Salaries.playerid == People.playerid, Salaries.yearID == year, Teams.yearID == Salaries.yearID,
+				Teams.teamID == Salaries.teamID, Fielding.teamID == Teams.teamID, Teams.yearID == Fielding.yearID,
+				Fielding.playerid == Salaries.playerid, Fielding.A > 10)\
 		.order_by(Salaries.salary.desc()).limit(10).all()
 	return salaries

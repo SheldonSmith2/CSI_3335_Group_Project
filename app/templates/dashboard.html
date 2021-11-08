@@ -99,13 +99,13 @@
             </tr>
           </thead>
           <tbody>
-            {% for team in salaries %}
+            {% for player in salaries %}
             <tr>
-              <th scope="row">{{ team[0].nameFirst }} {{ team[0].nameLast }}</th>
-              <td>{{ team[2].name }}</td>
-              <td>{{ CHANGE }}</td>
-              <td>{{ 2021 - team[0].birthYear }}</td>
-              <td>${{ "{:.1f}".format(team[1].salary/1000000)}} Million</td>
+              <th scope="row">{{ player[0].nameFirst }} {{ player[0].nameLast }}</th>
+              <td>{{ player[2].name }}</td>
+              <td>{{ player[3].POS }}</td>
+              <td>{{ 2021 - player[0].birthYear }}</td>
+              <td>${{ "{:.1f}".format(player[1].salary/1000000)}} Million</td>
             </tr>
         {% endfor %}
           </tbody>

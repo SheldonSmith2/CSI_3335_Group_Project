@@ -11,32 +11,25 @@
     </nav>
     <div class="tab-content" id="nav-tabContent">
       <div class="tab-pane fade show active" id="nav-list" role="tabpanel" aria-labelledby="nav-home-tab">
-          <br><h4>Past 15 Managers</h4>
+          <br><h4>Past 10 Managers for the {{ current_user.fav_team }}</h4>
             <table class="table table-striped">
               <thead>
                 <tr>
                   <th scope="col">Name</th>
                   <th scope="col">Start Year</th>
                   <th scope="col">End Year</th>
-                  <th scope="col">Total Wins</th>
                   <th scope="col">Win %</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">Dusty baker</th>
-                  <td>2020</td>
-                  <td>Present</td>
-                  <td>29</td>
-                  <td>.483</td>
-                </tr>
-                <tr>
-                  <th scope="row">AJ Hinch</th>
-                  <td>2015</td>
-                  <td>2019</td>
-                  <td>481</td>
-                  <td>.594</td>
-                </tr>
+                {% for manager in managerList %}
+                    <tr>
+                      <th scope="row">{{ manager[4].nameFirst }} {{ manager[4].nameLast }}</th>
+                      <td>{{ manager[2] }}</td>
+                      <td>{{ manager[1] }}</td>
+                      <td>{{ "{:.3f}".format(manager[3]/manager[5],2) }} </td>
+                    </tr>
+                {% endfor %}
               </tbody>
             </table>
       </div>
