@@ -4,14 +4,12 @@
 {% block content %}
     <div class="content-section">
     <!-- Check if the user is authenticated -->
-        <h1 style="text-align: center">Team Standings for 2019</h1><br>
+        <h1 style="text-align: center">Team Standings for {{ year }}</h1><br>
         <h6>Change Year</h6>
-        <form method="POST" action="" class="needs-validation">
+        <form method="POST" action="" class="d-flex">
             {{ form.hidden_tag() }}
-            <div>
-            {{ form.changeYear(class="form-control form-control-lg") }}
-            {{ form.submit(class="btn btn-outline-info") }}
-            </div>
+            {{ form.changeYear(class="form-control me-2") }}
+            {{ form.submit(class="btn btn-outline-success") }}
         </form>
         <!-- The section that controls the division standings -->
         <h5>American League West</h5>

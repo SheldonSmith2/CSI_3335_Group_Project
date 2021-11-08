@@ -7,13 +7,14 @@
     {% if current_user.is_authenticated %}
         <h1 style="text-align: center">Logged in as {{ current_user.username }}</h1><br>
         <h6>Change Year</h6>
-        <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Year" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Submit</button>
+        <form method="POST" action="" class="d-flex">
+            {{ form.hidden_tag() }}
+            {{ form.changeYear(class="form-control me-2") }}
+            {{ form.submit(class="btn btn-outline-success") }}
         </form>
         <!-- The section to control the team's roster -->
         <h4>Team Roster for the {{ current_user.fav_team }}</h4>
-        <h6>Current Year: 2019</h6>
+        <h6>Current Year: {{ year }}</h6>
         <table class="table table-striped">
           <thead>
             <tr>

@@ -10,10 +10,18 @@ from app.baseballModels.modelConnection import getRoster, getStandings
 
 # The main page for the website
 @app.route('/')
-@app.route('/dashboard')
+@app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
-    roster = getRoster(current_user.fav_team, 2019)
-    return render_template('dashboard.html', title='Home', roster=roster)
+    form = ChangeYearForm()
+    if form.validate_on_submit():
+        year = form.changeYear.data
+    elif request.method == 'GET':
+        year = 2019
+    if current_user.is_authenticated:
+        roster = getRoster(current_user.fav_team, year)
+    else:
+        roster = ""
+    return render_template('dashboard.html', title='Home', roster=roster, form=form, year=year)
 
 
 # The route to control the login functionality
@@ -108,7 +116,7 @@ def standings():
     elif request.method == 'GET':
         year = 2019
     standings = getStandings(year, "AL", "W")
-    return render_template('standings.html', title='Standings', standings=standings, form=form)
+    return render_template('standings.html', title='Standings', standings=standings, form=form, year=year)
 
 
 # The function to send the reset password email
