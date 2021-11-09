@@ -5,7 +5,8 @@ from flask import render_template, flash, redirect, url_for, request
 from app.userModel import User
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
-from app.baseballModels.modelConnection import getRoster, getStandings, getManagers, getTopSalaries
+from app.baseballModels.modelConnection import getRoster, getStandings, getManagers, getTopSalaries, \
+    getTSNAwards, getBBWAAawards, getLatestWSChamp, getWLofDivision, getWSWins
 
 
 # The main page for the website
@@ -27,8 +28,9 @@ def dashboard():
     elif request.method == 'GET':
         yearSalary = 2016
     salaries = getTopSalaries(yearSalary)
+    wschamp = getLatestWSChamp()
     return render_template('dashboard.html', title='Home', roster=roster, form=form,
-                           year=year, salaries=salaries, yearSalary=yearSalary, formSalary=formSalary)
+                           year=year, salaries=salaries, yearSalary=yearSalary, formSalary=formSalary, wschamp=wschamp)
 
 
 # The route to control the login functionality
@@ -107,13 +109,17 @@ def about():
 
 @app.route('/managers')
 def managers():
+    tsnAwards = getTSNAwards(current_user.fav_team)
+    bbwaaAwards = getBBWAAawards(current_user.fav_team)
     managerList = getManagers(current_user.fav_team)
-    return render_template('managers.html', title='Managers', managerList=managerList)
+    return render_template('managers.html', title='Managers', managerList=managerList,
+                           tsnAwards=tsnAwards, bbwaaAwards=bbwaaAwards)
 
 
 @app.route('/postseason')
 def postseason():
-    return render_template('postseason.html', title='Post Season Stats')
+    countWS = getWSWins(current_user.fav_team)
+    return render_template('postseason.html', title='Post Season Stats', countWS=countWS)
 
 
 @app.route('/standings', methods=['GET', 'POST'])
@@ -123,8 +129,9 @@ def standings():
         year = form.changeYear.data
     elif request.method == 'GET':
         year = 2019
-    standings = getStandings(year, "AL", "W")
-    return render_template('standings.html', title='Standings', standings=standings, form=form, year=year)
+    ALWest = getStandings(year, "AL", "W")
+    ALWestWL = getWLofDivision(year, "AL", "W")
+    return render_template('standings.html', title='Standings', ALWest=ALWest, form=form, year=year, ALWestWL=ALWestWL)
 
 
 # The function to send the reset password email

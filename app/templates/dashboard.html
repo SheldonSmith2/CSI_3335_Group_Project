@@ -75,10 +75,12 @@
 
     {% else %}
         <!-- The homepage if the user is not logged in -->
-        <h1 style="text-align: center">Guest Home</h1>
-        <h4 style="text-align: center">Current World Series Champion</h4>
-        <h5 style="text-align: center">The Los Angeles Dodgers defeated the Tampa Bay Rays in 6 games</h5><br>
-        <h5 style="text-align: center">World Series MVP: Corey Seager</h5>
+        <h1 style="text-align: center">Guest Home</h1><br>
+        <h4 style="text-align: center"><u>Current World Series Champion</u></h4>
+        {% for team in wschamp %}
+        <h5 style="text-align: center">The {{ team[1].name }} defeated the {{ team[2].name }} in {{ team[0].wins + team[0].losses }} games</h5>
+        {% endfor %}
+        <h5 style="text-align: center">World Series MVP: Corey Seager (MIGHT DELETE)</h5>
         <hr>
         <!-- Display the top highest salaries in current year -->
         <h4>Top 5 Highest Salaries in {{ yearSalary }}</h4>

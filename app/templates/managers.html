@@ -42,18 +42,32 @@
                     AJ Hinch was manager for the Houston Astros during their World Series win in 2017
                 </div>
 
-          <br><div class="card">
+          <br>
+            <div class="row">
+            <div class="col-sm-6">
+          <div class="card">
                   <div class="card-body">
-                    <h5 class="card-title">BBVAA Manager of the Year</h5>
-                    <p class="card-text">Name - Year, Name - Year, Name - Year</p>
+                    <h5 class="card-title">BBWAA Manager of the Year</h5>
+                    <p class="card-text">
+                        {% for manager in bbwaaAwards %}
+                              {{ manager[2].nameFirst }} {{ manager[2].nameLast }} ({{ manager[0].yearID }}) <br>
+                        {% endfor %}</p>
                   </div>
-                </div> <br>
+                </div>
+            </div>
+            <div class="col-sm-6">
                 <div class="card">
                   <div class="card-body">
                     <h5 class="card-title">TLA Manager of the Year</h5>
-                    <p class="card-text">Name - Year, Name - Year, Name - Year</p>
+                    <p class="card-text">
+                        {% for manager in tsnAwards %}
+                              {{ manager[2].nameFirst }} {{ manager[2].nameLast }} ({{ manager[0].yearID }}) <br>
+                        {% endfor %}
+                      </p>
                   </div>
                 </div>
+            </div>
+            </div>
       </div>
     </div>
     </div>

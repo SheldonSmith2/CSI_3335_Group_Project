@@ -24,13 +24,15 @@
             </tr>
           </thead>
           <tbody>
-            {% for team in standings %}
+            {% for team in ALWest %}
             <tr>
               <th scope="row">{{ team.name }}</th>
               <td>{{ team.W }}</td>
               <td>{{ team.L }}</td>
               <td>{{ "{:.3f}".format(team.W/team.G,2) }}</td>
-              <td>CHANGE</td>
+                {% for topTeam in ALWestWL %}
+              <td>{{ ((topTeam.W - team.W) + (team.L - topTeam.L))/2 }}</td>
+                {% endfor %}
             </tr>
         {% endfor %}
           </tbody>
