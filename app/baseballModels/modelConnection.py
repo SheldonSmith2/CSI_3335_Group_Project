@@ -10,6 +10,7 @@ from app.baseballModels.fielding import Fielding
 from app.baseballModels.seriespostseason import SeriesPost
 from app.baseballModels.awardsmanagers import AwardsManagers
 
+
 def createConnection():
 	enginestr = "mysql+pymysql://" +cfg.mysql['user']+":" +cfg.mysql['password']+"@" +cfg.mysql['host']+":3306/" +cfg.mysql['db']
 
@@ -22,7 +23,7 @@ def createConnection():
 
 def getRoster(team, year):
 	session = createConnection()
-	players = session.query(People, Batting, Teams)\
+	players = session.query(People, Batting, Teams).distinct(People.playerid)\
 		.filter(People.playerid == Batting.playerid, Teams.teamID == Batting.teamID, Teams.yearID == Batting.yearID,
 				Teams.name == team, Batting.yearID == year).order_by(People.nameLast).all()
 	return players
@@ -55,7 +56,7 @@ def getTopSalaries(year):
 	salaries = session.query(People, Salaries, Teams, Fielding)\
 		.filter(Salaries.playerid == People.playerid, Salaries.yearID == year, Teams.yearID == Salaries.yearID,
 				Teams.teamID == Salaries.teamID, Fielding.teamID == Teams.teamID, Teams.yearID == Fielding.yearID,
-				Fielding.playerid == Salaries.playerid, Fielding.A > 10)\
+				Fielding.playerid == Salaries.playerid, Fielding.G > 10)\
 		.order_by(Salaries.salary.desc()).limit(10).all()
 	return salaries
 
@@ -95,3 +96,11 @@ def getWSWins(team):
 	count = session.query(func.count(Teams.WSWin))\
 		.filter(Teams.name == team, Teams.WSWin == 'Y')
 	return count
+
+
+def getStats(plyr_id, year, team):
+	session = createConnection()
+	stats = session.query(Batting, People.nameFirst, People.nameLast)\
+		.filter(Batting.yearID == year, Batting.playerid == plyr_id, Batting.teamID == Teams.teamID, Batting.yearID == Teams.yearID,
+				Teams.name == team, Batting.playerid == People.playerid).limit(1)
+	return stats

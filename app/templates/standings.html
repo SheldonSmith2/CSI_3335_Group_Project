@@ -12,7 +12,34 @@
             {{ form.submit(class="btn btn-outline-success") }}
         </form>
         <!-- The section that controls the division standings -->
-        <h5>American League West</h5>
+    <div style="text-align: center">_____ won the World Series against ______</div>
+    <div class="row">
+        <div class="col-sm-6">
+            ____ defeated ___ in the ALCS
+        </div>
+        <div class="col-sm-6">
+            ____ defeated ___ in the NLCS
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            ____ defeated ___ in the ALDS
+        </div>
+        <div class="col-sm-6">
+            ____ defeated ___ in the NLDS
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            ____ defeated ___ in the ALDS
+        </div>
+        <div class="col-sm-6">
+            ____ defeated ___ in the NLDS
+        </div>
+    </div><br>
+    <div class="row">
+            <div class="col-sm-6">
+    <h5>American League West</h5>
         <table class="table table-striped">
           <thead>
             <tr>
@@ -37,5 +64,148 @@
         {% endfor %}
           </tbody>
         </table>
+            </div>
+    <div class="col-sm-6">
+    <h5>National League West</h5>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Team</th>
+              <th scope="col">Wins</th>
+              <th scope="col">Losses</th>
+              <th scope="col">PCT</th>
+              <th scope="col">GB</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for team in NLWest %}
+            <tr>
+              <th scope="row">{{ team.name }}</th>
+              <td>{{ team.W }}</td>
+              <td>{{ team.L }}</td>
+              <td>{{ "{:.3f}".format(team.W/team.G,2) }}</td>
+                {% for topTeam in NLWestWL %}
+              <td>{{ ((topTeam.W - team.W) + (team.L - topTeam.L))/2 }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+          </tbody>
+        </table>
+    </div>
+    <div class="row">
+            <div class="col-sm-6">
+    <h5>American League East</h5>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Team</th>
+              <th scope="col">Wins</th>
+              <th scope="col">Losses</th>
+              <th scope="col">PCT</th>
+              <th scope="col">GB</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for team in ALEast %}
+            <tr>
+              <th scope="row">{{ team.name }}</th>
+              <td>{{ team.W }}</td>
+              <td>{{ team.L }}</td>
+              <td>{{ "{:.3f}".format(team.W/team.G,2) }}</td>
+                {% for topTeam in ALEastWL %}
+              <td>{{ ((topTeam.W - team.W) + (team.L - topTeam.L))/2 }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+          </tbody>
+        </table>
+            </div>
+            <div class="col-sm-6">
+    <h5>National League East</h5>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Team</th>
+              <th scope="col">Wins</th>
+              <th scope="col">Losses</th>
+              <th scope="col">PCT</th>
+              <th scope="col">GB</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for team in NLEast %}
+            <tr>
+              <th scope="row">{{ team.name }}</th>
+              <td>{{ team.W }}</td>
+              <td>{{ team.L }}</td>
+              <td>{{ "{:.3f}".format(team.W/team.G,2) }}</td>
+                {% for topTeam in NLEastWL %}
+              <td>{{ ((topTeam.W - team.W) + (team.L - topTeam.L))/2 }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+          </tbody>
+        </table>
+            </div>
+    <div class="row">
+            <div class="col-sm-6">
+    <h5>American League Central</h5>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Team</th>
+              <th scope="col">Wins</th>
+              <th scope="col">Losses</th>
+              <th scope="col">PCT</th>
+              <th scope="col">GB</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for team in ALCentral %}
+            <tr>
+              <th scope="row">{{ team.name }}</th>
+              <td>{{ team.W }}</td>
+              <td>{{ team.L }}</td>
+              <td>{{ "{:.3f}".format(team.W/team.G,2) }}</td>
+                {% for topTeam in ALCentralWL %}
+              <td>{{ ((topTeam.W - team.W) + (team.L - topTeam.L))/2 }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+          </tbody>
+        </table>
+            </div>
+            <div class="col-sm-6">
+    <h5>National League Central</h5>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Team</th>
+              <th scope="col">Wins</th>
+              <th scope="col">Losses</th>
+              <th scope="col">PCT</th>
+              <th scope="col">GB</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for team in NLCentral %}
+            <tr>
+              <th scope="row">{{ team.name }}</th>
+              <td>{{ team.W }}</td>
+              <td>{{ team.L }}</td>
+              <td>{{ "{:.3f}".format(team.W/team.G,2) }}</td>
+                {% for topTeam in NLCentralWL %}
+              <td>{{ ((topTeam.W - team.W) + (team.L - topTeam.L))/2 }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+          </tbody>
+        </table>
+            </div>
+    </div>
+    </div>
+    </div>
+
+
     </div>
 {% endblock %}

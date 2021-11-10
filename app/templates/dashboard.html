@@ -5,7 +5,7 @@
     <div class="content-section">
     <!-- Check if the user is authenticated -->
     {% if current_user.is_authenticated %}
-        <h1 style="text-align: center">Logged in as {{ current_user.username }}</h1><br>
+        <h1 style="text-align: center">Logged in as {{ current_user.username }} </h1><br>
         <h6>Change Year</h6>
         <form method="POST" action="" class="d-flex">
             {{ form.hidden_tag() }}
@@ -19,8 +19,9 @@
           <thead>
             <tr>
               <th scope="col">Name</th>
-              <th scope="col">Position</th>
-              <th scope="col">Birth Year</th>
+              <th scope="col">Pitcher</th>
+              <th scope="col">Batter</th>
+              <th scope="col">Age</th>
               <th scope="col">Height</th>
               <th scope="col">Weight</th>
               <th scope="col">Birth Place</th>
@@ -31,32 +32,48 @@
           {% for player in roster %}
             <tr>
               <th scope="row">{{ player[0].nameFirst }} {{ player[0].nameLast }}</th>
-              <td>NEEDS CHANGE</td>
-              <td>{{ player[0].birthYear }}</td>
-              <td>{{ player[0].height//12 }}' {{ player[0].height%12 }}"</td>
-              <td>{{ player[0].weight }} Ib</td>
-              <td>{{ player[0].birthState }}, {{ player[0].birthCountry }}</td>
-              <td><button onclick="myFunction({{ player[0].playerid }})" class="morebutton" data-bs-toggle="offcanvas" href="#offcanvasStats">More</button></td>
+                <td>X</td>
+                <td>X</td>
+                <td>{% if player[0].deathYear != None %}
+                        Died
+                    {% else %}
+                        {{ 2021 - player[0].birthYear }}
+                    {% endif %}
+                </td>
+                <td>{{ player[0].height//12 }}' {{ player[0].height%12 }}"</td>
+                <td>{{ player[0].weight }} Ib</td>
+                <td>{% if player[0].birthCountry == "USA" %}
+                        {{ player[0].birthCity }}, {{ player[0].birthState }}
+                    {% else %}
+                        {{ player[0].birthCity }}, {{ player[0].birthCountry }}
+                    {% endif %}
+                </td>
+                <td>
+                <button class="btn btn-outline-success btn-sm" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" id={{ loop.index0 }} onclick="setID()" aria-controls="offcanvasExample">
+                  More
+                </button>
+                </td>
             </tr>
         {% endfor %}
           </tbody>
         </table>
-        <!-- The section to control the more information button for each player on roster -->
-        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasStats">
-          <div class="offcanvas-header">
 
-            <h5 class="offcanvas-title">2021 Stats for<div id="displayName"></div></h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-          </div>
-          <div class="offcanvas-body">
+        <!-- The section to control the more information button for each player on roster -->
+            <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+                <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasExampleLabel">{{ year }} Stats for</h5>
+                <div id="demo"></div>
+                <a type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></a>
+              </div>
+              <div class="offcanvas-body">
               <h6>Batting Stats</h6>
               <ul class="list-group">
-                 <li class="list-group-item">Runs</li>
-                 <li class="list-group-item">Hits</li>
-                 <li class="list-group-item">Doubles</li>
-                 <li class="list-group-item">Triples</li>
-                 <li class="list-group-item">Home Runs</li>
-                 <li class="list-group-item">RBIs</li>
+                 <li class="list-group-item">Runs: <div id="playerRuns"></div></li>
+                 <li class="list-group-item">Hits: <div id="playerHits"></div></li>
+                 <li class="list-group-item">Doubles: <div id="playerDoubles"></div></li>
+                 <li class="list-group-item">Triples: <div id="playerTriples"></div></li>
+                 <li class="list-group-item">Home Runs: <div id="playerHRs"></div></li>
+                 <li class="list-group-item">RBIs: <div id="playerRBIs"></div></li>
               </ul><br>
               <h6>Pitching Stats</h6>
               <ul class="list-group">
@@ -67,11 +84,17 @@
               </ul>
           </div>
         </div>
+
         <script>
-                function myFunction(playerid) {
-                  document.getElementById("displayName").innerHTML = playerid;
-                }
-                </script>
+        function setID() {
+          var x = document.getElementsByClassName("btn btn-primary player")[0].id;
+          alert(x);
+          document.getElementById("playerRuns").innerHTML = {{ roster[1][0].R }};
+          document.getElementById("playerHits").innerHTML = {{ roster[1][0].H }};
+          document.getElementById("playerHRs").innerHTML = {{ roster[1][0].HR }};
+          document.getElementById("playerRBIs").innerHTML = {{ roster[1][0].RBI }};
+        }
+        </script>
 
     {% else %}
         <!-- The homepage if the user is not logged in -->
@@ -114,4 +137,5 @@
         </table>
     {% endif %}
     </div>
+
 {% endblock %}

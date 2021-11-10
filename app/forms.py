@@ -97,3 +97,7 @@ class ResetPasswordForm(FlaskForm):
 class ChangeYearForm(FlaskForm):
     changeYear = StringField('Year', validators=[DataRequired()])
     submit = SubmitField('Change Year')
+
+
+class SeePlayerInfo(FlaskForm):
+    submit = SubmitField('More')

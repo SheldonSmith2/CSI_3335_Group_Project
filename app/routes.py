@@ -1,13 +1,15 @@
 # The file to control the different routes within the application
+from itsdangerous import json
+
 from app import app, db, bcrypt, mail
-from app.forms import LoginForm, RegisterForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm, ChangeYearForm
+from app.forms import LoginForm, RegisterForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm, \
+    ChangeYearForm
 from flask import render_template, flash, redirect, url_for, request
 from app.userModel import User
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
 from app.baseballModels.modelConnection import getRoster, getStandings, getManagers, getTopSalaries, \
-    getTSNAwards, getBBWAAawards, getLatestWSChamp, getWLofDivision, getWSWins
-
+    getTSNAwards, getBBWAAawards, getLatestWSChamp, getWLofDivision, getWSWins, getStats
 
 # The main page for the website
 @app.route('/')
@@ -30,7 +32,16 @@ def dashboard():
     salaries = getTopSalaries(yearSalary)
     wschamp = getLatestWSChamp()
     return render_template('dashboard.html', title='Home', roster=roster, form=form,
-                           year=year, salaries=salaries, yearSalary=yearSalary, formSalary=formSalary, wschamp=wschamp)
+                           year=year, salaries=salaries, yearSalary=yearSalary, formSalary=formSalary,
+                           wschamp=wschamp, **request.args)
+
+
+@app.route('/getinfo/<id>/<year>', methods=['GET', 'POST'])
+def stats(id, year):
+    flash("Player " + id + " " + year, 'success')
+    player_stats = getStats(id, year, current_user.fav_team)
+    toggle = ".show"
+    return redirect(url_for('dashboard', toggle=toggle, player_stats=player_stats))
 
 
 # The route to control the login functionality
@@ -131,7 +142,19 @@ def standings():
         year = 2019
     ALWest = getStandings(year, "AL", "W")
     ALWestWL = getWLofDivision(year, "AL", "W")
-    return render_template('standings.html', title='Standings', ALWest=ALWest, form=form, year=year, ALWestWL=ALWestWL)
+    ALEast = getStandings(year, "AL", "E")
+    ALEastWL = getWLofDivision(year, "AL", "E")
+    ALCentral = getStandings(year, "AL", "C")
+    ALCentralWL = getWLofDivision(year, "AL", "C")
+    NLWest = getStandings(year, "NL", "W")
+    NLWestWL = getWLofDivision(year, "NL", "W")
+    NLEast = getStandings(year, "NL", "E")
+    NLEastWL = getWLofDivision(year, "NL", "E")
+    NLCentral = getStandings(year, "NL", "C")
+    NLCentralWL = getWLofDivision(year, "NL", "C")
+    return render_template('standings.html', title='Standings', ALWest=ALWest, form=form, year=year, ALWestWL=ALWestWL,
+                           ALEast=ALEast, ALEastWL=ALEastWL, ALCentralWL=ALCentralWL, ALCentral=ALCentral, NLWest=NLWest,
+                           NLWestWL=NLWestWL, NLEast=NLEast, NLEastWL=NLEastWL, NLCentral=NLCentral, NLCentralWL=NLCentralWL)
 
 
 # The function to send the reset password email
