@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="content-section">
+        <h3 style="text-align: center">Player Awards for {{ year }}</h3>
+        <br>
+        <form method="POST" action="" class="d-flex">
+            {{ form.hidden_tag() }}
+            {{ form.changeYear(class="form-control me-2") }}
+            {{ form.submit(class="btn btn-outline-success") }}
+        </form><br>
+        <div class="row">
+            <div class="col-sm-6">
+        <h5>Most Valuable Player</h5>
+            <div>National League: {{ mvp[1][0].nameFirst }} {{ mvp[1][0].nameLast }}</div>
+            <div>American League: {{ mvp[0][0].nameFirst }} {{ mvp[0][0].nameLast }}</div><br>
+            </div>
+            <div class="col-sm-6">
+        <h5>Cy Young Award</h5>
+            <div>National League: {{ cyyoung[1][0].nameFirst }} {{ cyyoung[1][0].nameLast }}</div>
+            <div>American League: {{ cyyoung[0][0].nameFirst }} {{ cyyoung[0][0].nameLast }}</div><br>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+        <h5>Hank Aaron Award</h5>
+            <div>National League: {{ hankaaron[1][0].nameFirst }} {{ hankaaron[1][0].nameLast }}</div>
+            <div>American League: {{ hankaaron[0][0].nameFirst }} {{ hankaaron[0][0].nameLast }}</div><br>
+                </div>
+                <div class="col-sm-6">
+        <h5>Comeback player of the Year</h5>
+            <div>National League: {{ comeback[1][0].nameFirst }} {{ comeback[1][0].nameLast }}</div>
+            <div>American League: {{ comeback[0][0].nameFirst }} {{ comeback[0][0].nameLast }}</div><br>
+                </div>
+                 <div class="row">
+                <div class="col-sm-6">
+        <h5>Rookie of the Year</h5>
+            <div>National League: {{ rookie[1][0].nameFirst }} {{ rookie[1][0].nameLast }}</div>
+            <div>American League: {{ rookie[0][0].nameFirst }} {{ rookie[0][0].nameLast }}</div>
+                </div>
+                <div class="col-sm-6">
+        <h5>Reliever of the Year</h5>
+            <div>National League: {{ reliever[1][0].nameFirst }} {{ reliever[1][0].nameLast }}</div>
+            <div>American League: {{ reliever[0][0].nameFirst }} {{ reliever[0][0].nameLast }}</div>
+                </div>
+                 </div>
+                </div>
+        </div><br>
+    </div>
+{% endblock %}

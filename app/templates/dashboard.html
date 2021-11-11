@@ -5,57 +5,22 @@
     <div class="content-section">
     <!-- Check if the user is authenticated -->
     {% if current_user.is_authenticated %}
-        <h1 style="text-align: center">Logged in as {{ current_user.username }}</h1><br>
+        <h1 style="text-align: center">Logged in as {{ current_user.username }} </h1><br>
         <h6>Change Year</h6>
-        <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Year" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Submit</button>
+        <form method="POST" action="" class="d-flex">
+            {{ form.hidden_tag() }}
+            {{ form.changeYear(class="form-control me-2") }}
+            {{ form.submit(class="btn btn-outline-success") }}
         </form>
-        <!-- The section that controls the division standings -->
-        <h4>Division Standings for 2021</h4>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">Team</th>
-              <th scope="col">Wins</th>
-              <th scope="col">Losses</th>
-              <th scope="col">PCT</th>
-              <th scope="col">GB</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">Houston Astros</th>
-              <td>95</td>
-              <td>67</td>
-              <td>.586</td>
-              <td>-</td>
-            </tr>
-            <tr>
-              <th scope="row">Seattle Mariners</th>
-              <td>90</td>
-              <td>72</td>
-              <td>.556</td>
-              <td>5.0</td>
-            </tr>
-            <tr>
-              <th scope="row">Oakland Athletics</th>
-              <td>86</td>
-              <td>76</td>
-              <td>.531</td>
-              <td>9.0</td>
-            </tr>
-          </tbody>
-        </table>
-        <hr>
         <!-- The section to control the team's roster -->
-        <h4>Team Roster</h4>
-        <h6>Current Year: 2021</h6>
+        <h4>Team Roster for the {{ current_user.fav_team }}</h4>
+        <h6>Current Year: {{ year }}</h6>
         <table class="table table-striped">
           <thead>
             <tr>
               <th scope="col">Name</th>
-              <th scope="col">Position</th>
+              <th scope="col">Pitcher</th>
+              <th scope="col">Hitter</th>
               <th scope="col">Age</th>
               <th scope="col">Height</th>
               <th scope="col">Weight</th>
@@ -64,41 +29,51 @@
             </tr>
           </thead>
           <tbody>
+          {% for player in roster %}
             <tr>
-              <th scope="row">Jose Altuve</th>
-              <td>2B</td>
-              <td>31</td>
-              <td>5' 6"</td>
-              <td>166 lbs</td>
-              <td>Maracay, Venezuela</td>
-              <td><button data-bs-toggle="offcanvas" href="#offcanvasStats">More</button></td>
+              <th scope="row">{{ player[0].nameFirst }} {{ player[0].nameLast }}</th>
+                <td>X</td>
+                <td>X</td>
+                <td>{% if player[0].deathYear != None %}
+                        Died
+                    {% else %}
+                        {{ 2021 - player[0].birthYear }}
+                    {% endif %}
+                </td>
+                <td>{{ player[0].height//12 }}' {{ player[0].height%12 }}"</td>
+                <td>{{ player[0].weight }} Ib</td>
+                <td>{% if player[0].birthCountry == "USA" %}
+                        {{ player[0].birthCity }}, {{ player[0].birthState }}
+                    {% else %}
+                        {{ player[0].birthCity }}, {{ player[0].birthCountry }}
+                    {% endif %}
+                </td>
+                <td>
+                <button class="btn btn-outline-success btn-sm" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" id={{ loop.index0 }} onclick="setID()" aria-controls="offcanvasExample">
+                  More
+                </button>
+                </td>
             </tr>
-            <tr>
-              <th scope="row">Zack Grenke</th>
-              <td>SP</td>
-              <td>37</td>
-              <td>6' 2"</td>
-              <td>200 lbs</td>
-              <td>Orlando, FL</td>
-              <td><button data-bs-toggle="offcanvas" href="#offcanvasStats">More</button></td>
-            </tr>
+        {% endfor %}
           </tbody>
         </table>
+
         <!-- The section to control the more information button for each player on roster -->
-        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasStats">
-          <div class="offcanvas-header">
-            <h5 class="offcanvas-title">2021 Stats for Player Name</h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-          </div>
-          <div class="offcanvas-body">
+            <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+                <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasExampleLabel">{{ year }} Stats for</h5>
+                <div id="demo"></div>
+                <a type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></a>
+              </div>
+              <div class="offcanvas-body">
               <h6>Batting Stats</h6>
               <ul class="list-group">
-                 <li class="list-group-item">Runs</li>
-                 <li class="list-group-item">Hits</li>
-                 <li class="list-group-item">Doubles</li>
-                 <li class="list-group-item">Triples</li>
-                 <li class="list-group-item">Home Runs</li>
-                 <li class="list-group-item">RBIs</li>
+                 <li class="list-group-item">Runs: <div id="playerRuns"></div></li>
+                 <li class="list-group-item">Hits: <div id="playerHits"></div></li>
+                 <li class="list-group-item">Doubles: <div id="playerDoubles"></div></li>
+                 <li class="list-group-item">Triples: <div id="playerTriples"></div></li>
+                 <li class="list-group-item">Home Runs: <div id="playerHRs"></div></li>
+                 <li class="list-group-item">RBIs: <div id="playerRBIs"></div></li>
               </ul><br>
               <h6>Pitching Stats</h6>
               <ul class="list-group">
@@ -112,13 +87,21 @@
 
     {% else %}
         <!-- The homepage if the user is not logged in -->
-        <h1>Guest Home</h1>
-        <h4 style="text-align: center">Current World Series Champion</h4>
-        <h5 style="text-align: center">The Los Angeles Dodgers defeated the Tampa Bay Rays in 6 games</h5><br>
-        <h5 style="text-align: center">World Series MVP: Corey Seager</h5>
+        <h1 style="text-align: center">Guest Home</h1><br>
+        <h4 style="text-align: center"><u>Current World Series Champion</u></h4>
+        {% for team in wschamp %}
+        <h5 style="text-align: center">The {{ team[1].name }} defeated the {{ team[2].name }} in {{ team[0].wins + team[0].losses }} games</h5>
+        {% endfor %}
+        <h5 style="text-align: center">World Series MVP: Corey Seager (MIGHT DELETE)</h5>
         <hr>
         <!-- Display the top highest salaries in current year -->
-        <h4>Top 5 Highest Salaries in 2021</h4>
+        <h4>Top 5 Highest Salaries in {{ yearSalary }}</h4>
+        <h6>Change Year</h6>
+        <form method="POST" action="" class="d-flex">
+            {{ formSalary.hidden_tag() }}
+            {{ formSalary.changeYear(class="form-control me-2") }}
+            {{ formSalary.submit(class="btn btn-outline-success") }}
+        </form>
         <table class="table table-striped">
           <thead>
             <tr>
@@ -130,22 +113,18 @@
             </tr>
           </thead>
           <tbody>
+            {% for player in salaries %}
             <tr>
-              <th scope="row">Mike Trout</th>
-              <td>Los Angeles Angels</td>
-              <td>OF</td>
-              <td>30</td>
-              <td>$37.12 Million</td>
+              <th scope="row">{{ player[0].nameFirst }} {{ player[0].nameLast }}</th>
+              <td>{{ player[2].name }}</td>
+              <td>{{ player[3].POS }}</td>
+              <td>{{ 2021 - player[0].birthYear }}</td>
+              <td>${{ "{:.1f}".format(player[1].salary/1000000)}} Million</td>
             </tr>
-            <tr>
-              <th scope="row">Sheldon Smith</th>
-              <td>Houston Astros</td>
-              <td>1B</td>
-              <td>20</td>
-              <td>$1</td>
-            </tr>
+        {% endfor %}
           </tbody>
         </table>
     {% endif %}
     </div>
+
 {% endblock %}

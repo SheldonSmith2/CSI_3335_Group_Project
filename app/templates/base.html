@@ -39,11 +39,13 @@
                       <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="{{ url_for('managers') }}">Managers</a></li>
                         <li><a class="dropdown-item" href="{{ url_for('postseason') }}">Post Season</a></li>
-                        <li><a class="dropdown-item" href="{{ url_for('postseason') }}">Player Awards</a></li>
+                          <li><a class="dropdown-item" href="{{ url_for('allstar') }}">All Star Games</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Other</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('playerawards') }}">Player Awards</a></li>
+                          <li><a class="dropdown-item" href="{{ url_for('halloffame') }}">Hall of Fame</a></li>
                       </ul>
                     </li>
+                    <a class="nav-item nav-link" href="{{ url_for('standings') }}">Team Standings</a>
                     <a class="nav-item nav-link" href="{{ url_for('account') }}">Account</a>
                     <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
                 {% else %}

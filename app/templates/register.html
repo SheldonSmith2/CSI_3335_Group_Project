@@ -9,7 +9,7 @@
             <legend class="border-bottom mb-4">Register</legend>
                 <div class="form-group">
                     {{ form.username.label(class="form-control-label") }}
-                    {{ form.username(class="form-control form-control-lg") }}
+                    {{ form.username(class="form-control") }}
                     {% for error in form.username.errors %}
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
@@ -17,7 +17,7 @@
                 </div>
                 <div class="form-group">
                     {{ form.email.label(class="form-control-label") }}
-                    {{ form.email(class="form-control form-control-lg") }}
+                    {{ form.email(class="form-control") }}
                     {% for error in form.email.errors %}
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
@@ -25,7 +25,7 @@
                 </div>
                 <div class="form-group">
                     {{ form.password.label(class="form-control-label") }}
-                    {{ form.password(class="form-control form-control-lg") }}
+                    {{ form.password(class="form-control") }}
                     <small id="passwordHelpBlock" class="form-text text-muted">
                       Your password must be 8-20 characters long, contain at least one number, uppercase letter, and special character.
                     </small><br>
@@ -36,7 +36,7 @@
                 </div>
                 <div class="form-group">
                     {{ form.passwordRepeat.label(class="form-control-label") }}
-                    {{ form.passwordRepeat(class="form-control form-control-lg") }}
+                    {{ form.passwordRepeat(class="form-control") }}
                     {% for error in form.passwordRepeat.errors %}
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
@@ -44,7 +44,7 @@
                 </div>
                 <div class="form-group">
                     {{ form.fav_team.label(class="form-control-label") }}<br>
-                    {{ form.fav_team(size=4) }}<br>
+                    {{ form.fav_team(class="form-select") }}<br>
                     {% for error in form.fav_team.errors %}
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}

@@ -1,17 +1,49 @@
 # The file to control the different routes within the application
+from itsdangerous import json
+
 from app import app, db, bcrypt, mail
-from app.forms import LoginForm, RegisterForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
+from app.forms import LoginForm, RegisterForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm, \
+    ChangeYearForm
 from flask import render_template, flash, redirect, url_for, request
-from app.models import User
+from app.userModel import User
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
+from app.baseballModels.modelConnection import getRoster, getStandings, getManagers, getTopSalaries, \
+    getManagerAward, getRound, getWLofDivision, getWSWins, getStats, getLgWins, getDivWins, getWSWinInfo, \
+    getHallofFame, getAllstar, getPlayerAwards, getCurrentTeams
 
 
 # The main page for the website
-@app.route('/')
-@app.route('/dashboard')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
-    return render_template('dashboard.html', title='Home')
+    form = ChangeYearForm()
+    formSalary = ChangeYearForm()
+    if form.validate_on_submit():
+        year = form.changeYear.data
+    elif request.method == 'GET':
+        year = 2019
+    if current_user.is_authenticated:
+        roster = getRoster(current_user.fav_team, year)
+    else:
+        roster = ""
+    if formSalary.validate_on_submit():
+        yearSalary = formSalary.changeYear.data
+    elif request.method == 'GET':
+        yearSalary = 2016
+    salaries = getTopSalaries(yearSalary)
+    wschamp = getRound(2019, "WS")
+    return render_template('dashboard.html', title='Home', roster=roster, form=form,
+                           year=year, salaries=salaries, yearSalary=yearSalary, formSalary=formSalary,
+                           wschamp=wschamp, **request.args)
+
+
+@app.route('/getinfo/<id>/<year>', methods=['GET', 'POST'])
+def stats(id, year):
+    flash("Player " + id + " " + year, 'success')
+    player_stats = getStats(id, year, current_user.fav_team)
+    toggle = ".show"
+    return redirect(url_for('dashboard', toggle=toggle, player_stats=player_stats))
 
 
 # The route to control the login functionality
@@ -79,7 +111,8 @@ def account():
         form.username.data = current_user.username
         form.email.data = current_user.email
         form.fav_team.data = current_user.fav_team
-    return render_template('account.html', title='Account', form=form)
+    teams = getCurrentTeams()
+    return render_template('account.html', title='Account', form=form, teams=teams)
 
 
 # The route to control the about page
@@ -88,14 +121,97 @@ def about():
     return render_template('about.html', title='About')
 
 
+@app.route('/allstar', methods=['GET', 'POST'])
+def allstar():
+    form = ChangeYearForm()
+    if form.validate_on_submit():
+        year = form.changeYear.data
+    elif request.method == 'GET':
+        year = 2019
+    allstarInfo = getAllstar(current_user.fav_team, year)
+    return render_template('allstar.html', title='All Star', form=form, year=year, allstarInfo=allstarInfo)
+
+
+@app.route('/halloffame', methods=['GET', 'POST'])
+def halloffame():
+    form = ChangeYearForm()
+    if form.validate_on_submit():
+        year = form.changeYear.data
+    elif request.method == 'GET':
+        year = 2018
+    halloffame = getHallofFame(year)
+    return render_template('halloffame.html', title='Hall of Fame', halloffame=halloffame, form=form, year=year)
+
+
+@app.route('/playerawards', methods=['GET', 'POST'])
+def playerawards():
+    form = ChangeYearForm()
+    if form.validate_on_submit():
+        year = form.changeYear.data
+    elif request.method == 'GET':
+        year = 2017
+    mvp = getPlayerAwards(year, "Most Valuable Player")
+    cyyoung = getPlayerAwards(year, "Cy Young Award")
+    rookie = getPlayerAwards(year, "Rookie of the Year")
+    comeback = getPlayerAwards(year, "Comeback Player of the Year")
+    hankaaron = getPlayerAwards(year, "Hank Aaron Award")
+    reliever = getPlayerAwards(year, "Reliever of the Year Award")
+    return render_template('playerawards.html', title='Player Awards', year=year, form=form, mvp=mvp, cyyoung=cyyoung,
+                           rookie=rookie, comeback=comeback, hankaaron=hankaaron, reliever=reliever)
+
+
 @app.route('/managers')
 def managers():
-    return render_template('managers.html', title='Managers')
+    tsnAwards = getManagerAward(current_user.fav_team, "TSN Manager of the Year")
+    bbwaaAwards = getManagerAward(current_user.fav_team, "BBWAA Manager of the Year")
+    managerList = getManagers(current_user.fav_team)
+    return render_template('managers.html', title='Managers', managerList=managerList,
+                           tsnAwards=tsnAwards, bbwaaAwards=bbwaaAwards)
 
 
 @app.route('/postseason')
 def postseason():
-    return render_template('postseason.html', title='Post Season Stats')
+    countWS = getWSWins(current_user.fav_team)
+    countDiv = getDivWins(current_user.fav_team)
+    countLg = getLgWins(current_user.fav_team)
+    WSWinInfo = getWSWinInfo(current_user.fav_team)
+    return render_template('postseason.html', title='Post Season Stats', countWS=countWS, countLg=countLg,
+                           countDiv=countDiv, WSWinInfo=WSWinInfo)
+
+
+@app.route('/standings', methods=['GET', 'POST'])
+def standings():
+    form = ChangeYearForm()
+    if form.validate_on_submit():
+        year = form.changeYear.data
+    elif request.method == 'GET':
+        year = 2019
+    ALWest = getStandings(year, "AL", "W")
+    ALWestWL = getWLofDivision(year, "AL", "W")
+    ALEast = getStandings(year, "AL", "E")
+    ALEastWL = getWLofDivision(year, "AL", "E")
+    ALCentral = getStandings(year, "AL", "C")
+    ALCentralWL = getWLofDivision(year, "AL", "C")
+    NLWest = getStandings(year, "NL", "W")
+    NLWestWL = getWLofDivision(year, "NL", "W")
+    NLEast = getStandings(year, "NL", "E")
+    NLEastWL = getWLofDivision(year, "NL", "E")
+    NLCentral = getStandings(year, "NL", "C")
+    NLCentralWL = getWLofDivision(year, "NL", "C")
+    WSChamp = getRound(year, "WS")
+    ALCS = getRound(year, "ALCS")
+    NLCS = getRound(year, "NLCS")
+    ALDS1 = getRound(year, "ALDS1")
+    ALDS2 = getRound(year, "ALDS2")
+    NLDS1 = getRound(year, "NLDS1")
+    NLDS2 = getRound(year, "NLDS2")
+    ALWC = getRound(year, "ALWC")
+    NLWC = getRound(year, "NLWC")
+    return render_template('standings.html', title='Standings', ALWest=ALWest, form=form, year=year, ALWestWL=ALWestWL,
+                           ALEast=ALEast, ALEastWL=ALEastWL, ALCentralWL=ALCentralWL, ALCentral=ALCentral, NLWest=NLWest,
+                           NLWestWL=NLWestWL, NLEast=NLEast, NLEastWL=NLEastWL, NLCentral=NLCentral, NLCentralWL=NLCentralWL,
+                           WSChamp=WSChamp, ALCS=ALCS, NLCS=NLCS, ALDS1=ALDS1, ALDS2=ALDS2, NLDS1=NLDS1, NLDS2=NLDS2,
+                           ALWC=ALWC, NLWC=NLWC)
 
 
 # The function to send the reset password email

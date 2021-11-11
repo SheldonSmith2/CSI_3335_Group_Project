@@ -11,56 +11,56 @@
     </nav>
     <div class="tab-content" id="nav-tabContent">
       <div class="tab-pane fade show active" id="nav-list" role="tabpanel" aria-labelledby="nav-home-tab">
-          <br><h4>Past 15 Managers</h4>
+          <br><h4>Past 10 Managers for the {{ current_user.fav_team }}</h4>
             <table class="table table-striped">
               <thead>
                 <tr>
                   <th scope="col">Name</th>
                   <th scope="col">Start Year</th>
                   <th scope="col">End Year</th>
-                  <th scope="col">Total Wins</th>
                   <th scope="col">Win %</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">Dusty baker</th>
-                  <td>2020</td>
-                  <td>Present</td>
-                  <td>29</td>
-                  <td>.483</td>
-                </tr>
-                <tr>
-                  <th scope="row">AJ Hinch</th>
-                  <td>2015</td>
-                  <td>2019</td>
-                  <td>481</td>
-                  <td>.594</td>
-                </tr>
+                {% for manager in managerList %}
+                    <tr>
+                      <th scope="row">{{ manager[4].nameFirst }} {{ manager[4].nameLast }}</th>
+                      <td>{{ manager[2] }}</td>
+                      <td>{{ manager[1] }}</td>
+                      <td>{{ "{:.3f}".format(manager[3]/manager[5],2) }} </td>
+                    </tr>
+                {% endfor %}
               </tbody>
             </table>
       </div>
       <div class="tab-pane fade" id="nav-awards" role="tabpanel" aria-labelledby="nav-profile-tab">
-          <br><h4>Managers during World Series wins</h4>
-                <div class="card card-body">
-                    AJ Hinch was manager for the Houston Astros during their World Series win in 2017
-                </div>
-                <div class="card card-body">
-                    AJ Hinch was manager for the Houston Astros during their World Series win in 2017
-                </div>
 
-          <br><div class="card">
+          <br>
+            <div class="row">
+            <div class="col-sm-6">
+          <div class="card">
                   <div class="card-body">
-                    <h5 class="card-title">BBVAA Manager of the Year</h5>
-                    <p class="card-text">Name - Year, Name - Year, Name - Year</p>
+                    <h5 class="card-title">BBWAA Manager of the Year</h5>
+                    <p class="card-text">
+                        {% for manager in bbwaaAwards %}
+                              {{ manager[2].nameFirst }} {{ manager[2].nameLast }} ({{ manager[0].yearID }}) <br>
+                        {% endfor %}</p>
                   </div>
-                </div> <br>
+                </div>
+            </div>
+            <div class="col-sm-6">
                 <div class="card">
                   <div class="card-body">
-                    <h5 class="card-title">TLA Manager of the Year</h5>
-                    <p class="card-text">Name - Year, Name - Year, Name - Year</p>
+                    <h5 class="card-title">TSN Manager of the Year</h5>
+                    <p class="card-text">
+                        {% for manager in tsnAwards %}
+                              {{ manager[2].nameFirst }} {{ manager[2].nameLast }} ({{ manager[0].yearID }}) <br>
+                        {% endfor %}
+                      </p>
                   </div>
                 </div>
+            </div>
+            </div>
       </div>
     </div>
     </div>
