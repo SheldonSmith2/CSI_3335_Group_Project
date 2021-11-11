@@ -9,6 +9,7 @@ from app.baseballModels.managers import Managers
 from app.baseballModels.fielding import Fielding
 from app.baseballModels.seriespostseason import SeriesPost
 from app.baseballModels.awardsmanagers import AwardsManagers
+from app.baseballModels.awardsplayers import AwardsPlayers
 
 
 def createConnection():
@@ -81,14 +82,14 @@ def getBBWAAawards(team):
 	return bbwaaawards
 
 
-def getLatestWSChamp():
+def getRound(year, rd):
 	session = createConnection()
 	teamWin = aliased(Teams)
 	teamLoss = aliased(Teams)
-	wschamp = session.query(SeriesPost, teamWin, teamLoss).filter(SeriesPost.yearID == 2019, SeriesPost.round == "WS",
+	roundResults = session.query(SeriesPost, teamWin, teamLoss).filter(SeriesPost.yearID == year, SeriesPost.round == rd,
 													SeriesPost.teamIDwinner == teamWin.teamID, SeriesPost.teamIDloser == teamLoss.teamID,
 																SeriesPost.yearID == teamWin.yearID, SeriesPost.yearID == teamLoss.yearID)
-	return wschamp
+	return roundResults
 
 
 def getWSWins(team):
@@ -98,9 +99,41 @@ def getWSWins(team):
 	return count
 
 
+def getDivWins(team):
+	session = createConnection()
+	count = session.query(func.count(Teams.DivWin))\
+		.filter(Teams.name == team, Teams.DivWin == 'Y')
+	return count
+
+
+def getLgWins(team):
+	session = createConnection()
+	count = session.query(func.count(Teams.LgWin))\
+		.filter(Teams.name == team, Teams.LgWin == 'Y')
+	return count
+
+
+def getWSWinInfo(team):
+	session = createConnection()
+	teamWin = aliased(Teams)
+	teamLoss = aliased(Teams)
+	roundResults = session.query(SeriesPost, teamLoss)\
+		.filter(SeriesPost.round == "WS", SeriesPost.teamIDwinner == teamWin.teamID,
+				SeriesPost.teamIDloser == teamLoss.teamID, SeriesPost.yearID == teamWin.yearID,
+				SeriesPost.yearID == teamLoss.yearID, teamWin.name == team).order_by(SeriesPost.yearID.desc())
+	return roundResults
+
+
 def getStats(plyr_id, year, team):
 	session = createConnection()
 	stats = session.query(Batting, People.nameFirst, People.nameLast)\
 		.filter(Batting.yearID == year, Batting.playerid == plyr_id, Batting.teamID == Teams.teamID, Batting.yearID == Teams.yearID,
 				Teams.name == team, Batting.playerid == People.playerid).limit(1)
 	return stats
+
+
+def getPlayerAwards(team):
+	session = createConnection()
+	stats = session.query(People, AwardsPlayers).filter(Teams.name == team, A)
+	return stats
+

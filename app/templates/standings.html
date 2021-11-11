@@ -12,31 +12,32 @@
             {{ form.submit(class="btn btn-outline-success") }}
         </form>
         <!-- The section that controls the division standings -->
-    <div style="text-align: center">_____ won the World Series against ______</div>
-    <div class="row">
-        <div class="col-sm-6">
-            ____ defeated ___ in the ALCS
+        <div style="text-align: center">The <strong>{{ WSChamp[0][1].name }}</strong> won the <strong>World Series</strong> against the {{ WSChamp[0][2].name }}</div>
+        <div>
+            The <strong>{{ ALCS[0][1].name }}</strong> defeated the {{ ALCS[0][2].name }} in the <strong>ALCS</strong>
         </div>
-        <div class="col-sm-6">
-            ____ defeated ___ in the NLCS
+        <div>
+            The <strong>{{ NLCS[0][1].name }}</strong> defeated the {{ NLCS[0][2].name }} in the <strong>NLCS</strong>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-6">
-            ____ defeated ___ in the ALDS
+        <div>
+            The <strong>{{ ALDS1[0][1].name }}</strong> defeated the {{ ALDS1[0][2].name }} in the <strong>ALDS</strong>
         </div>
-        <div class="col-sm-6">
-            ____ defeated ___ in the NLDS
+        <div>
+            The <strong>{{ ALDS2[0][1].name }}</strong> defeated the {{ ALDS2[0][2].name }} in the <strong>ALDS</strong>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-6">
-            ____ defeated ___ in the ALDS
+        <div>
+            The <strong>{{ NLDS1[0][1].name }}</strong> defeated the {{ NLDS1[0][2].name }} in the <strong>NLDS</strong>
         </div>
-        <div class="col-sm-6">
-            ____ defeated ___ in the NLDS
+        <div>
+            The <strong>{{ NLDS2[0][1].name }}</strong> defeated the {{ NLDS2[0][2].name }} in the <strong>NLDS</strong>
         </div>
-    </div><br>
+        <div>
+            The <strong>{{ ALWC[0][1].name }}</strong> defeated the {{ ALWC[0][2].name }} in the <strong>AL Wild Card</strong>
+        </div>
+        <div>
+            The <strong>{{ NLWC[0][1].name }}</strong> defeated the {{ NLWC[0][2].name }} in the <strong>NL Wild Card</strong>
+        </div>
+    <br>
     <div class="row">
             <div class="col-sm-6">
     <h5>American League West</h5>
@@ -57,9 +58,7 @@
               <td>{{ team.W }}</td>
               <td>{{ team.L }}</td>
               <td>{{ "{:.3f}".format(team.W/team.G,2) }}</td>
-                {% for topTeam in ALWestWL %}
-              <td>{{ ((topTeam.W - team.W) + (team.L - topTeam.L))/2 }}</td>
-                {% endfor %}
+              <td>{{ ((ALWestWL[0].W - team.W) + (team.L - ALWestWL[0].L))/2 }}</td>
             </tr>
         {% endfor %}
           </tbody>
@@ -84,9 +83,9 @@
               <td>{{ team.W }}</td>
               <td>{{ team.L }}</td>
               <td>{{ "{:.3f}".format(team.W/team.G,2) }}</td>
-                {% for topTeam in NLWestWL %}
-              <td>{{ ((topTeam.W - team.W) + (team.L - topTeam.L))/2 }}</td>
-                {% endfor %}
+              <td>
+                {{ ((NLWestWL[0].W - team.W) + (team.L - NLWestWL[0].L))/2 }}
+              </td>
             </tr>
         {% endfor %}
           </tbody>
@@ -112,9 +111,7 @@
               <td>{{ team.W }}</td>
               <td>{{ team.L }}</td>
               <td>{{ "{:.3f}".format(team.W/team.G,2) }}</td>
-                {% for topTeam in ALEastWL %}
-              <td>{{ ((topTeam.W - team.W) + (team.L - topTeam.L))/2 }}</td>
-                {% endfor %}
+                <td>{{ ((ALEastWL[0].W - team.W) + (team.L - ALEastWL[0].L))/2 }}</td>
             </tr>
         {% endfor %}
           </tbody>
@@ -139,9 +136,7 @@
               <td>{{ team.W }}</td>
               <td>{{ team.L }}</td>
               <td>{{ "{:.3f}".format(team.W/team.G,2) }}</td>
-                {% for topTeam in NLEastWL %}
-              <td>{{ ((topTeam.W - team.W) + (team.L - topTeam.L))/2 }}</td>
-                {% endfor %}
+               <td>{{ ((NLEastWL[0].W - team.W) + (team.L - NLEastWL[0].L))/2 }}</td>
             </tr>
         {% endfor %}
           </tbody>
@@ -167,9 +162,7 @@
               <td>{{ team.W }}</td>
               <td>{{ team.L }}</td>
               <td>{{ "{:.3f}".format(team.W/team.G,2) }}</td>
-                {% for topTeam in ALCentralWL %}
-              <td>{{ ((topTeam.W - team.W) + (team.L - topTeam.L))/2 }}</td>
-                {% endfor %}
+              <td>{{ ((ALCentralWL[0].W - team.W) + (team.L - ALCentralWL[0].L))/2 }}</td>
             </tr>
         {% endfor %}
           </tbody>
@@ -194,9 +187,7 @@
               <td>{{ team.W }}</td>
               <td>{{ team.L }}</td>
               <td>{{ "{:.3f}".format(team.W/team.G,2) }}</td>
-                {% for topTeam in NLCentralWL %}
-              <td>{{ ((topTeam.W - team.W) + (team.L - topTeam.L))/2 }}</td>
-                {% endfor %}
+              <td>{{ ((NLCentralWL[0].W - team.W) + (team.L - NLCentralWL[0].L))/2 }}</td>
             </tr>
         {% endfor %}
           </tbody>

@@ -4,10 +4,9 @@
     <div class="content-section">
         <h3 style="text-align: center">Post Season Stats</h3>
         <br>
-        <h5>Number of Times Won Division: </h5><br>
-        <h5>Number of Times Won Conference: </h5><br>
-        <h5>Number of World Series Appearances:</h5><br>
-        <h5>World Series Wins: {% for count in countWS %}{{ count[0] }} {% endfor %}</h5>
+        <h5>Number of Times Won Division: {{ countDiv[0][0] }}</h5><br>
+        <h5>Number of Times Won Conference: {{ countLg[0][0] }}</h5><br>
+        <h5>World Series Wins: {{ countWS[0][0] }} </h5><br>
             <table class="table table-striped">
               <thead>
                 <tr>
@@ -18,18 +17,14 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">2017</th>
-                  <td>Los Angeles Dodgers</td>
-                  <td>7</td>
-                  <td>George Springer</td>
+              {% for win in WSWinInfo %}
+                  <tr>
+                  <th scope="row">{{ win[0].yearID }}</th>
+                  <td>{{ win[1].name }}</td>
+                  <td>{{ win[0].wins + win[0].losses + win[0].ties }}</td>
+                  <td>Not Known</td>
                 </tr>
-                <tr>
-                  <th scope="row">N/A</th>
-                  <td>N/A</td>
-                  <td>N/A</td>
-                  <td>N/A</td>
-                </tr>
+              {% endfor %}
               </tbody>
             </table>
     </div>

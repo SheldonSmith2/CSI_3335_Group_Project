@@ -9,7 +9,8 @@ from app.userModel import User
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
 from app.baseballModels.modelConnection import getRoster, getStandings, getManagers, getTopSalaries, \
-    getTSNAwards, getBBWAAawards, getLatestWSChamp, getWLofDivision, getWSWins, getStats
+    getTSNAwards, getBBWAAawards, getRound, getWLofDivision, getWSWins, getStats, getLgWins, getDivWins, getWSWinInfo
+
 
 # The main page for the website
 @app.route('/')
@@ -30,7 +31,7 @@ def dashboard():
     elif request.method == 'GET':
         yearSalary = 2016
     salaries = getTopSalaries(yearSalary)
-    wschamp = getLatestWSChamp()
+    wschamp = getRound(2019, "WS")
     return render_template('dashboard.html', title='Home', roster=roster, form=form,
                            year=year, salaries=salaries, yearSalary=yearSalary, formSalary=formSalary,
                            wschamp=wschamp, **request.args)
@@ -130,7 +131,11 @@ def managers():
 @app.route('/postseason')
 def postseason():
     countWS = getWSWins(current_user.fav_team)
-    return render_template('postseason.html', title='Post Season Stats', countWS=countWS)
+    countDiv = getDivWins(current_user.fav_team)
+    countLg = getLgWins(current_user.fav_team)
+    WSWinInfo = getWSWinInfo(current_user.fav_team)
+    return render_template('postseason.html', title='Post Season Stats', countWS=countWS, countLg=countLg,
+                           countDiv=countDiv, WSWinInfo=WSWinInfo)
 
 
 @app.route('/standings', methods=['GET', 'POST'])
@@ -152,9 +157,20 @@ def standings():
     NLEastWL = getWLofDivision(year, "NL", "E")
     NLCentral = getStandings(year, "NL", "C")
     NLCentralWL = getWLofDivision(year, "NL", "C")
+    WSChamp = getRound(year, "WS")
+    ALCS = getRound(year, "ALCS")
+    NLCS = getRound(year, "NLCS")
+    ALDS1 = getRound(year, "ALDS1")
+    ALDS2 = getRound(year, "ALDS2")
+    NLDS1 = getRound(year, "NLDS1")
+    NLDS2 = getRound(year, "NLDS2")
+    ALWC = getRound(year, "ALWC")
+    NLWC = getRound(year, "NLWC")
     return render_template('standings.html', title='Standings', ALWest=ALWest, form=form, year=year, ALWestWL=ALWestWL,
                            ALEast=ALEast, ALEastWL=ALEastWL, ALCentralWL=ALCentralWL, ALCentral=ALCentral, NLWest=NLWest,
-                           NLWestWL=NLWestWL, NLEast=NLEast, NLEastWL=NLEastWL, NLCentral=NLCentral, NLCentralWL=NLCentralWL)
+                           NLWestWL=NLWestWL, NLEast=NLEast, NLEastWL=NLEastWL, NLCentral=NLCentral, NLCentralWL=NLCentralWL,
+                           WSChamp=WSChamp, ALCS=ALCS, NLCS=NLCS, ALDS1=ALDS1, ALDS2=ALDS2, NLDS1=NLDS1, NLDS2=NLDS2,
+                           ALWC=ALWC, NLWC=NLWC)
 
 
 # The function to send the reset password email
