@@ -10,6 +10,8 @@ from app.baseballModels.fielding import Fielding
 from app.baseballModels.seriespostseason import SeriesPost
 from app.baseballModels.awardsmanagers import AwardsManagers
 from app.baseballModels.awardsplayers import AwardsPlayers
+from app.baseballModels.halloffame import HallofFame
+from app.baseballModels.allstarfull import AllstarFull
 
 
 def createConnection():
@@ -132,8 +134,16 @@ def getStats(plyr_id, year, team):
 	return stats
 
 
-def getPlayerAwards(team):
+def getHallofFame(year):
 	session = createConnection()
-	stats = session.query(People, AwardsPlayers).filter(Teams.name == team, A)
+	stats = session.query(People, HallofFame)\
+		.filter(People.playerid == HallofFame.playerid, HallofFame.inducted == 'Y', HallofFame.yearid == year)
 	return stats
 
+
+def getAllstar(team, year):
+	session = createConnection()
+	allstar = session.query(People, AllstarFull)\
+		.filter(People.playerid == AllstarFull.playerid, Teams.name == team, Teams.yearID == AllstarFull.yearID,
+				Teams.teamID == AllstarFull.teamID, AllstarFull.yearID == year)
+	return allstar

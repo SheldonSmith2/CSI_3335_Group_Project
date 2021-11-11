@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="content-section">
+        <h3 style="text-align: center">Player Awards for {{ year }}</h3>
+        <br>
+        <form method="POST" action="" class="d-flex">
+            {{ form.hidden_tag() }}
+            {{ form.changeYear(class="form-control me-2") }}
+            {{ form.submit(class="btn btn-outline-success") }}
+        </form><br>
+        <h5>Most Valuable Player</h5>
+            <div>National League:</div>
+            <div>American League:</div><br>
+        <h5>Cy Young Award</h5>
+            <div>National League:</div>
+            <div>American League:</div><br>
+        <h5>Comeback player of the Year</h5>
+            <div>National League:</div>
+            <div>American League:</div><br>
+        <h5>Rookie of the Year</h5>
+            <div>National League:</div>
+            <div>American League:</div>
+    </div>
+{% endblock %}

@@ -9,7 +9,8 @@ from app.userModel import User
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
 from app.baseballModels.modelConnection import getRoster, getStandings, getManagers, getTopSalaries, \
-    getTSNAwards, getBBWAAawards, getRound, getWLofDivision, getWSWins, getStats, getLgWins, getDivWins, getWSWinInfo
+    getTSNAwards, getBBWAAawards, getRound, getWLofDivision, getWSWins, getStats, getLgWins, getDivWins, getWSWinInfo, \
+    getHallofFame, getAllstar
 
 
 # The main page for the website
@@ -117,6 +118,38 @@ def account():
 @app.route('/about')
 def about():
     return render_template('about.html', title='About')
+
+
+@app.route('/allstar', methods=['GET', 'POST'])
+def allstar():
+    form = ChangeYearForm()
+    if form.validate_on_submit():
+        year = form.changeYear.data
+    elif request.method == 'GET':
+        year = 2019
+    allstarInfo = getAllstar(current_user.fav_team, year)
+    return render_template('allstar.html', title='All Star', form=form, year=year, allstarInfo=allstarInfo)
+
+
+@app.route('/halloffame', methods=['GET', 'POST'])
+def halloffame():
+    form = ChangeYearForm()
+    if form.validate_on_submit():
+        year = form.changeYear.data
+    elif request.method == 'GET':
+        year = 2018
+    halloffame = getHallofFame(year)
+    return render_template('halloffame.html', title='Hall of Fame', halloffame=halloffame, form=form, year=year)
+
+
+@app.route('/playerawards', methods=['GET', 'POST'])
+def playerawards():
+    form = ChangeYearForm()
+    if form.validate_on_submit():
+        year = form.changeYear.data
+    elif request.method == 'GET':
+        year = 2017
+    return render_template('playerawards.html', title='Player Awards', year=year, form=form)
 
 
 @app.route('/managers')

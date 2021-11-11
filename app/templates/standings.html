@@ -12,31 +12,25 @@
             {{ form.submit(class="btn btn-outline-success") }}
         </form>
         <!-- The section that controls the division standings -->
-        <div style="text-align: center">The <strong>{{ WSChamp[0][1].name }}</strong> won the <strong>World Series</strong> against the {{ WSChamp[0][2].name }}</div>
-        <div>
-            The <strong>{{ ALCS[0][1].name }}</strong> defeated the {{ ALCS[0][2].name }} in the <strong>ALCS</strong>
-        </div>
-        <div>
-            The <strong>{{ NLCS[0][1].name }}</strong> defeated the {{ NLCS[0][2].name }} in the <strong>NLCS</strong>
-        </div>
-        <div>
-            The <strong>{{ ALDS1[0][1].name }}</strong> defeated the {{ ALDS1[0][2].name }} in the <strong>ALDS</strong>
-        </div>
-        <div>
-            The <strong>{{ ALDS2[0][1].name }}</strong> defeated the {{ ALDS2[0][2].name }} in the <strong>ALDS</strong>
-        </div>
-        <div>
-            The <strong>{{ NLDS1[0][1].name }}</strong> defeated the {{ NLDS1[0][2].name }} in the <strong>NLDS</strong>
-        </div>
-        <div>
-            The <strong>{{ NLDS2[0][1].name }}</strong> defeated the {{ NLDS2[0][2].name }} in the <strong>NLDS</strong>
-        </div>
-        <div>
-            The <strong>{{ ALWC[0][1].name }}</strong> defeated the {{ ALWC[0][2].name }} in the <strong>AL Wild Card</strong>
-        </div>
-        <div>
-            The <strong>{{ NLWC[0][1].name }}</strong> defeated the {{ NLWC[0][2].name }} in the <strong>NL Wild Card</strong>
-        </div>
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-light">
+                <div>The <strong>{{ WSChamp[0][1].name }}</strong> won the <strong>World Series</strong> against the {{ WSChamp[0][2].name }}</div>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <div>The <strong>{{ ALCS[0][1].name }}</strong> defeated the {{ ALCS[0][2].name }} in the <strong>ALCS</strong></div>
+                <div>The <strong>{{ NLCS[0][1].name }}</strong> defeated the {{ NLCS[0][2].name }} in the <strong>NLCS</strong></div>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <div>The <strong>{{ ALDS1[0][1].name }}</strong> defeated the {{ ALDS1[0][2].name }} in the <strong>ALDS</strong></div>
+                <div>The <strong>{{ ALDS2[0][1].name }}</strong> defeated the {{ ALDS2[0][2].name }} in the <strong>ALDS</strong></div>
+                <div>The <strong>{{ NLDS1[0][1].name }}</strong> defeated the {{ NLDS1[0][2].name }} in the <strong>NLDS</strong></div>
+                <div>The <strong>{{ NLDS2[0][1].name }}</strong> defeated the {{ NLDS2[0][2].name }} in the <strong>NLDS</strong></div>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <div>The <strong>{{ ALWC[0][1].name }}</strong> defeated the {{ ALWC[0][2].name }} in the <strong>AL Wild Card</strong></div>
+                <div>The <strong>{{ NLWC[0][1].name }}</strong> defeated the {{ NLWC[0][2].name }} in the <strong>NL Wild Card</strong></div>
+            </li>
+        </ul>
     <br>
     <div class="row">
             <div class="col-sm-6">

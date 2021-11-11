@@ -2,10 +2,10 @@
 
 {% block content %}
     <div class="content-section">
-        <h3 style="text-align: center">Post Season Stats</h3>
+        <h3 style="text-align: center">Post Season Stats for the {{ current_user.fav_team }}</h3>
         <br>
-        <h5>Number of Times Won Division: {{ countDiv[0][0] }}</h5><br>
-        <h5>Number of Times Won Conference: {{ countLg[0][0] }}</h5><br>
+        <h5>Number of Times Won Division: {{ countDiv[0][0] }}</h5>
+        <h5>Number of Times Won Conference: {{ countLg[0][0] }}</h5>
         <h5>World Series Wins: {{ countWS[0][0] }} </h5><br>
             <table class="table table-striped">
               <thead>

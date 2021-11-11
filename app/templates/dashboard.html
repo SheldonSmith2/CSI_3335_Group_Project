@@ -20,7 +20,7 @@
             <tr>
               <th scope="col">Name</th>
               <th scope="col">Pitcher</th>
-              <th scope="col">Batter</th>
+              <th scope="col">Hitter</th>
               <th scope="col">Age</th>
               <th scope="col">Height</th>
               <th scope="col">Weight</th>
@@ -84,17 +84,6 @@
               </ul>
           </div>
         </div>
-
-        <script>
-        function setID() {
-          var x = document.getElementsByClassName("btn btn-primary player")[0].id;
-          alert(x);
-          document.getElementById("playerRuns").innerHTML = {{ roster[1][0].R }};
-          document.getElementById("playerHits").innerHTML = {{ roster[1][0].H }};
-          document.getElementById("playerHRs").innerHTML = {{ roster[1][0].HR }};
-          document.getElementById("playerRBIs").innerHTML = {{ roster[1][0].RBI }};
-        }
-        </script>
 
     {% else %}
         <!-- The homepage if the user is not logged in -->
