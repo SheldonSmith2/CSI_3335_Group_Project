@@ -29,6 +29,7 @@ def getRoster(team, year):
 	players = session.query(People, Batting, Teams).distinct(People.playerid)\
 		.filter(People.playerid == Batting.playerid, Teams.teamID == Batting.teamID, Teams.yearID == Batting.yearID,
 				Teams.name == team, Batting.yearID == year).order_by(People.nameLast).all()
+	session.close()
 	return players
 
 
@@ -36,12 +37,14 @@ def getStandings(year, league, division):
 	session = createConnection()
 	teams = session.query(Teams)\
 		.filter(Teams.lgID == league, Teams.divID == division, Teams.yearID == year).order_by(Teams.W.desc()).all()
+	session.close()
 	return teams
 
 def getWLofDivision(year, league, division):
 	session = createConnection()
 	topTeam = session.query(Teams)\
 		.filter(Teams.lgID == league, Teams.divID == division, Teams.yearID == year).order_by(Teams.W.desc()).limit(1)
+	session.close()
 	return topTeam
 
 
@@ -51,6 +54,7 @@ def getManagers(team):
 							 People, func.sum(Managers.G))\
 		.filter(Managers.teamID == Teams.teamID, Teams.name == team, People.playerid == Managers.playerid)\
 		.group_by(Managers.playerid).order_by(func.max(Managers.yearID).desc()).limit(10).all()
+	session.close()
 	return managers
 
 
@@ -61,36 +65,29 @@ def getTopSalaries(year):
 				Teams.teamID == Salaries.teamID, Fielding.teamID == Teams.teamID, Teams.yearID == Fielding.yearID,
 				Fielding.playerid == Salaries.playerid, Fielding.G > 10)\
 		.order_by(Salaries.salary.desc()).limit(10).all()
+	session.close()
 	return salaries
 
 
-def getTSNAwards(team):
+def getManagerAward(team, type):
 	session = createConnection()
 	tsnawards = session.query(AwardsManagers, Managers, People)\
 		.filter(Managers.playerid == AwardsManagers.playerID, Managers.yearID == AwardsManagers.yearID, People.playerid == Managers.playerid,
 				Managers.teamID == Teams.teamID, Managers.yearID == Teams.yearID, Teams.name == team,
-				AwardsManagers.awardID == "TSN Manager of the Year")\
+				AwardsManagers.awardID == type)\
 		.order_by(Managers.yearID.desc())
+	session.close()
 	return tsnawards
-
-
-def getBBWAAawards(team):
-	session = createConnection()
-	bbwaaawards = session.query(AwardsManagers, Managers, People)\
-		.filter(Managers.playerid == AwardsManagers.playerID, Managers.yearID == AwardsManagers.yearID, People.playerid == Managers.playerid,
-				Managers.teamID == Teams.teamID, Managers.yearID == Teams.yearID, Teams.name == team,
-				AwardsManagers.awardID == "BBWAA Manager of the Year")\
-		.order_by(Managers.yearID.desc())
-	return bbwaaawards
 
 
 def getRound(year, rd):
 	session = createConnection()
 	teamWin = aliased(Teams)
 	teamLoss = aliased(Teams)
-	roundResults = session.query(SeriesPost, teamWin, teamLoss).filter(SeriesPost.yearID == year, SeriesPost.round == rd,
-													SeriesPost.teamIDwinner == teamWin.teamID, SeriesPost.teamIDloser == teamLoss.teamID,
-																SeriesPost.yearID == teamWin.yearID, SeriesPost.yearID == teamLoss.yearID)
+	roundResults = session.query(SeriesPost, teamWin, teamLoss)\
+		.filter(SeriesPost.yearID == year, SeriesPost.round == rd, SeriesPost.teamIDwinner == teamWin.teamID,
+				SeriesPost.teamIDloser == teamLoss.teamID, SeriesPost.yearID == teamWin.yearID, SeriesPost.yearID == teamLoss.yearID)
+	session.close()
 	return roundResults
 
 
@@ -98,6 +95,7 @@ def getWSWins(team):
 	session = createConnection()
 	count = session.query(func.count(Teams.WSWin))\
 		.filter(Teams.name == team, Teams.WSWin == 'Y')
+	session.close()
 	return count
 
 
@@ -105,6 +103,7 @@ def getDivWins(team):
 	session = createConnection()
 	count = session.query(func.count(Teams.DivWin))\
 		.filter(Teams.name == team, Teams.DivWin == 'Y')
+	session.close()
 	return count
 
 
@@ -112,6 +111,7 @@ def getLgWins(team):
 	session = createConnection()
 	count = session.query(func.count(Teams.LgWin))\
 		.filter(Teams.name == team, Teams.LgWin == 'Y')
+	session.close()
 	return count
 
 
@@ -123,6 +123,7 @@ def getWSWinInfo(team):
 		.filter(SeriesPost.round == "WS", SeriesPost.teamIDwinner == teamWin.teamID,
 				SeriesPost.teamIDloser == teamLoss.teamID, SeriesPost.yearID == teamWin.yearID,
 				SeriesPost.yearID == teamLoss.yearID, teamWin.name == team).order_by(SeriesPost.yearID.desc())
+	session.close()
 	return roundResults
 
 
@@ -131,6 +132,7 @@ def getStats(plyr_id, year, team):
 	stats = session.query(Batting, People.nameFirst, People.nameLast)\
 		.filter(Batting.yearID == year, Batting.playerid == plyr_id, Batting.teamID == Teams.teamID, Batting.yearID == Teams.yearID,
 				Teams.name == team, Batting.playerid == People.playerid).limit(1)
+	session.close()
 	return stats
 
 
@@ -138,6 +140,7 @@ def getHallofFame(year):
 	session = createConnection()
 	stats = session.query(People, HallofFame)\
 		.filter(People.playerid == HallofFame.playerid, HallofFame.inducted == 'Y', HallofFame.yearid == year)
+	session.close()
 	return stats
 
 
@@ -146,4 +149,23 @@ def getAllstar(team, year):
 	allstar = session.query(People, AllstarFull)\
 		.filter(People.playerid == AllstarFull.playerid, Teams.name == team, Teams.yearID == AllstarFull.yearID,
 				Teams.teamID == AllstarFull.teamID, AllstarFull.yearID == year)
+	session.close()
 	return allstar
+
+
+def getPlayerAwards(year, award):
+	session = createConnection()
+	awards = session.query(People, AwardsPlayers)\
+		.filter(People.playerid == AwardsPlayers.playerid, AwardsPlayers.yearID == year, AwardsPlayers.awardID == award)\
+		.order_by(AwardsPlayers.lgID)
+	session.close()
+	return awards
+
+
+def getCurrentTeams():
+	session = createConnection()
+	teams = session.query(Teams.name)\
+		.filter(Teams.yearID == 2019)\
+		.order_by(Teams.name)
+	session.close()
+	return teams

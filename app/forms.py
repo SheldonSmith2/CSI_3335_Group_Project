@@ -4,7 +4,12 @@ from flask_login import current_user
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 from app.userModel import User
+from app.baseballModels.modelConnection import getCurrentTeams
 
+teams = getCurrentTeams()
+teamsForm = []
+for team in teams:
+    teamsForm.append(team[0])
 
 # The class to handle the login information
 class LoginForm(FlaskForm):
@@ -20,7 +25,7 @@ class RegisterForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     passwordRepeat = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('password')])
-    fav_team = SelectField('Favorite Team', choices=['Houston Astros', 'Oakland Athletics', 'Boston Red Sox', 'New York Yankees', 'Texas Rangers', 'San Diego Padres'], validators=[DataRequired()])
+    fav_team = SelectField('Favorite Team', choices=teamsForm, validators=[DataRequired()])
     submit = SubmitField('Create Account')
 
     # Validate that the username is not already taken by another user
@@ -57,7 +62,7 @@ class RegisterForm(FlaskForm):
 class UpdateAccountForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    fav_team = SelectField('Favorite Team', choices=['Houston Astros', 'Oakland Athletics', 'Boston Red Sox', 'New York Yankees', 'Texas Rangers', 'San Diego Padres'], validators=[DataRequired()])
+    fav_team = SelectField('Favorite Team', choices=teamsForm, validators=[DataRequired()])
     submit = SubmitField('Update')
 
     # Validate that the username is not already taken by another user

@@ -9,12 +9,12 @@ from app.userModel import User
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
 from app.baseballModels.modelConnection import getRoster, getStandings, getManagers, getTopSalaries, \
-    getTSNAwards, getBBWAAawards, getRound, getWLofDivision, getWSWins, getStats, getLgWins, getDivWins, getWSWinInfo, \
-    getHallofFame, getAllstar
+    getManagerAward, getRound, getWLofDivision, getWSWins, getStats, getLgWins, getDivWins, getWSWinInfo, \
+    getHallofFame, getAllstar, getPlayerAwards, getCurrentTeams
 
 
 # The main page for the website
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     form = ChangeYearForm()
@@ -111,7 +111,8 @@ def account():
         form.username.data = current_user.username
         form.email.data = current_user.email
         form.fav_team.data = current_user.fav_team
-    return render_template('account.html', title='Account', form=form)
+    teams = getCurrentTeams()
+    return render_template('account.html', title='Account', form=form, teams=teams)
 
 
 # The route to control the about page
@@ -149,13 +150,20 @@ def playerawards():
         year = form.changeYear.data
     elif request.method == 'GET':
         year = 2017
-    return render_template('playerawards.html', title='Player Awards', year=year, form=form)
+    mvp = getPlayerAwards(year, "Most Valuable Player")
+    cyyoung = getPlayerAwards(year, "Cy Young Award")
+    rookie = getPlayerAwards(year, "Rookie of the Year")
+    comeback = getPlayerAwards(year, "Comeback Player of the Year")
+    hankaaron = getPlayerAwards(year, "Hank Aaron Award")
+    reliever = getPlayerAwards(year, "Reliever of the Year Award")
+    return render_template('playerawards.html', title='Player Awards', year=year, form=form, mvp=mvp, cyyoung=cyyoung,
+                           rookie=rookie, comeback=comeback, hankaaron=hankaaron, reliever=reliever)
 
 
 @app.route('/managers')
 def managers():
-    tsnAwards = getTSNAwards(current_user.fav_team)
-    bbwaaAwards = getBBWAAawards(current_user.fav_team)
+    tsnAwards = getManagerAward(current_user.fav_team, "TSN Manager of the Year")
+    bbwaaAwards = getManagerAward(current_user.fav_team, "BBWAA Manager of the Year")
     managerList = getManagers(current_user.fav_team)
     return render_template('managers.html', title='Managers', managerList=managerList,
                            tsnAwards=tsnAwards, bbwaaAwards=bbwaaAwards)
