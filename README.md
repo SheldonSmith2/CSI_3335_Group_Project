@@ -6,6 +6,7 @@ Imported Python Modules (pip install)
  - flask-login: to manage the log in system of the application
  - flask-mail: to manage the forgot email functionality
  - email_validator
+ - pymysql
 
 Instructions to Run Application
  - execute: python run.py
