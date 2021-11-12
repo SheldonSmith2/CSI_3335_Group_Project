@@ -1,5 +1,4 @@
 # The file to control the different routes within the application
-from itsdangerous import json
 
 from app import app, db, bcrypt, mail, maxHR, maxBA, maxRBI, maxERA, maxSO, maxWins
 from app.forms import LoginForm, RegisterForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm, \
@@ -11,7 +10,9 @@ from flask_mail import Message
 from app.databaseControllers.standingsController import getStandings, getWLofDivision, getCurrentTeams
 from app.databaseControllers.awardsController import getPlayerAwards, getAllstar, getHallofFame, getManagerAward
 from app.databaseControllers.postseasonController import getLgWins, getDivWins, getWSWinInfo, getWSWins, getRound
-from app.databaseControllers.generalController import getRoster, getStats, getManagers, getTopSalaries, getAppearances
+from app.databaseControllers.generalController import getRoster, getStats, getManagers, getTopSalaries, \
+    getAppearances
+
 
 # The main page for the website
 @app.route('/', methods=['GET', 'POST'])

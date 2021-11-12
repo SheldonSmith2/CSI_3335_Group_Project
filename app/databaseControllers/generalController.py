@@ -8,6 +8,7 @@ from app.baseballModels.salaries import Salaries
 from app.baseballModels.managers import Managers
 from app.baseballModels.fielding import Fielding
 from app.baseballModels.appearances import Appearances
+from app.baseballModels.pitching import Pitching
 
 
 def createConnection():

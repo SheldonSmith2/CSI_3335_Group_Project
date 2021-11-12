@@ -50,40 +50,48 @@
                     {% endif %}
                 </td>
                 <td>
-                <button class="btn btn-outline-success btn-sm" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" id={{ loop.index0 }} onclick="setID()" aria-controls="offcanvasExample">
+                <button class="btn btn-outline-success btn-sm" data-bs-toggle="offcanvas" href="#offcanvasExample{{ loop.index0 }}"
+                        role="button" id={{ loop.index0 }} aria-controls="offcanvasExample">
                   More
                 </button>
                 </td>
                 </tr>
+                <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasExample{{ loop.index0 }}" aria-labelledby="offcanvasExampleLabel">
+                    <div class="offcanvas-header">
+                        <p class="offcanvas-title">{{ year }} Stats for {{ roster[loop.index0][0].nameFirst }} {{ roster[loop.index0][0].nameLast }}</p>
+                        <div id="demo"></div>
+                        <a type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></a>
+                    </div>
+                    <div class="offcanvas-body">
+                        {% if appearances[loop.index0].G_batting > 10%}
+                        <h6>Batting Stats</h6>
+                        <ul class="list-group">
+                            <li class="list-group-item">Runs: {{ roster[loop.index0][1].R }}</li>
+                            <li class="list-group-item">Hits: {{ roster[loop.index0][1].H }}</li>
+                            <li class="list-group-item">Doubles: CHANGE</li>
+                            <li class="list-group-item">Triples: CHANGE</li>
+                            <li class="list-group-item">Home Runs: {{ roster[loop.index0][1].HR }}</li>
+                            <li class="list-group-item">RBIs: {{ roster[loop.index0][1].RBI }}</li>
+                            <li class="list-group-item">Batting Average: {{ "{:.3f}".format(roster[loop.index0][1].H/roster[loop.index0][1].AB,2) }}</li>
+                            <li class="list-group-item">At Bats: {{ roster[loop.index0][1].AB }}</li>
+                            <li class="list-group-item">Stolen Bases: {{ roster[loop.index0][1].SB }}</li>
+                            <li class="list-group-item">Walks: {{ roster[loop.index0][1].BB }}</li>
+                        </ul><br>{% endif %}
+                        {% if appearances[loop.index0].G_p > 1%}
+                        <h6>Pitching Stats</h6>
+                        <ul class="list-group">
+                            <li class="list-group-item">Wins:</li>
+                            <li class="list-group-item">ERA:</li>
+                            <li class="list-group-item">WHIP:</li>
+                            <li class="list-group-item">Strike Outs:</li>
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
           {% endfor %}
           </tbody>
         </table>
         <!-- The section to control the more information button for each player on roster -->
-        <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasExampleLabel">{{ year }} Stats for</h5>
-                <div id="demo"></div>
-                <a type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></a>
-            </div>
-            <div class="offcanvas-body">
-                <h6>Batting Stats</h6>
-                <ul class="list-group">
-                    <li class="list-group-item">Runs: <div id="playerRuns"></div></li>
-                    <li class="list-group-item">Hits: <div id="playerHits"></div></li>
-                    <li class="list-group-item">Doubles: <div id="playerDoubles"></div></li>
-                    <li class="list-group-item">Triples: <div id="playerTriples"></div></li>
-                    <li class="list-group-item">Home Runs: <div id="playerHRs"></div></li>
-                    <li class="list-group-item">RBIs: <div id="playerRBIs"></div></li>
-                </ul><br>
-                <h6>Pitching Stats</h6>
-                <ul class="list-group">
-                    <li class="list-group-item">Wins</li>
-                    <li class="list-group-item">ERA</li>
-                    <li class="list-group-item">WHIP</li>
-                    <li class="list-group-item">Strike Outs</li>
-                </ul>
-            </div>
-        </div>
     {% else %}
         <!-- The homepage if the user is not logged in -->
         <h1 style="text-align: center">Guest Home</h1><br>
