@@ -13,16 +13,14 @@
                     {% for error in form.username.errors %}
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
-                <br>
-                </div>
+                <br></div>
                 <div class="form-group">
                     {{ form.email.label(class="form-control-label") }}
                     {{ form.email(class="form-control") }}
                     {% for error in form.email.errors %}
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
-                <br>
-                </div>
+                <br></div>
                 <div class="form-group">
                     {{ form.password.label(class="form-control-label") }}
                     {{ form.password(class="form-control") }}

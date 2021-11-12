@@ -9,33 +9,33 @@
             {{ form.changeYear(class="form-control me-2") }}
             {{ form.submit(class="btn btn-outline-success") }}
         </form><br>
-            <h5>Team: {{ current_user.fav_team }}</h5>
-            <table class="table table-striped">
-              <thead>
+        <h5>Team: {{ current_user.fav_team }}</h5>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Starting Position</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for player in allstarInfo %}
                 <tr>
-                  <th scope="col">Name</th>
-                  <th scope="col">Starting Position</th>
+                    <th scope="row">{{ player[0].nameFirst }} {{ player[0].nameLast }}</th>
+                    <td>{% if player[1].startingPos == 1 %} Pitcher
+                    {% elif player[1].startingPos == 2 %} Catcher
+                    {% elif player[1].startingPos == 3 %} First Base
+                    {% elif player[1].startingPos == 4 %} Second Base
+                    {% elif player[1].startingPos == 5 %} Third Base
+                    {% elif player[1].startingPos == 6 %} Shortstop
+                    {% elif player[1].startingPos == 7 %} Left Field
+                    {% elif player[1].startingPos == 8 %} Center Field
+                    {% elif player[1].startingPos == 9 %} Right Field
+                    {% else %} Unknown
+                    {% endif %}
+                    </td>
                 </tr>
-              </thead>
-              <tbody>
-                {% for player in allstarInfo %}
-                    <tr>
-                      <th scope="row">{{ player[0].nameFirst }} {{ player[0].nameLast }}</th>
-                      <td>{% if player[1].startingPos == 1 %} Pitcher
-                          {% elif player[1].startingPos == 2 %} Catcher
-                          {% elif player[1].startingPos == 3 %} First Base
-                          {% elif player[1].startingPos == 4 %} Second Base
-                          {% elif player[1].startingPos == 5 %} Third Base
-                          {% elif player[1].startingPos == 6 %} Shortstop
-                          {% elif player[1].startingPos == 7 %} Left Field
-                          {% elif player[1].startingPos == 8 %} Center Field
-                          {% elif player[1].startingPos == 9 %} Right Field
-                          {% else %} Unknown
-                          {% endif %}
-                      </td>
-                    </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}

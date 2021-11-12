@@ -9,4 +9,5 @@ Imported Python Modules (pip install)
  - pymysql
 
 Instructions to Run Application
+ - need to include a dbconfig.py file in baseballModels directory with valid (host, user, password, and db)
  - execute: python run.py

@@ -1,7 +1,7 @@
 # The file to control the different routes within the application
 from itsdangerous import json
 
-from app import app, db, bcrypt, mail
+from app import app, db, bcrypt, mail, maxHR, maxBA, maxRBI, maxERA, maxSO, maxWins
 from app.forms import LoginForm, RegisterForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm, \
     ChangeYearForm
 from flask import render_template, flash, redirect, url_for, request
@@ -10,15 +10,8 @@ from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
 from app.baseballModels.modelConnection import getRoster, getStandings, getManagers, getTopSalaries, \
     getManagerAward, getRound, getWLofDivision, getWSWins, getStats, getLgWins, getDivWins, getWSWinInfo, \
-    getHallofFame, getAllstar, getPlayerAwards, getCurrentTeams, getAppearances, getHighestHR, getHighestBA, \
-    getHighestRBI, getHighestWins, getHighestSO, getHighestERA
+    getHallofFame, getAllstar, getPlayerAwards, getCurrentTeams, getAppearances
 
-maxHR = getHighestHR()
-maxBA = getHighestBA()
-maxRBI = getHighestRBI()
-maxWins = getHighestWins()
-maxSO = getHighestSO()
-maxERA = getHighestERA()
 
 # The main page for the website
 @app.route('/', methods=['GET', 'POST'])

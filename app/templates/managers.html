@@ -13,55 +13,49 @@
       <div class="tab-pane fade show active" id="nav-list" role="tabpanel" aria-labelledby="nav-home-tab">
           <br><h4>Past 10 Managers for the {{ current_user.fav_team }}</h4>
             <table class="table table-striped">
-              <thead>
-                <tr>
+              <thead><tr>
                   <th scope="col">Name</th>
                   <th scope="col">Start Year</th>
                   <th scope="col">End Year</th>
                   <th scope="col">Win %</th>
-                </tr>
-              </thead>
+              </tr></thead>
               <tbody>
-                {% for manager in managerList %}
-                    <tr>
+                {% for manager in managerList %}<tr>
                       <th scope="row">{{ manager[4].nameFirst }} {{ manager[4].nameLast }}</th>
                       <td>{{ manager[2] }}</td>
                       <td>{{ manager[1] }}</td>
                       <td>{{ "{:.3f}".format(manager[3]/manager[5],2) }} </td>
-                    </tr>
-                {% endfor %}
+                    </tr>{% endfor %}
               </tbody>
             </table>
-      </div>
-      <div class="tab-pane fade" id="nav-awards" role="tabpanel" aria-labelledby="nav-profile-tab">
-
-          <br>
+        </div>
+        <div class="tab-pane fade" id="nav-awards" role="tabpanel" aria-labelledby="nav-profile-tab"><br>
             <div class="row">
             <div class="col-sm-6">
-          <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">BBWAA Manager of the Year</h5>
-                    <p class="card-text">
-                        {% for manager in bbwaaAwards %}
-                              {{ manager[2].nameFirst }} {{ manager[2].nameLast }} ({{ manager[0].yearID }}) <br>
-                        {% endfor %}</p>
-                  </div>
+            <div class="card">
+                <div class="card-body">
+                <h5 class="card-title">BBWAA Manager of the Year</h5>
+                <p class="card-text">
+                    {% for manager in bbwaaAwards %}
+                        {{ manager[2].nameFirst }} {{ manager[2].nameLast }} ({{ manager[0].yearID }}) <br>
+                    {% endfor %}</p>
                 </div>
+            </div>
             </div>
             <div class="col-sm-6">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">TSN Manager of the Year</h5>
-                    <p class="card-text">
-                        {% for manager in tsnAwards %}
-                              {{ manager[2].nameFirst }} {{ manager[2].nameLast }} ({{ manager[0].yearID }}) <br>
-                        {% endfor %}
-                      </p>
-                  </div>
+            <div class="card">
+                <div class="card-body">
+                <h5 class="card-title">TSN Manager of the Year</h5>
+                <p class="card-text">
+                    {% for manager in tsnAwards %}
+                        {{ manager[2].nameFirst }} {{ manager[2].nameLast }} ({{ manager[0].yearID }}) <br>
+                    {% endfor %}
+                </p>
                 </div>
             </div>
             </div>
-      </div>
+            </div>
+        </div>
     </div>
     </div>
 {% endblock %}

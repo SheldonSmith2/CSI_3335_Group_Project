@@ -12,23 +12,19 @@
                     {% for error in form.email.errors %}
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
-                <br>
-                </div>
+                <br></div>
                 <div class="form-group">
                     {{ form.password.label(class="form-control-label") }}
                     {{ form.password(class="form-control") }}
                     {% for error in form.password.errors %}
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
-                <br>
-                </div>
+                <br></div>
                 <div class="form-group">
                     {{ form.remember_me(class="form-check-input") }}
                     {{ form.remember_me.label(class="form-check-label") }}
                 </div>
-
-        </fieldset>
-        <hr>
+        </fieldset><hr>
         <div class="form-group">{{ form.submit(class="btn btn-outline-info") }}
         <small class="text-muted ml-2">
             <a href="{{ url_for('reset_request') }}">Forgot Password?</a>

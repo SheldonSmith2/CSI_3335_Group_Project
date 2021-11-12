@@ -16,7 +16,7 @@
         <h4>Team Roster for the {{ current_user.fav_team }}</h4>
         <h6>Current Year: {{ year }}</h6>
         <table class="table table-striped">
-          <thead>
+            <thead>
             <tr>
               <th scope="col">Name</th>
               <th scope="col">Pitcher</th>
@@ -27,17 +27,15 @@
               <th scope="col">Birth Place</th>
               <th scope="col">Stats</th>
             </tr>
-          </thead>
-          <tbody>
-          {% for player in roster %}
-            <tr>
-              <th scope="row">{{ player[0].nameFirst }} {{ player[0].nameLast }}</th>
+            </thead>
+            <tbody>
+            {% for player in roster %}
+                <tr>
+                <th scope="row">{{ player[0].nameFirst }} {{ player[0].nameLast }}</th>
                 <td>{% if appearances[loop.index0].G_p > 1%} Y {% else %} N {% endif %}</td>
                 <td>{% if appearances[loop.index0].G_batting > 10%} Y {% else %} N {% endif %}</td>
-                <td>{% if player[0].deathYear != None %}
-                        Died
-                    {% else %}
-                        {{ 2021 - player[0].birthYear }}
+                <td>{% if player[0].deathYear != None %}Died
+                    {% else %} {{ 2021 - player[0].birthYear }}
                     {% endif %}
                 </td>
                 <td>{{ player[0].height//12 }}' {{ player[0].height%12 }}"</td>
@@ -53,44 +51,42 @@
                   More
                 </button>
                 </td>
-            </tr>
-        {% endfor %}
+                </tr>
+          {% endfor %}
           </tbody>
         </table>
-
         <!-- The section to control the more information button for each player on roster -->
-            <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-                <div class="offcanvas-header">
+        <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+            <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="offcanvasExampleLabel">{{ year }} Stats for</h5>
                 <div id="demo"></div>
                 <a type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></a>
-              </div>
-              <div class="offcanvas-body">
-              <h6>Batting Stats</h6>
-              <ul class="list-group">
-                 <li class="list-group-item">Runs: <div id="playerRuns"></div></li>
-                 <li class="list-group-item">Hits: <div id="playerHits"></div></li>
-                 <li class="list-group-item">Doubles: <div id="playerDoubles"></div></li>
-                 <li class="list-group-item">Triples: <div id="playerTriples"></div></li>
-                 <li class="list-group-item">Home Runs: <div id="playerHRs"></div></li>
-                 <li class="list-group-item">RBIs: <div id="playerRBIs"></div></li>
-              </ul><br>
-              <h6>Pitching Stats</h6>
-              <ul class="list-group">
-                 <li class="list-group-item">Wins</li>
-                 <li class="list-group-item">ERA</li>
-                 <li class="list-group-item">WHIP</li>
-                 <li class="list-group-item">Strike Outs</li>
-              </ul>
-          </div>
+            </div>
+            <div class="offcanvas-body">
+                <h6>Batting Stats</h6>
+                <ul class="list-group">
+                    <li class="list-group-item">Runs: <div id="playerRuns"></div></li>
+                    <li class="list-group-item">Hits: <div id="playerHits"></div></li>
+                    <li class="list-group-item">Doubles: <div id="playerDoubles"></div></li>
+                    <li class="list-group-item">Triples: <div id="playerTriples"></div></li>
+                    <li class="list-group-item">Home Runs: <div id="playerHRs"></div></li>
+                    <li class="list-group-item">RBIs: <div id="playerRBIs"></div></li>
+                </ul><br>
+                <h6>Pitching Stats</h6>
+                <ul class="list-group">
+                    <li class="list-group-item">Wins</li>
+                    <li class="list-group-item">ERA</li>
+                    <li class="list-group-item">WHIP</li>
+                    <li class="list-group-item">Strike Outs</li>
+                </ul>
+            </div>
         </div>
-
     {% else %}
         <!-- The homepage if the user is not logged in -->
         <h1 style="text-align: center">Guest Home</h1><br>
         <h4 style="text-align: center"><u>Current World Series Champion</u></h4>
         {% for team in wschamp %}
-        <h5 style="text-align: center">The {{ team[1].name }} defeated the {{ team[2].name }} in {{ team[0].wins + team[0].losses }} games</h5>
+            <h5 style="text-align: center">The {{ team[1].name }} defeated the {{ team[2].name }} in {{ team[0].wins + team[0].losses }} games</h5>
         {% endfor %}
         <h5 style="text-align: center">World Series MVP: Corey Seager (MIGHT DELETE)</h5>
         <hr>
@@ -103,28 +99,23 @@
             {{ formSalary.submit(class="btn btn-outline-success") }}
         </form>
         <table class="table table-striped">
-          <thead>
-            <tr>
+          <thead><tr>
               <th scope="col">Name</th>
               <th scope="col">Team</th>
               <th scope="col">Position</th>
               <th scope="col">Age</th>
               <th scope="col">Salary</th>
-            </tr>
-          </thead>
+          </tr></thead>
           <tbody>
-            {% for player in salaries %}
-            <tr>
+            {% for player in salaries %}<tr>
               <th scope="row">{{ player[0].nameFirst }} {{ player[0].nameLast }}</th>
               <td>{{ player[2].name }}</td>
               <td>{{ player[3].POS }}</td>
               <td>{{ 2021 - player[0].birthYear }}</td>
               <td>${{ "{:.1f}".format(player[1].salary/1000000)}} Million</td>
-            </tr>
-        {% endfor %}
+            </tr>{% endfor %}
           </tbody>
         </table>
     {% endif %}
     </div>
-
 {% endblock %}

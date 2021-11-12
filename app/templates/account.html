@@ -17,30 +17,27 @@
         {{ form.hidden_tag() }}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Account Info</legend>
-                    <div class="form-group">
-                        {{ form.username.label(class="form-control-label") }}
-                        {{ form.username(class="form-control") }}
-                        {% for error in form.username.errors %}
+                <div class="form-group">
+                    {{ form.username.label(class="form-control-label") }}
+                    {{ form.username(class="form-control") }}
+                    {% for error in form.username.errors %}
                         <span style="color: red;">[{{ error }}]</span>
-                        {% endfor %}
-                    <br>
-                    </div>
-                    <div class="form-group">
-                        {{ form.email.label(class="form-control-label") }}
-                        {{ form.email(class="form-control") }}
-                        {% for error in form.email.errors %}
+                    {% endfor %}
+                <br></div>
+                <div class="form-group">
+                    {{ form.email.label(class="form-control-label") }}
+                    {{ form.email(class="form-control") }}
+                    {% for error in form.email.errors %}
                         <span style="color: red;">[{{ error }}]</span>
-                        {% endfor %}
-                    <br>
-                    </div>
-                    <div class="form-group">
-                        {{ form.fav_team.label(class="form-control-label") }}<br>
-                        {{ form.fav_team(class="form-select") }}<br>
-                        {% for error in form.fav_team.errors %}
+                    {% endfor %}
+                <br></div>
+                <div class="form-group">
+                    {{ form.fav_team.label(class="form-control-label") }}<br>
+                    {{ form.fav_team(class="form-select") }}<br>
+                    {% for error in form.fav_team.errors %}
                         <span style="color: red;">[{{ error }}]</span>
-                        {% endfor %}
-                    <br>
-                    </div>
+                    {% endfor %}
+                <br></div>
             </fieldset>
             <hr>
             <!-- The button in order to submit the new account information -->

@@ -3,6 +3,15 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
+from app.baseballModels.modelConnection import getHighestSO, getHighestERA, getHighestWins, \
+    getHighestRBI, getHighestBA, getHighestHR
+
+maxHR = getHighestHR()
+maxBA = getHighestBA()
+maxRBI = getHighestRBI()
+maxWins = getHighestWins()
+maxSO = getHighestSO()
+maxERA = getHighestERA()
 
 # create config settings for use in the project
 app = Flask(__name__)
