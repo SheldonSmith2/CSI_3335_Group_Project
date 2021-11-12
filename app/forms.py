@@ -4,7 +4,7 @@ from flask_login import current_user
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 from app.userModel import User
-from app.baseballModels.modelConnection import getCurrentTeams
+from app.databaseControllers.standingsController import getCurrentTeams
 
 teams = getCurrentTeams()
 teamsForm = []

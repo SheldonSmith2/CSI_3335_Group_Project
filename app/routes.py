@@ -8,10 +8,10 @@ from flask import render_template, flash, redirect, url_for, request
 from app.userModel import User
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
-from app.baseballModels.modelConnection import getRoster, getStandings, getManagers, getTopSalaries, \
-    getManagerAward, getRound, getWLofDivision, getWSWins, getStats, getLgWins, getDivWins, getWSWinInfo, \
-    getHallofFame, getAllstar, getPlayerAwards, getCurrentTeams, getAppearances
-
+from app.databaseControllers.standingsController import getStandings, getWLofDivision, getCurrentTeams
+from app.databaseControllers.awardsController import getPlayerAwards, getAllstar, getHallofFame, getManagerAward
+from app.databaseControllers.postseasonController import getLgWins, getDivWins, getWSWinInfo, getWSWins, getRound
+from app.databaseControllers.generalController import getRoster, getStats, getManagers, getTopSalaries, getAppearances
 
 # The main page for the website
 @app.route('/', methods=['GET', 'POST'])
