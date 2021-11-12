@@ -79,14 +79,14 @@
             <p class='text-muted'>Here are the current MLB leaders per statistic.
               <ul class="list-group">
                 <!-- Output the MLB leaders for batting stats -->
-                <li class="list-group-item list-group-item-light">Home Runs</li>
-                <li class="list-group-item list-group-item-light">Batting Average</li>
-                <li class="list-group-item list-group-item-light">RBIs</li>
+                <li class="list-group-item list-group-item-light">Home Runs: {{ maxHR[0][2] }} ({{ maxHR[0][0] }} {{ maxHR[0][1] }})</li>
+                <li class="list-group-item list-group-item-light">Batting Average: {{ "{:.3f}".format(maxBA[0][2]/maxBA[0][3],2) }} ({{ maxBA[0][0] }} {{ maxBA[0][1] }})</li>
+                <li class="list-group-item list-group-item-light">RBIs: {{ maxRBI[0][2] }} ({{ maxRBI[0][0] }} {{ maxRBI[0][1] }})</li>
                 <hr>
                 <!-- Output the MLB leaders for pitching stats -->
-                <li class="list-group-item list-group-item-light">Wins</li>
-                <li class="list-group-item list-group-item-light">Strike Outs</li>
-                <li class="list-group-item list-group-item-light">ERA</li>
+                <li class="list-group-item list-group-item-light">Wins: {{ maxWins[0][2] }} ({{ maxWins[0][0] }} {{ maxWins[0][1] }})</li>
+                <li class="list-group-item list-group-item-light">Strike Outs: {{ maxSO[0][2] }} ({{ maxSO[0][0] }} {{ maxSO[0][1] }})</li>
+                <li class="list-group-item list-group-item-light">ERA: {{ "{:.2f}".format(27*maxERA[0][2]/maxERA[0][3],2) }} ({{ maxERA[0][0] }} {{ maxERA[0][1] }})</li>
               </ul>
             </p>
           </div>

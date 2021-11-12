@@ -12,6 +12,8 @@ from app.baseballModels.awardsmanagers import AwardsManagers
 from app.baseballModels.awardsplayers import AwardsPlayers
 from app.baseballModels.halloffame import HallofFame
 from app.baseballModels.allstarfull import AllstarFull
+from app.baseballModels.appearances import Appearances
+from app.baseballModels.pitching import Pitching
 
 
 def createConnection():
@@ -28,7 +30,15 @@ def getRoster(team, year):
 	session = createConnection()
 	players = session.query(People, Batting, Teams).distinct(People.playerid)\
 		.filter(People.playerid == Batting.playerid, Teams.teamID == Batting.teamID, Teams.yearID == Batting.yearID,
-				Teams.name == team, Batting.yearID == year).order_by(People.nameLast).all()
+				Teams.name == team, Batting.yearID == year).order_by(People.playerid).all()
+	session.close()
+	return players
+
+def getAppearances(team, year):
+	session = createConnection()
+	players = session.query(Appearances).distinct(People.playerid)\
+		.filter(People.playerid == Appearances.playerid, Teams.teamID == Appearances.teamID, Teams.yearID == Appearances.yearID,
+				Teams.name == team, Appearances.yearID == year).order_by(People.playerid).all()
 	session.close()
 	return players
 
@@ -169,3 +179,57 @@ def getCurrentTeams():
 		.order_by(Teams.name)
 	session.close()
 	return teams
+
+
+def getHighestHR():
+	session = createConnection()
+	topHR = session.query(People.nameFirst, People.nameLast, Batting.HR)\
+		.filter(Batting.yearID == 2019, People.playerid == Batting.playerid)\
+		.order_by(Batting.HR.desc())
+	session.close()
+	return topHR
+
+
+def getHighestBA():
+	session = createConnection()
+	topBA = session.query(People.nameFirst, People.nameLast, Batting.H, Batting.AB)\
+		.filter(Batting.yearID == 2019, People.playerid == Batting.playerid, Batting.AB > 100)\
+		.order_by(Batting.H/Batting.AB.desc())
+	session.close()
+	return topBA
+
+
+def getHighestRBI():
+	session = createConnection()
+	topRBI = session.query(People.nameFirst, People.nameLast, Batting.RBI)\
+		.filter(Batting.yearID == 2019, People.playerid == Batting.playerid)\
+		.order_by(Batting.RBI.desc())
+	session.close()
+	return topRBI
+
+
+def getHighestWins():
+	session = createConnection()
+	topWins = session.query(People.nameFirst, People.nameLast, Pitching.W)\
+		.filter(Pitching.yearID == 2019, People.playerid == Pitching.playerid)\
+		.order_by(Pitching.W.desc())
+	session.close()
+	return topWins
+
+
+def getHighestSO():
+	session = createConnection()
+	topSO = session.query(People.nameFirst, People.nameLast, Pitching.SO)\
+		.filter(Pitching.yearID == 2019, People.playerid == Pitching.playerid)\
+		.order_by(Pitching.SO.desc())
+	session.close()
+	return topSO
+
+
+def getHighestERA():
+	session = createConnection()
+	topERA = session.query(People.nameFirst, People.nameLast, Pitching.ER, Pitching.IPouts)\
+		.filter(Pitching.yearID == 2019, People.playerid == Pitching.playerid, Pitching.IPouts/3 > 100)\
+		.order_by(27*Pitching.ER/Pitching.IPouts)
+	session.close()
+	return topERA

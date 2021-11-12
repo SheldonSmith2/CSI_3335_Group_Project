@@ -32,8 +32,8 @@
           {% for player in roster %}
             <tr>
               <th scope="row">{{ player[0].nameFirst }} {{ player[0].nameLast }}</th>
-                <td>X</td>
-                <td>X</td>
+                <td>{% if appearances[loop.index0].G_p > 1%} Y {% else %} N {% endif %}</td>
+                <td>{% if appearances[loop.index0].G_batting > 10%} Y {% else %} N {% endif %}</td>
                 <td>{% if player[0].deathYear != None %}
                         Died
                     {% else %}

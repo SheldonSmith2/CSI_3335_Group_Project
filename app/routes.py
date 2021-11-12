@@ -10,8 +10,15 @@ from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
 from app.baseballModels.modelConnection import getRoster, getStandings, getManagers, getTopSalaries, \
     getManagerAward, getRound, getWLofDivision, getWSWins, getStats, getLgWins, getDivWins, getWSWinInfo, \
-    getHallofFame, getAllstar, getPlayerAwards, getCurrentTeams
+    getHallofFame, getAllstar, getPlayerAwards, getCurrentTeams, getAppearances, getHighestHR, getHighestBA, \
+    getHighestRBI, getHighestWins, getHighestSO, getHighestERA
 
+maxHR = getHighestHR()
+maxBA = getHighestBA()
+maxRBI = getHighestRBI()
+maxWins = getHighestWins()
+maxSO = getHighestSO()
+maxERA = getHighestERA()
 
 # The main page for the website
 @app.route('/', methods=['GET', 'POST'])
@@ -25,17 +32,20 @@ def dashboard():
         year = 2019
     if current_user.is_authenticated:
         roster = getRoster(current_user.fav_team, year)
+        appearances = getAppearances(current_user.fav_team, year)
     else:
         roster = ""
+        appearances = ""
     if formSalary.validate_on_submit():
         yearSalary = formSalary.changeYear.data
     elif request.method == 'GET':
         yearSalary = 2016
     salaries = getTopSalaries(yearSalary)
     wschamp = getRound(2019, "WS")
-    return render_template('dashboard.html', title='Home', roster=roster, form=form,
+    return render_template('dashboard.html', title='Home', roster=roster, form=form, appearances=appearances,
                            year=year, salaries=salaries, yearSalary=yearSalary, formSalary=formSalary,
-                           wschamp=wschamp, **request.args)
+                           wschamp=wschamp, maxHR=maxHR, maxBA=maxBA, maxRBI=maxRBI, maxWins=maxWins,
+                           maxSO=maxSO, maxERA=maxERA, **request.args)
 
 
 @app.route('/getinfo/<id>/<year>', methods=['GET', 'POST'])
@@ -62,7 +72,8 @@ def login():
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('dashboard'))
         flash('Login Unsuccessful.  Please check email and password', 'danger')
-    return render_template('login.html', title='Sign In', form=form)
+    return render_template('login.html', title='Sign In', form=form, maxHR=maxHR, maxBA=maxBA, maxRBI=maxRBI,
+                           maxWins=maxWins, maxSO=maxSO, maxERA=maxERA)
 
 
 # The route to control the registration functionality
@@ -82,7 +93,8 @@ def register():
         db.session.commit()
         flash('Your account has been created!  You are now able to log in', 'success')
         return redirect(url_for('login'))
-    return render_template('register.html', title='Register', form=form)
+    return render_template('register.html', title='Register', form=form, maxHR=maxHR, maxBA=maxBA, maxRBI=maxRBI,
+                           maxWins=maxWins, maxSO=maxSO, maxERA=maxERA)
 
 
 # The route to log out the user
@@ -112,13 +124,15 @@ def account():
         form.email.data = current_user.email
         form.fav_team.data = current_user.fav_team
     teams = getCurrentTeams()
-    return render_template('account.html', title='Account', form=form, teams=teams)
+    return render_template('account.html', title='Account', form=form, teams=teams, maxHR=maxHR, maxBA=maxBA,
+                           maxRBI=maxRBI, maxWins=maxWins, maxSO=maxSO, maxERA=maxERA)
 
 
 # The route to control the about page
 @app.route('/about')
 def about():
-    return render_template('about.html', title='About')
+    return render_template('about.html', title='About', maxHR=maxHR, maxBA=maxBA, maxRBI=maxRBI, maxWins=maxWins,
+                           maxSO=maxSO, maxERA=maxERA)
 
 
 @app.route('/allstar', methods=['GET', 'POST'])
@@ -129,7 +143,8 @@ def allstar():
     elif request.method == 'GET':
         year = 2019
     allstarInfo = getAllstar(current_user.fav_team, year)
-    return render_template('allstar.html', title='All Star', form=form, year=year, allstarInfo=allstarInfo)
+    return render_template('allstar.html', title='All Star', form=form, year=year, allstarInfo=allstarInfo, maxHR=maxHR,
+                           maxBA=maxBA, maxRBI=maxRBI, maxWins=maxWins, maxSO=maxSO, maxERA=maxERA)
 
 
 @app.route('/halloffame', methods=['GET', 'POST'])
@@ -140,7 +155,8 @@ def halloffame():
     elif request.method == 'GET':
         year = 2018
     halloffame = getHallofFame(year)
-    return render_template('halloffame.html', title='Hall of Fame', halloffame=halloffame, form=form, year=year)
+    return render_template('halloffame.html', title='Hall of Fame', halloffame=halloffame, form=form, year=year,
+                           maxHR=maxHR, maxBA=maxBA, maxRBI=maxRBI, maxWins=maxWins, maxSO=maxSO, maxERA=maxERA)
 
 
 @app.route('/playerawards', methods=['GET', 'POST'])
@@ -157,7 +173,8 @@ def playerawards():
     hankaaron = getPlayerAwards(year, "Hank Aaron Award")
     reliever = getPlayerAwards(year, "Reliever of the Year Award")
     return render_template('playerawards.html', title='Player Awards', year=year, form=form, mvp=mvp, cyyoung=cyyoung,
-                           rookie=rookie, comeback=comeback, hankaaron=hankaaron, reliever=reliever)
+                           rookie=rookie, comeback=comeback, hankaaron=hankaaron, reliever=reliever, maxHR=maxHR,
+                           maxBA=maxBA, maxRBI=maxRBI, maxWins=maxWins, maxSO=maxSO, maxERA=maxERA)
 
 
 @app.route('/managers')
@@ -165,8 +182,9 @@ def managers():
     tsnAwards = getManagerAward(current_user.fav_team, "TSN Manager of the Year")
     bbwaaAwards = getManagerAward(current_user.fav_team, "BBWAA Manager of the Year")
     managerList = getManagers(current_user.fav_team)
-    return render_template('managers.html', title='Managers', managerList=managerList,
-                           tsnAwards=tsnAwards, bbwaaAwards=bbwaaAwards)
+    return render_template('managers.html', title='Managers', managerList=managerList, tsnAwards=tsnAwards,
+                           bbwaaAwards=bbwaaAwards, maxHR=maxHR, maxBA=maxBA, maxRBI=maxRBI, maxWins=maxWins,
+                           maxSO=maxSO, maxERA=maxERA)
 
 
 @app.route('/postseason')
@@ -176,7 +194,8 @@ def postseason():
     countLg = getLgWins(current_user.fav_team)
     WSWinInfo = getWSWinInfo(current_user.fav_team)
     return render_template('postseason.html', title='Post Season Stats', countWS=countWS, countLg=countLg,
-                           countDiv=countDiv, WSWinInfo=WSWinInfo)
+                           countDiv=countDiv, WSWinInfo=WSWinInfo, maxHR=maxHR, maxBA=maxBA, maxRBI=maxRBI,
+                           maxWins=maxWins, maxSO=maxSO, maxERA=maxERA)
 
 
 @app.route('/standings', methods=['GET', 'POST'])
@@ -211,7 +230,8 @@ def standings():
                            ALEast=ALEast, ALEastWL=ALEastWL, ALCentralWL=ALCentralWL, ALCentral=ALCentral, NLWest=NLWest,
                            NLWestWL=NLWestWL, NLEast=NLEast, NLEastWL=NLEastWL, NLCentral=NLCentral, NLCentralWL=NLCentralWL,
                            WSChamp=WSChamp, ALCS=ALCS, NLCS=NLCS, ALDS1=ALDS1, ALDS2=ALDS2, NLDS1=NLDS1, NLDS2=NLDS2,
-                           ALWC=ALWC, NLWC=NLWC)
+                           ALWC=ALWC, NLWC=NLWC, maxHR=maxHR, maxBA=maxBA, maxRBI=maxRBI, maxWins=maxWins,
+                           maxSO=maxSO, maxERA=maxERA)
 
 
 # The function to send the reset password email
@@ -238,7 +258,8 @@ def reset_request():
         send_reset_email(user)
         flash('An email has been sent with instructions to reset your password', 'info')
         return redirect(url_for('login'))
-    return render_template('reset_request.html', title='Reset Password', form=form)
+    return render_template('reset_request.html', title='Reset Password', form=form, maxHR=maxHR, maxBA=maxBA,
+                           maxRBI=maxRBI, maxWins=maxWins, maxSO=maxSO, maxERA=maxERA)
 
 
 # The function to handle resetting a user's password with given token
@@ -259,4 +280,5 @@ def reset_token(token):
         db.session.commit()
         flash('Your password has been updated!  You are now able to log in', 'success')
         return redirect(url_for('login'))
-    return render_template('reset_token.html', title='Reset Password', form=form)
+    return render_template('reset_token.html', title='Reset Password', form=form, maxHR=maxHR, maxBA=maxBA,
+                           maxRBI=maxRBI, maxWins=maxWins, maxSO=maxSO, maxERA=maxERA)
