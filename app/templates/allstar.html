@@ -8,7 +8,10 @@
             {{ form.hidden_tag() }}
             {{ form.changeYear(class="form-control me-2") }}
             {{ form.submit(class="btn btn-outline-success") }}
-        </form><br>
+        </form>
+        {% for error in form.changeYear.errors %}
+            <span style="color: red;">[{{ error }}]</span><br>
+        {% endfor %}<br>
         <h5>Team: {{ current_user.fav_team }}</h5>
         <table class="table table-striped">
             <thead>

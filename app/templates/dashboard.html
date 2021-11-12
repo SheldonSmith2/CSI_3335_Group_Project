@@ -12,6 +12,9 @@
             {{ form.changeYear(class="form-control me-2") }}
             {{ form.submit(class="btn btn-outline-success") }}
         </form>
+        {% for error in form.changeYear.errors %}
+            <span style="color: red;">[{{ error }}]</span><br>
+        {% endfor %}
         <!-- The section to control the team's roster -->
         <h4>Team Roster for the {{ current_user.fav_team }}</h4>
         <h6>Current Year: {{ year }}</h6>
@@ -98,6 +101,9 @@
             {{ formSalary.changeYear(class="form-control me-2") }}
             {{ formSalary.submit(class="btn btn-outline-success") }}
         </form>
+        {% for error in formSalary.changeYear.errors %}
+            <span style="color: red;">[{{ error }}]</span><br>
+        {% endfor %}
         <table class="table table-striped">
           <thead><tr>
               <th scope="col">Name</th>

@@ -9,6 +9,9 @@
             {{ form.changeYear(class="form-control me-2") }}
             {{ form.submit(class="btn btn-outline-success") }}
         </form>
+        {% for error in form.changeYear.errors %}
+            <span style="color: red;">[{{ error }}]</span><br>
+        {% endfor %}
         <table class="table table-striped">
             <thead><tr>
                 <th scope="col">Name</th>

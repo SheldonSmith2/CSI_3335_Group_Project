@@ -1,8 +1,8 @@
 # The imports in order to create the different forms
 from flask_wtf import FlaskForm
 from flask_login import current_user
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
-from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, IntegerField
+from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Length, NumberRange
 from app.userModel import User
 from app.databaseControllers.standingsController import getCurrentTeams
 
@@ -100,7 +100,8 @@ class ResetPasswordForm(FlaskForm):
 
 
 class ChangeYearForm(FlaskForm):
-    changeYear = StringField('Year', validators=[DataRequired()])
+    changeYear = IntegerField('Year', validators=[DataRequired(message="Must enter a year"),
+                                                  NumberRange(min=1870, max=2020, message="Date must be within 1870-2020")])
     submit = SubmitField('Change Year')
 
 

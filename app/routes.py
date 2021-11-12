@@ -23,6 +23,8 @@ def dashboard():
         year = form.changeYear.data
     elif request.method == 'GET':
         year = 2019
+    else:
+        year = 2019
     if current_user.is_authenticated:
         roster = getRoster(current_user.fav_team, year)
         appearances = getAppearances(current_user.fav_team, year)
@@ -32,6 +34,8 @@ def dashboard():
     if formSalary.validate_on_submit():
         yearSalary = formSalary.changeYear.data
     elif request.method == 'GET':
+        yearSalary = 2016
+    else:
         yearSalary = 2016
     salaries = getTopSalaries(yearSalary)
     wschamp = getRound(2019, "WS")
@@ -135,6 +139,8 @@ def allstar():
         year = form.changeYear.data
     elif request.method == 'GET':
         year = 2019
+    else:
+        year = 2019
     allstarInfo = getAllstar(current_user.fav_team, year)
     return render_template('allstar.html', title='All Star', form=form, year=year, allstarInfo=allstarInfo, maxHR=maxHR,
                            maxBA=maxBA, maxRBI=maxRBI, maxWins=maxWins, maxSO=maxSO, maxERA=maxERA)
@@ -147,6 +153,8 @@ def halloffame():
         year = form.changeYear.data
     elif request.method == 'GET':
         year = 2018
+    else:
+        year = 2018
     halloffame = getHallofFame(year)
     return render_template('halloffame.html', title='Hall of Fame', halloffame=halloffame, form=form, year=year,
                            maxHR=maxHR, maxBA=maxBA, maxRBI=maxRBI, maxWins=maxWins, maxSO=maxSO, maxERA=maxERA)
@@ -158,6 +166,8 @@ def playerawards():
     if form.validate_on_submit():
         year = form.changeYear.data
     elif request.method == 'GET':
+        year = 2017
+    else:
         year = 2017
     mvp = getPlayerAwards(year, "Most Valuable Player")
     cyyoung = getPlayerAwards(year, "Cy Young Award")
@@ -197,6 +207,8 @@ def standings():
     if form.validate_on_submit():
         year = form.changeYear.data
     elif request.method == 'GET':
+        year = 2019
+    else:
         year = 2019
     ALWest = getStandings(year, "AL", "W")
     ALWestWL = getWLofDivision(year, "AL", "W")
