@@ -84,3 +84,17 @@ def getPlayers():
     session = createConnection()
     players = session.query(People).distinct(People.playerid)
     return players
+
+
+def careerBattingStats(playerName):
+    splitName = playerName.data.split()
+    session = createConnection()
+    stats = session.query().filter(People.nameFirst == splitName[0], People.nameLast == splitName[1])
+    return stats
+
+
+def careerBattingStats(playerName):
+    splitName = playerName.data.split()
+    session = createConnection()
+    stats = session.query().filter(People.nameFirst == splitName[0], People.nameLast == splitName[1])
+    return stats

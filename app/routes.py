@@ -201,6 +201,12 @@ def managers():
                            maxSO=maxSO, maxERA=maxERA)
 
 
+@app.route('/careerstats')
+def careerstats():
+    return render_template('careerstats.html', title='Career Stats', maxHR=maxHR, maxBA=maxBA, maxRBI=maxRBI, maxWins=maxWins,
+                           maxSO=maxSO, maxERA=maxERA)
+
+
 @app.route('/postseason')
 def postseason():
     countWS = getWSWins(current_user.fav_team)

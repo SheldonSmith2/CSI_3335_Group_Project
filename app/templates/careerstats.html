@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="content-section">
+        <h3 style="text-align: center">Career Stats for {{ current_user.fav_player }}</h3>
+        <h5>Played from 2015 to 2021</h5>
+        <h6>{{ current_user.fav_player }} is currently not in the Hall of Fame</h6>
+
+        <h6>Career MLB Batting Stats</h6>
+        <div>At Bats</div>
+        <div>Runs</div>
+        <div>Hits</div>
+        <div>Home Runs</div>
+        <div>RBIs</div>
+        <div>Stolen Bases</div>
+        <div>AVG</div>
+
+        <h6>Career Postseason Batting Stats</h6>
+        <div>At Bats</div>
+        <div>Runs</div>
+        <div>Hits</div>
+        <div>Home Runs</div>
+        <div>RBIs</div>
+        <div>Stolen Bases</div>
+        <div>AVG</div>
+
+        <h6>Career MLB Pitching Stats</h6>
+        <div>Wins</div>
+        <div>Losses</div>
+        <div>Era</div>
+        <div>Innings Pitched</div>
+        <div>Strike Outs</div>
+        <div>WHIP</div>
+
+        <h6>Career Postseason Pitching Stats</h6>
+        <div>Wins</div>
+        <div>Losses</div>
+        <div>Era</div>
+        <div>Innings Pitched</div>
+        <div>Strike Outs</div>
+        <div>WHIP</div>
+    </div>
+{% endblock %}

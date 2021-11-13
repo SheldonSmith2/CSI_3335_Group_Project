@@ -85,11 +85,12 @@ class UpdateAccountForm(FlaskForm):
     def validate_fav_player(self, fav_player):
         players = getPlayers()
         isValid = 0
+        splitName = fav_player.data.split()
         if fav_player.data != "":
-            for person in players:
-                #name = (person.nameFirst + " " + person.nameLast)
-                if person.nameFirst == fav_player.data:
-                    isValid = 1
+            if len(splitName) == 2:
+                for person in players:
+                    if person.nameFirst == splitName[0] and person.nameLast == splitName[1]:
+                        isValid = 1
             if isValid == 0:
                 raise ValidationError('That player is not valid.  Make sure that the first and last name are capitalized.')
 

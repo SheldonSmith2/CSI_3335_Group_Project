@@ -34,14 +34,21 @@
                     <!-- If the user is authenticated, then print out links for user -->
                     <li class="nav-item dropdown">
                     <a class="nav-item nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Team Info
+                        Baseball Info
                       </a>
                       <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{{ url_for('managers') }}">Managers</a></li>
-                        <li><a class="dropdown-item" href="{{ url_for('postseason') }}">Post Season</a></li>
+                          <li><h6> Favorite Team</h6></li>
+                          <li><a class="dropdown-item" href="{{ url_for('managers') }}">Managers</a></li>
+                          <li><a class="dropdown-item" href="{{ url_for('postseason') }}">Post Season</a></li>
                           <li><a class="dropdown-item" href="{{ url_for('allstar') }}">All Star Games</a></li>
+                        {% if current_user.fav_player != None %}
+                          <li><hr class="dropdown-divider"></li>
+                          <li><h6> Favorite Player Info</h6></li>
+                          <li><a class="dropdown-item" href="{{ url_for('careerstats') }}">Career Stats</a></li>
+                        {% endif %}
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{ url_for('playerawards') }}">Player Awards</a></li>
+                          <li><h6> General Info</h6></li>
+                          <li><a class="dropdown-item" href="{{ url_for('playerawards') }}">Player Awards</a></li>
                           <li><a class="dropdown-item" href="{{ url_for('halloffame') }}">Hall of Fame</a></li>
                       </ul>
                     </li>
