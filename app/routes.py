@@ -15,7 +15,6 @@ from app.databaseControllers.generalController import getRoster, getStats, getMa
 from app.databaseControllers.sidebarController import getHighestSO, getHighestERA, getHighestWins, \
     getHighestRBI, getHighestBA, getHighestHR
 
-
 maxHR = getHighestHR()
 maxBA = getHighestBA()
 maxRBI = getHighestRBI()
@@ -55,15 +54,7 @@ def dashboard():
     return render_template('dashboard.html', title='Home', roster=roster, form=form, appearances=appearances,
                            year=year, salaries=salaries, yearSalary=yearSalary, formSalary=formSalary,
                            wschamp=wschamp, maxHR=maxHR, maxBA=maxBA, maxRBI=maxRBI, maxWins=maxWins,
-                           maxSO=maxSO, maxERA=maxERA, pitchingInfo=pitchingInfo, **request.args)
-
-
-@app.route('/getinfo/<id>/<year>', methods=['GET', 'POST'])
-def stats(id, year):
-    flash("Player " + id + " " + year, 'success')
-    player_stats = getStats(id, year, current_user.fav_team)
-    toggle = ".show"
-    return redirect(url_for('dashboard', toggle=toggle, player_stats=player_stats))
+                           maxSO=maxSO, maxERA=maxERA, pitchingInfo=pitchingInfo)
 
 
 # The route to control the login functionality
@@ -98,7 +89,8 @@ def register():
         # Hash the password before storing it
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         # Create a new User and add to the database
-        user = User(username=form.username.data, email=form.email.data, password=hashed_password, fav_team=form.fav_team.data)
+        user = User(username=form.username.data, email=form.email.data, password=hashed_password,
+                    fav_team=form.fav_team.data, fav_player=None)
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created!  You are now able to log in', 'success')
@@ -125,6 +117,10 @@ def account():
         current_user.username = form.username.data
         current_user.email = form.email.data
         current_user.fav_team = form.fav_team.data
+        if form.fav_player.data == "":
+            current_user.fav_player = None
+        else:
+            current_user.fav_player = form.fav_player.data
         db.session.commit()
         flash('Your account has been updated!', 'success')
         return redirect(url_for('account'))
@@ -133,6 +129,8 @@ def account():
         form.username.data = current_user.username
         form.email.data = current_user.email
         form.fav_team.data = current_user.fav_team
+        if current_user.fav_player is not None:
+            form.fav_player.data = current_user.fav_player
     teams = getCurrentTeams()
     return render_template('account.html', title='Account', form=form, teams=teams, maxHR=maxHR, maxBA=maxBA,
                            maxRBI=maxRBI, maxWins=maxWins, maxSO=maxSO, maxERA=maxERA)
@@ -245,8 +243,10 @@ def standings():
     ALWC = getRound(year, "ALWC")
     NLWC = getRound(year, "NLWC")
     return render_template('standings.html', title='Standings', ALWest=ALWest, form=form, year=year, ALWestWL=ALWestWL,
-                           ALEast=ALEast, ALEastWL=ALEastWL, ALCentralWL=ALCentralWL, ALCentral=ALCentral, NLWest=NLWest,
-                           NLWestWL=NLWestWL, NLEast=NLEast, NLEastWL=NLEastWL, NLCentral=NLCentral, NLCentralWL=NLCentralWL,
+                           ALEast=ALEast, ALEastWL=ALEastWL, ALCentralWL=ALCentralWL, ALCentral=ALCentral,
+                           NLWest=NLWest,
+                           NLWestWL=NLWestWL, NLEast=NLEast, NLEastWL=NLEastWL, NLCentral=NLCentral,
+                           NLCentralWL=NLCentralWL,
                            WSChamp=WSChamp, ALCS=ALCS, NLCS=NLCS, ALDS1=ALDS1, ALDS2=ALDS2, NLDS1=NLDS1, NLDS2=NLDS2,
                            ALWC=ALWC, NLWC=NLWC, maxHR=maxHR, maxBA=maxBA, maxRBI=maxRBI, maxWins=maxWins,
                            maxSO=maxSO, maxERA=maxERA)

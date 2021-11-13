@@ -5,6 +5,8 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, Selec
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Length, NumberRange
 from app.userModel import User
 from app.databaseControllers.standingsController import getCurrentTeams
+from app.databaseControllers.generalController import getPlayers
+from flask import flash
 
 teams = getCurrentTeams()
 teamsForm = []
@@ -63,6 +65,7 @@ class UpdateAccountForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     fav_team = SelectField('Favorite Team', choices=teamsForm, validators=[DataRequired()])
+    fav_player = StringField('Favorite Player')
     submit = SubmitField('Update')
 
     # Validate that the username is not already taken by another user
@@ -78,6 +81,17 @@ class UpdateAccountForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('That email is taken.  Please choose another one.')
+
+    def validate_fav_player(self, fav_player):
+        players = getPlayers()
+        isValid = 0
+        if fav_player.data != "":
+            for person in players:
+                #name = (person.nameFirst + " " + person.nameLast)
+                if person.nameFirst == fav_player.data:
+                    isValid = 1
+            if isValid == 0:
+                raise ValidationError('That player is not valid.  Make sure that the first and last name are capitalized.')
 
 
 # The form in order to initiate a reset password request

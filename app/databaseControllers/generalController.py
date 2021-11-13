@@ -79,3 +79,8 @@ def getPitchingInfo(team, year):
         .order_by(Pitching.playerid).all()
     session.close()
     return players
+
+def getPlayers():
+    session = createConnection()
+    players = session.query(People).distinct(People.playerid)
+    return players
