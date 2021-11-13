@@ -1,6 +1,6 @@
 # The file to control the different routes within the application
 
-from app import app, db, bcrypt, mail, maxHR, maxBA, maxRBI, maxERA, maxSO, maxWins
+from app import app, db, bcrypt, mail
 from app.forms import LoginForm, RegisterForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm, \
     ChangeYearForm
 from flask import render_template, flash, redirect, url_for, request
@@ -9,9 +9,19 @@ from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
 from app.databaseControllers.standingsController import getStandings, getWLofDivision, getCurrentTeams
 from app.databaseControllers.awardsController import getPlayerAwards, getAllstar, getHallofFame, getManagerAward
-from app.databaseControllers.postseasonController import getLgWins, getDivWins, getWSWinInfo, getWSWins, getRound
+from app.databaseControllers.postseasonController import getLgWins, getDivWins, getPostInfo, getWSWins, getRound
 from app.databaseControllers.generalController import getRoster, getStats, getManagers, getTopSalaries, \
-    getAppearances
+    getAppearances, getPitchingInfo
+from app.databaseControllers.sidebarController import getHighestSO, getHighestERA, getHighestWins, \
+    getHighestRBI, getHighestBA, getHighestHR
+
+
+maxHR = getHighestHR()
+maxBA = getHighestBA()
+maxRBI = getHighestRBI()
+maxWins = getHighestWins()
+maxSO = getHighestSO()
+maxERA = getHighestERA()
 
 
 # The main page for the website
@@ -29,9 +39,11 @@ def dashboard():
     if current_user.is_authenticated:
         roster = getRoster(current_user.fav_team, year)
         appearances = getAppearances(current_user.fav_team, year)
+        pitchingInfo = getPitchingInfo(current_user.fav_team, year)
     else:
         roster = ""
         appearances = ""
+        pitchingInfo = ""
     if formSalary.validate_on_submit():
         yearSalary = formSalary.changeYear.data
     elif request.method == 'GET':
@@ -43,7 +55,7 @@ def dashboard():
     return render_template('dashboard.html', title='Home', roster=roster, form=form, appearances=appearances,
                            year=year, salaries=salaries, yearSalary=yearSalary, formSalary=formSalary,
                            wschamp=wschamp, maxHR=maxHR, maxBA=maxBA, maxRBI=maxRBI, maxWins=maxWins,
-                           maxSO=maxSO, maxERA=maxERA, **request.args)
+                           maxSO=maxSO, maxERA=maxERA, pitchingInfo=pitchingInfo, **request.args)
 
 
 @app.route('/getinfo/<id>/<year>', methods=['GET', 'POST'])
@@ -196,9 +208,9 @@ def postseason():
     countWS = getWSWins(current_user.fav_team)
     countDiv = getDivWins(current_user.fav_team)
     countLg = getLgWins(current_user.fav_team)
-    WSWinInfo = getWSWinInfo(current_user.fav_team)
+    PostInfo = getPostInfo(current_user.fav_team)
     return render_template('postseason.html', title='Post Season Stats', countWS=countWS, countLg=countLg,
-                           countDiv=countDiv, WSWinInfo=WSWinInfo, maxHR=maxHR, maxBA=maxBA, maxRBI=maxRBI,
+                           countDiv=countDiv, PostInfo=PostInfo, maxHR=maxHR, maxBA=maxBA, maxRBI=maxRBI,
                            maxWins=maxWins, maxSO=maxSO, maxERA=maxERA)
 
 

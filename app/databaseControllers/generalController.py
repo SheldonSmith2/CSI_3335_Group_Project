@@ -70,3 +70,12 @@ def getStats(plyr_id, year, team):
                 Teams.name == team, Batting.playerid == People.playerid).limit(1)
     session.close()
     return stats
+
+
+def getPitchingInfo(team, year):
+    session = createConnection()
+    players = session.query(Pitching)\
+        .filter(Pitching.yearID == year, Pitching.teamID == Teams.teamID, Teams.name == team)\
+        .order_by(Pitching.playerid).all()
+    session.close()
+    return players

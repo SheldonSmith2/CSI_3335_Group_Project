@@ -58,7 +58,7 @@
                 </tr>
                 <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasExample{{ loop.index0 }}" aria-labelledby="offcanvasExampleLabel">
                     <div class="offcanvas-header">
-                        <p class="offcanvas-title">{{ year }} Stats for {{ roster[loop.index0][0].nameFirst }} {{ roster[loop.index0][0].nameLast }}</p>
+                        <h4 class="offcanvas-title">{{ year }} Stats for {{ roster[loop.index0][0].nameFirst }} {{ roster[loop.index0][0].nameLast }}</h4>
                         <div id="demo"></div>
                         <a type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></a>
                     </div>
@@ -78,13 +78,27 @@
                             <li class="list-group-item">Walks: {{ roster[loop.index0][1].BB }}</li>
                         </ul><br>{% endif %}
                         {% if appearances[loop.index0].G_p > 1%}
-                        <h6>Pitching Stats</h6>
-                        <ul class="list-group">
-                            <li class="list-group-item">Wins:</li>
-                            <li class="list-group-item">ERA:</li>
-                            <li class="list-group-item">WHIP:</li>
-                            <li class="list-group-item">Strike Outs:</li>
-                        </ul>
+                            {% for pitcher in pitchingInfo %}
+                                {% if pitcher.playerid == player[1].playerid %}
+                                <h6>Pitching Stats</h6>
+                                <ul class="list-group">
+                                    <li class="list-group-item">Wins: {{ pitcher.W }}</li>
+                                    <li class="list-group-item">Losses: {{ pitcher.L }}</li>
+                                    <li class="list-group-item">Win/Loss %: {% if pitcher.L > 0 %}
+                                        {{ "{:.3f}".format(pitcher.W/(pitcher.L+pitcher.W),2) }}
+                                        {% elif pitcher.L == 0 and pitcher.W == 0 %}N/A
+                                        {% else %}1.000
+                                        {% endif %}
+                                    </li>
+                                    <li class="list-group-item">ERA: {{ "{:.2f}".format(27*pitcher.ER/pitcher.IPouts,2) }}</li>
+                                    <li class="list-group-item">WHIP: {{ "{:.3f}".format(3*(pitcher.BB + pitcher.H)/pitcher.IPouts,2) }}</li>
+                                    <li class="list-group-item">Strike Outs: {{ pitcher.SO }}</li>
+                                    <li class="list-group-item">Innings Pitched: {{ pitcher.IPouts//3 }}.{{ pitcher.IPouts%3 }}</li>
+                                    <li class="list-group-item">Games: {{ pitcher.G }}</li>
+                                    <li class="list-group-item">Saves: {{ pitcher.SV }}</li>
+                                </ul>
+                                {% endif %}
+                            {% endfor %}
                         {% endif %}
                     </div>
                 </div>
@@ -99,10 +113,9 @@
         {% for team in wschamp %}
             <h5 style="text-align: center">The {{ team[1].name }} defeated the {{ team[2].name }} in {{ team[0].wins + team[0].losses }} games</h5>
         {% endfor %}
-        <h5 style="text-align: center">World Series MVP: Corey Seager (MIGHT DELETE)</h5>
         <hr>
         <!-- Display the top highest salaries in current year -->
-        <h4>Top 5 Highest Salaries in {{ yearSalary }}</h4>
+        <h4>Top 10 Highest Salaries in {{ yearSalary }}</h4>
         <h6>Change Year</h6>
         <form method="POST" action="" class="d-flex">
             {{ formSalary.hidden_tag() }}

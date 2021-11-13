@@ -41,13 +41,14 @@ def getLgWins(team):
     return count
 
 
-def getWSWinInfo(team):
+def getPostInfo(team):
     session = createConnection()
     teamWin = aliased(Teams)
     teamLoss = aliased(Teams)
     roundResults = session.query(SeriesPost, teamLoss) \
-        .filter(SeriesPost.round == "WS", SeriesPost.teamIDwinner == teamWin.teamID,
+        .filter(SeriesPost.teamIDwinner == teamWin.teamID,
                 SeriesPost.teamIDloser == teamLoss.teamID, SeriesPost.yearID == teamWin.yearID,
-                SeriesPost.yearID == teamLoss.yearID, teamWin.name == team).order_by(SeriesPost.yearID.desc())
+                SeriesPost.yearID == teamLoss.yearID, teamWin.name == team, SeriesPost.yearID > 2015)\
+        .order_by(SeriesPost.yearID.desc(), SeriesPost.round.desc())
     session.close()
     return roundResults

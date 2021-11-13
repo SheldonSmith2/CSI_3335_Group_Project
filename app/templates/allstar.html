@@ -40,5 +40,7 @@
             {% endfor %}
             </tbody>
         </table>
+        {% if allstarInfo.count() == 0 %}
+        <div style="color: red">Sorry, there is no data for that year</div>{% endif %}
     </div>
 {% endblock %}
