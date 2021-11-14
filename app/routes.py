@@ -10,10 +10,13 @@ from flask_mail import Message
 from app.databaseControllers.standingsController import getStandings, getWLofDivision, getCurrentTeams
 from app.databaseControllers.awardsController import getPlayerAwards, getAllstar, getHallofFame, getManagerAward
 from app.databaseControllers.postseasonController import getLgWins, getDivWins, getPostInfo, getWSWins, getRound
-from app.databaseControllers.generalController import getRoster, getStats, getManagers, getTopSalaries, \
+from app.databaseControllers.generalController import getRoster, getManagers, getTopSalaries, \
     getAppearances, getPitchingInfo
 from app.databaseControllers.sidebarController import getHighestSO, getHighestERA, getHighestWins, \
     getHighestRBI, getHighestBA, getHighestHR
+from app.databaseControllers.favPlayerController import careerBattingPost, careerPitchingPost, careerPitchingStats, \
+    careerBattingStats, battingStats, battingPost, postAppearancesBatting, postAppearancesPitching, pitchingPost, \
+    pitchingStats, getSumAppearances
 
 maxHR = getHighestHR()
 maxBA = getHighestBA()
@@ -203,8 +206,29 @@ def managers():
 
 @app.route('/careerstats')
 def careerstats():
+    careerPitching = careerPitchingStats(current_user.fav_player)
+    pitching = pitchingStats(current_user.fav_player)
+    careerBatting = careerBattingStats(current_user.fav_player)
+    batting = battingStats(current_user.fav_player)
+    appearances = getSumAppearances(current_user.fav_player)
     return render_template('careerstats.html', title='Career Stats', maxHR=maxHR, maxBA=maxBA, maxRBI=maxRBI, maxWins=maxWins,
-                           maxSO=maxSO, maxERA=maxERA)
+                           maxSO=maxSO, maxERA=maxERA, careerPitching=careerPitching, careerBatting=careerBatting,
+                           appearances=appearances, pitching=pitching, batting=batting)
+
+
+@app.route('/careerpostseason')
+def careerpostseason():
+    careerPitching = careerPitchingPost(current_user.fav_player)
+    pitching = pitchingPost(current_user.fav_player)
+    careerBatting = careerBattingPost(current_user.fav_player)
+    batting = battingPost(current_user.fav_player)
+    appearances = getSumAppearances(current_user.fav_player)
+    postBatting = postAppearancesBatting(current_user.fav_player)
+    postPitching = postAppearancesPitching(current_user.fav_player)
+    return render_template('careerpostseason.html', title='Postseason Stats', maxHR=maxHR, maxBA=maxBA, maxRBI=maxRBI,
+                           maxWins=maxWins, postPitching=postPitching,
+                           maxSO=maxSO, maxERA=maxERA, careerPitching=careerPitching, careerBatting=careerBatting,
+                           appearances=appearances, pitching=pitching, batting=batting, postBatting=postBatting)
 
 
 @app.route('/postseason')
