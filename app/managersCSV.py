@@ -16,4 +16,4 @@ def managersCSVUpdate(fileName):
                 sql += reader['teamRank'] + ","
                 sql += reader['plyrMgr']
                 sql += ";"
-                line_count +=1
+            line_count +=1

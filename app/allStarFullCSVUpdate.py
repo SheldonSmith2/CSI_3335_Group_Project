@@ -13,4 +13,4 @@ def allStarFullCSVUpdate():
                 sql += teamsreader['GP'] + ","
                 sql += teamsreader['startingPos'] + ","
                 sql += ";"
-                line_count
+            line_count+=1
