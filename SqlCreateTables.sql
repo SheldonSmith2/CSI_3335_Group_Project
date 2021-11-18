@@ -5,7 +5,8 @@
  */
 
 -- creates new database
-CREATE DATABASE NewBaseball IF NOT EXISTS;
+CREATE DATABASE baseball IF NOT EXISTS;
+USE baseball;
 
 --drop tables in order to start fresh
 DROP TABLE People IF EXISTS;
