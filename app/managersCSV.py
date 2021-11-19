@@ -4,7 +4,7 @@ def managersCSVUpdate(fileName):
         line_count = 0
         for row in reader:
             if line_count!=0:
-                sql = "INSERT INTO allstarfull VALUES ("
+                sql = "INSERT INTO managers VALUES ("
                 sql += reader['ID'] + ","
                 sql += reader['playerid'] + ","
                 sql += reader['yearID'] + ","

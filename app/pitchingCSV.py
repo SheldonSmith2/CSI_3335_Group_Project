@@ -1,31 +1,37 @@
-def battingCSVUpdate():
-    with open("Batting.csv", mode='r') as csvfile:
+def pitchingCSVUpdate():
+    with open("Pitching.csv", mode='r') as csvfile:
         teamsreader = csv.DictReader(csvfile)
         line_count = 0
         for row in teamsreader:
             if line_count!=0:
-                sql = "INSERT INTO batting VALUES ("
+                sql = "INSERT INTO pitching VALUES ("
                 sql += teamsreader['ID'] + ","
                 sql += teamsreader['playerid'] + ","
                 sql += teamsreader['yearID'] + ","
                 sql += teamsreader['stint'] + ","
                 sql += teamsreader['teamID'] + ","
-                sql += teamsreader['lgID'] + ","
+                sql += teamsreader['W'] + ","
+                sql += teamsreader['L'] + ","
                 sql += teamsreader['G'] + ","
-                sql += teamsreader['AB'] + ","
-                sql += teamsreader['R'] + ","
+                sql += teamsreader['GS'] + ","
+                sql += teamsreader['CG'] + ","
+                sql += teamsreader['SHO'] + ","
+                sql += teamsreader['SV'] + ","
+                sql += teamsreader['IPouts'] + ","
                 sql += teamsreader['H'] + ","
+                sql += teamsreader['ER'] + ","
                 sql += teamsreader['HR'] + ","
-                sql += teamsreader['RBI'] + ","
-                sql += teamsreader['SB'] + ","
-                #Check if 2b and 3b are in correct position
-                sql += teamsreader['2B'] + ","
-                sql += teamsreader['3B'] + ","
-                sql += teamsreader['CS'] + ","
                 sql += teamsreader['BB'] + ","
                 sql += teamsreader['SO'] + ","
+                sql += teamsreader['BAOpp'] + ","
+                sql += teamsreader['ERA'] + ","
                 sql += teamsreader['IBB'] + ","
+                sql += teamsreader['WP'] + ","
                 sql += teamsreader['HBP'] + ","
+                sql += teamsreader['BK'] + ","
+                sql += teamsreader['BFP'] + ","
+                sql += teamsreader['GF'] + ","
+                sql += teamsreader['R'] + ","
                 sql += teamsreader['SH'] + ","
                 sql += teamsreader['SF'] + ","
                 sql += teamsreader['GIDP'] + ","

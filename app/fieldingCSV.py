@@ -4,7 +4,7 @@ def fieldingCSVUpdate():
         line_count = 0
         for row in teamsreader:
             if line_count!=0:
-                sql = "INSERT INTO allstarfull VALUES ("
+                sql = "INSERT INTO fielding VALUES ("
                 sql += teamsreader['ID'] + ","
                 sql += teamsreader['playerid'] + ","
                 sql += teamsreader['yearID'] + ","
