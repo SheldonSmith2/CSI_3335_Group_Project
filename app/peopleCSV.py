@@ -1,5 +1,5 @@
 def peopleCSVUpdate():
-    with open("allstarfull.csv", mode='r') as csvfile:
+    with open("People.csv", mode='r') as csvfile:
         teamsreader = csv.DictReader(csvfile)
         line_count = 0
         for row in teamsreader:

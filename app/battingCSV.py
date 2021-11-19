@@ -1,5 +1,5 @@
-def allStarFullCSVUpdate():
-    with open("allstarfull.csv", mode='r') as csvfile:
+def battingCSVUpdate():
+    with open("Batting.csv", mode='r') as csvfile:
         teamsreader = csv.DictReader(csvfile)
         line_count = 0
         for row in teamsreader:
@@ -10,6 +10,7 @@ def allStarFullCSVUpdate():
                 sql += teamsreader['yearID'] + ","
                 sql += teamsreader['stint'] + ","
                 sql += teamsreader['teamID'] + ","
+                sql += teamsreader['lgID'] + ","
                 sql += teamsreader['G'] + ","
                 sql += teamsreader['AB'] + ","
                 sql += teamsreader['R'] + ","
@@ -17,7 +18,7 @@ def allStarFullCSVUpdate():
                 sql += teamsreader['HR'] + ","
                 sql += teamsreader['RBI'] + ","
                 sql += teamsreader['SB'] + ","
-                #Check if 2b and 3b exists in csv
+                #Check if 2b and 3b are in correct position
                 sql += teamsreader['2B'] + ","
                 sql += teamsreader['3B'] + ","
                 sql += teamsreader['CS'] + ","

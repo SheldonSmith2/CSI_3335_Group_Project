@@ -1,5 +1,5 @@
 def managersCSVUpdate(fileName):
-    with open("allstarfull.csv", mode='r') as csvfile:
+    with open("Managers.csv", mode='r') as csvfile:
         reader = csv.DictReader(csvfile)
         line_count = 0
         for row in reader:
