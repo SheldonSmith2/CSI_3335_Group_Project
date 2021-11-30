@@ -11,6 +11,7 @@ from app.baseballModels.appearances import Appearances
 from app.baseballModels.pitching import Pitching
 
 
+# Create a connection to the database
 def createConnection():
     enginestr = "mysql+pymysql://" + cfg.mysql['user'] + ":" + cfg.mysql['password'] + "@" + cfg.mysql[
         'host'] + ":3306/" + cfg.mysql['db']
@@ -22,6 +23,7 @@ def createConnection():
     return session
 
 
+# The function to get the roster of the given team based on the year
 def getRoster(team, year):
     session = createConnection()
     players = session.query(People, Batting, Teams).distinct(People.playerid) \
@@ -31,6 +33,7 @@ def getRoster(team, year):
     return players
 
 
+# The function to get the appearances of players on the given team in the year
 def getAppearances(team, year):
     session = createConnection()
     players = session.query(Appearances).distinct(People.playerid) \
@@ -41,6 +44,7 @@ def getAppearances(team, year):
     return players
 
 
+# The function to get the last 10 managers for a specific team
 def getManagers(team):
     session = createConnection()
     managers = session.query(Managers, func.max(Managers.yearID), func.min(Managers.yearID), func.sum(Managers.W),
@@ -51,6 +55,7 @@ def getManagers(team):
     return managers
 
 
+# The function to get the top 10 salaries of a given year
 def getTopSalaries(year):
     session = createConnection()
     salaries = session.query(People, Salaries, Teams, Fielding) \
@@ -62,6 +67,7 @@ def getTopSalaries(year):
     return salaries
 
 
+# The function to get the states of a player based on the playerid, year, and team
 def getStats(plyr_id, year, team):
     session = createConnection()
     stats = session.query(Batting, People.nameFirst, People.nameLast) \
@@ -72,6 +78,7 @@ def getStats(plyr_id, year, team):
     return stats
 
 
+# The function to get the pitching information for a team and year
 def getPitchingInfo(team, year):
     session = createConnection()
     players = session.query(Pitching)\
@@ -81,6 +88,7 @@ def getPitchingInfo(team, year):
     return players
 
 
+# The function the get all the player names
 def getPlayers():
     session = createConnection()
     players = session.query(People).distinct(People.playerid)

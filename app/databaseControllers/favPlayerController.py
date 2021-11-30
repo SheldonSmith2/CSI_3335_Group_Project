@@ -9,6 +9,7 @@ from app.baseballModels.battingpost import BattingPost
 from app.baseballModels.pitchingpost import PitchingPost
 
 
+# Create a connection to the database
 def createConnection():
     enginestr = "mysql+pymysql://" + cfg.mysql['user'] + ":" + cfg.mysql['password'] + "@" + cfg.mysql[
         'host'] + ":3306/" + cfg.mysql['db']
@@ -20,6 +21,7 @@ def createConnection():
     return session
 
 
+# The function to get the career batting stats sum for a specific player
 def careerBattingStats(playerName):
     splitName = playerName.split()
     session = createConnection()
@@ -29,6 +31,7 @@ def careerBattingStats(playerName):
     return stats
 
 
+# The function to get the batting stats of a given player per year
 def battingStats(playerName):
     splitName = playerName.split()
     session = createConnection()
@@ -38,6 +41,7 @@ def battingStats(playerName):
     return stats
 
 
+# The function to get the career pitching stats sum for a specific player
 def careerPitchingStats(playerName):
     splitName = playerName.split()
     session = createConnection()
@@ -47,6 +51,7 @@ def careerPitchingStats(playerName):
     return stats
 
 
+# The function to get the pitching stats of a given player per year
 def pitchingStats(playerName):
     splitName = playerName.split()
     session = createConnection()
@@ -56,6 +61,7 @@ def pitchingStats(playerName):
     return stats
 
 
+# Get the number of appearances for a given player
 def getSumAppearances(playerName):
     splitName = playerName.split()
     session = createConnection()
@@ -64,6 +70,8 @@ def getSumAppearances(playerName):
     return stats
 
 
+
+# The function to get the career batting postseason stats sum for a specific player
 def careerBattingPost(playerName):
     splitName = playerName.split()
     session = createConnection()
@@ -73,6 +81,7 @@ def careerBattingPost(playerName):
     return stats
 
 
+# The function to get the batting postseason stats of a given player per year
 def battingPost(playerName):
     splitName = playerName.split()
     session = createConnection()
@@ -82,6 +91,7 @@ def battingPost(playerName):
     return stats
 
 
+# The function to get the career pitching postseason stats sum for a specific player
 def careerPitchingPost(playerName):
     splitName = playerName.split()
     session = createConnection()
@@ -91,6 +101,7 @@ def careerPitchingPost(playerName):
     return stats
 
 
+# The function to get the pitching postseason stats of a given player per year
 def pitchingPost(playerName):
     splitName = playerName.split()
     session = createConnection()
@@ -100,6 +111,7 @@ def pitchingPost(playerName):
     return stats
 
 
+# The function to get the postseason batting appearances of a given player
 def postAppearancesBatting(playerName):
     splitName = playerName.split()
     session = createConnection()
@@ -109,6 +121,7 @@ def postAppearancesBatting(playerName):
     return stats
 
 
+# The function to get the postseason pitching appearances of a given player
 def postAppearancesPitching(playerName):
     splitName = playerName.split()
     session = createConnection()

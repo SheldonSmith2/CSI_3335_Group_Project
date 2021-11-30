@@ -6,8 +6,8 @@ from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Le
 from app.userModel import User
 from app.databaseControllers.standingsController import getCurrentTeams
 from app.databaseControllers.generalController import getPlayers
-from flask import flash
 
+# Get all the current teams that the user can choose for favorite
 teams = getCurrentTeams()
 teamsForm = []
 for team in teams:
@@ -42,23 +42,6 @@ class RegisterForm(FlaskForm):
         if user:
             raise ValidationError('That email is taken.  Please choose another one.')
 
-    # Validate that the password follows the constraints given
-    def validate_password(self, password):
-        num_chars = 0
-        num_upper = 0
-        num_other = 0
-        num_letters = 0
-        for element in password.data:
-            num_chars += 1
-            if element.isnumeric():
-                num_letters += 1
-            elif element.isupper():
-                num_upper += 1
-            elif not element.islower():
-                num_other += 1
-        if 8 > num_chars or num_chars > 20 or num_letters <= 0 or num_upper <= 0 or num_other <= 0:
-            raise ValidationError('The password does not match the minimum requirements.')
-
 
 # The class to control updating the account information
 class UpdateAccountForm(FlaskForm):
@@ -82,6 +65,7 @@ class UpdateAccountForm(FlaskForm):
             if user:
                 raise ValidationError('That email is taken.  Please choose another one.')
 
+    # Validate that the favorite player is a valid player in database
     def validate_fav_player(self, fav_player):
         players = getPlayers()
         isValid = 0
@@ -114,11 +98,13 @@ class ResetPasswordForm(FlaskForm):
     submit = SubmitField('Reset Password')
 
 
+# The form that is used in order to change the year in many of the pages
 class ChangeYearForm(FlaskForm):
     changeYear = IntegerField('Year', validators=[DataRequired(message="Must enter a year"),
                                                   NumberRange(min=1870, max=2020, message="Date must be within 1870-2020")])
     submit = SubmitField('Change Year')
 
 
+# Form in order to see player info
 class SeePlayerInfo(FlaskForm):
     submit = SubmitField('More')

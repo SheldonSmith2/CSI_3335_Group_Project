@@ -8,6 +8,7 @@ from app.baseballModels.allstarfull import AllstarFull
 from app.databaseControllers.generalController import createConnection
 
 
+# The function to get all the hall of fame inductees from the given year
 def getHallofFame(year):
     session = createConnection()
     stats = session.query(People, HallofFame) \
@@ -16,6 +17,7 @@ def getHallofFame(year):
     return stats
 
 
+# The function to get all the allstar players based on the given year and team
 def getAllstar(team, year):
     session = createConnection()
     allstar = session.query(People, AllstarFull) \
@@ -25,6 +27,7 @@ def getAllstar(team, year):
     return allstar
 
 
+# The function to get the players who won a specific award in the given year
 def getPlayerAwards(year, award):
     session = createConnection()
     awards = session.query(People, AwardsPlayers) \
@@ -34,6 +37,7 @@ def getPlayerAwards(year, award):
     return awards
 
 
+# The function to get the managers who won a specific award on a given team
 def getManagerAward(team, awardtype):
     session = createConnection()
     tsnawards = session.query(AwardsManagers, Managers, People) \

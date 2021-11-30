@@ -2,6 +2,7 @@ from app.baseballModels.teams import Teams
 from app.databaseControllers.generalController import createConnection
 
 
+# The function to get the division standings of a given year and league
 def getStandings(year, league, division):
     session = createConnection()
     teams = session.query(Teams) \
@@ -10,6 +11,7 @@ def getStandings(year, league, division):
     return teams
 
 
+# The function to get the current teams in the MLB
 def getCurrentTeams():
     session = createConnection()
     teams = session.query(Teams.name) \
@@ -19,6 +21,7 @@ def getCurrentTeams():
     return teams
 
 
+# The function to get the top team of the division
 def getWLofDivision(year, league, division):
     session = createConnection()
     topTeam = session.query(Teams) \

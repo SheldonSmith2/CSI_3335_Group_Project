@@ -5,6 +5,7 @@ from app.baseballModels.seriespostseason import SeriesPost
 from app.databaseControllers.generalController import createConnection
 
 
+# The function to get the postseason round information for a specific year
 def getRound(year, rd):
     session = createConnection()
     teamWin = aliased(Teams)
@@ -17,6 +18,7 @@ def getRound(year, rd):
     return roundResults
 
 
+# The function to get number of world series wins for given team
 def getWSWins(team):
     session = createConnection()
     count = session.query(func.count(Teams.WSWin)) \
@@ -25,6 +27,7 @@ def getWSWins(team):
     return count
 
 
+# The function to get number of division wins for given team
 def getDivWins(team):
     session = createConnection()
     count = session.query(func.count(Teams.DivWin)) \
@@ -33,6 +36,7 @@ def getDivWins(team):
     return count
 
 
+# The function to get number of league wins for given team
 def getLgWins(team):
     session = createConnection()
     count = session.query(func.count(Teams.LgWin)) \
@@ -41,6 +45,7 @@ def getLgWins(team):
     return count
 
 
+# The function to get postseason information for given team
 def getPostInfo(team):
     session = createConnection()
     teamWin = aliased(Teams)
