@@ -5,7 +5,6 @@ import mariadbconfig as cfg
 def peopleCSVUpdate():
     with open("People.csv", mode='r') as csvfile:
         teamsreader = csv.DictReader(csvfile)
-        line_count = 0
         sql = '''INSERT INTO `people` 
                     (playerID,birthYear,birthMonth,birthDay,birthCountry,birthState,birthCity,deathYear,deathMonth,
                     deathDay,deathCountry,deathState,deathCity,nameFirst,nameLast,nameGiven,weight,height,bats,throws,debutDate,finalGameDate) VALUES '''
