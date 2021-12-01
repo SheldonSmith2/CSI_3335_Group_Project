@@ -1,3 +1,4 @@
+import csv
 def fieldingCSVUpdate():
     with open("Fielding.csv", mode='r') as csvfile:
         teamsreader = csv.DictReader(csvfile)

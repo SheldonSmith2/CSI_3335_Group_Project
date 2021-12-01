@@ -1,3 +1,4 @@
+import csv
 def teamsCSVUpdate():
     with open("Teams.csv", mode='r') as csvfile:
         teamsreader = csv.DictReader(csvfile)
@@ -5,17 +6,22 @@ def teamsCSVUpdate():
         for row in teamsreader:
             if line_count!=0:
                 sql = "INSERT INTO teams VALUES ("
-                sql += teamsreader['ID'] + ","
+                sql += (line_count - 1) + ","
+                sql += teamsreader['teamID'] + ","
                 sql += teamsreader['yearID'] + ","
                 sql += teamsreader['lgID'] + ","
-                sql += teamsreader['teamID'] + ","
-                sql += teamsreader['franchID'] + ","
                 sql += teamsreader['divID'] + ","
+                sql += teamsreader['franchID'] + ","
+                sql += teamsreader['name'] + ","
                 sql += teamsreader['teamRank'] + ","
                 sql += teamsreader['G'] + ","
                 sql += teamsreader['Ghome'] + ","
                 sql += teamsreader['W'] + ","
                 sql += teamsreader['L'] + ","
+                sql += teamsreader['DivWin'] + ","
+                sql += teamsreader['WCWin'] + ","
+                sql += teamsreader['LgWin'] + ","
+                sql += teamsreader['WSWin'] + ","
                 sql += teamsreader['R'] + ","
                 sql += teamsreader['AB'] + ","
                 sql += teamsreader['H'] + ","
@@ -43,8 +49,5 @@ def teamsCSVUpdate():
                 sql += teamsreader['E'] + ","
                 sql += teamsreader['DP'] + ","
                 sql += teamsreader['FP'] + ","
-                sql += teamsreader['name'] + ","
-                sql += teamsreader['park'] + ","
-                sql += teamsreader['attendance'] + ","
-                sql += ";"
+                sql += ");"
             line_count+=1

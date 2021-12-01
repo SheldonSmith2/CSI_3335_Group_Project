@@ -1,3 +1,4 @@
+import csv
 def salariesCSVUpdate():
     with open("Salaries.csv", mode='r') as csvfile:
         teamsreader = csv.DictReader(csvfile)

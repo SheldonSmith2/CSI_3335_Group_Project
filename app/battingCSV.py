@@ -1,3 +1,4 @@
+import csv
 def battingCSVUpdate():
     with open("Batting.csv", mode='r') as csvfile:
         teamsreader = csv.DictReader(csvfile)

@@ -26,5 +26,6 @@ def peopleCSVUpdate():
                 sql += teamsreader['bats'] + ","
                 sql += teamsreader['throws'] + ","
                 sql += teamsreader['debut'] + ","
-                sql += ";"
+                sql += teamsreader['finalGame'] + ","
+                sql += ");"
             line_count+=1

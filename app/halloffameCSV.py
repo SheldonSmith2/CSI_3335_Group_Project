@@ -1,3 +1,4 @@
+import csv
 def battingCSVUpdate():
     with open("HallOfFame.csv", mode='r') as csvfile:
         teamsreader = csv.DictReader(csvfile)
@@ -5,9 +6,10 @@ def battingCSVUpdate():
         for row in teamsreader:
             if line_count!=0:
                 sql = "INSERT INTO halloffame VALUES ("
-                sql += teamsreader['ID'] + ","
+                sql += (line_count - 1) + ","
                 sql += teamsreader['playerid'] + ","
-                sql += teamsreader['yearID'] + ","
+                # yearID is in the CSV, but not in the .sql script
+                # sql += teamsreader['yearID'] + ","
                 sql += teamsreader['votedBy'] + ","
                 sql += teamsreader['ballots'] + ","
                 sql += teamsreader['needed'] + ","
@@ -15,5 +17,5 @@ def battingCSVUpdate():
                 sql += teamsreader['inducted'] + ","
                 sql += teamsreader['category'] + ","
                 sql += teamsreader['needed_note'] + ","
-                sql += ";"
+                sql += ");"
             line_count+=1

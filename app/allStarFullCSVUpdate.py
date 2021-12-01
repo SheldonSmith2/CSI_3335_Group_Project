@@ -1,3 +1,4 @@
+import csv
 def allStarFullCSVUpdate():
     with open("AllstarFull.csv", mode='r') as csvfile:
         teamsreader = csv.DictReader(csvfile)

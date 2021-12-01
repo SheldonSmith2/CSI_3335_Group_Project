@@ -1,3 +1,4 @@
+import csv
 def pitchingCSVUpdate():
     with open("Pitching.csv", mode='r') as csvfile:
         teamsreader = csv.DictReader(csvfile)
