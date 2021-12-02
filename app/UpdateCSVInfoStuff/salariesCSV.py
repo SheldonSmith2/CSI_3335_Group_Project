@@ -1,21 +1,30 @@
 import csv
 def salariesCSVUpdate():
+    sql = "INSERT INTO salary(playerID, teamID, lgId, yearId, salary) VALUES ("
     with open("Salaries.csv", mode='r') as csvfile:
         teamsreader = csv.DictReader(csvfile)
-        line_count = 0
+        null_Count = 0
         for row in teamsreader:
-            if line_count!=0:
-
-                sql = "INSERT INTO salaries VALUES ("
-                sql += teamsreader['ID'] + ","
-                sql += teamsreader['yearID'] + ","
-                sql += teamsreader['round'] + ","
-                sql += teamsreader['teamIDwinner'] + ","
-                sql += teamsreader['lgIDwinner'] + ","
-                sql += teamsreader['teamIDloser'] + ","
-                sql += teamsreader['lgIDloser'] + ","
-                sql += teamsreader['wins'] + ","
-                sql += teamsreader['losses'] + ","
-                sql += teamsreader['ties'] + ","
-                sql += ";"
-            line_count+=1
+            if row['playerID'] == "":
+                sql += "NULL"
+            else:
+                sql += "'" + row['playerID'] + "',"
+            if row['teamID'] == "":
+                sql += "NULL"
+            else:
+                sql += "'" + row['teamID'] + "',"
+            if row['lgID']  == "":
+                sql += "NULL"
+            else:
+                sql += "'" + row['lgID']  + "',"
+            if row['yearID'] == "":
+                sql += "NULL"
+            else:
+                sql += row['yearID'] + ","
+            if row['salary'] == "":
+                sql += "NULL"
+            else:
+                sql += row['salary']
+            sql += "), "
+    sql = sql[:-2] + ";"
+    return sql

@@ -5,7 +5,7 @@ def peopleCSVUpdate():
         for row in teamsreader:
             if line_count!=0:
                 sql = "INSERT INTO people VALUES ("
-                sql += teamsreader['playerid'] + ","
+                sql += teamsreader['playerID'] + ","
                 sql += teamsreader['birthYear'] + ","
                 sql += teamsreader['birthMonth'] + ","
                 sql += teamsreader['birthDay'] + ","

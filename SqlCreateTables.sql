@@ -146,12 +146,12 @@ CREATE TABLE franchises (
 --create the school table that hold the information the schools players attended
 --PK: schoolID
 CREATE TABLE school (
-    schoolId varchar(15) NOT NULL, 
+    schoolID varchar(15) NOT NULL, 
     name varchar(255), 
     city varchar(55), 
     state varchar(55),
     country varchar(55), 
-    CONSTRAINT pk_school PRIMARY KEY (schoolId)
+    CONSTRAINT pk_school PRIMARY KEY (schoolID)
     );
 
 --create the park table with information about the parks
@@ -197,7 +197,7 @@ CREATE TABLE awards (
     notes varchar(100),
     CONSTRAINT pk_awd PRIMARY KEY (ID), 
     CONSTRAINT fk_awd_peo FOREIGN KEY (playerID) REFERENCES People(playerID),
-    CONSTRAINT fk_awd_lg FOREIGN KEY (lgID, divID) REFERENCES LeagueDivision(lgID, divID)
+    CONSTRAINT fk_awd_lg FOREIGN KEY (lgID) REFERENCES LeagueDivision(lgID)
     );
 
 --creates the shared awards table that holds information about everyone nominated for an award
@@ -215,7 +215,7 @@ CREATE TABLE awardsShare (
     votesFirst double, 
     CONSTRAINT pk_awdshr PRIMARY KEY (ID), 
     CONSTRAINT fk_awdshr_peo FOREIGN KEY (playerID) REFERENCES People(playerID),
-    CONSTRAINT fk_awdshr_lg FOREIGN KEY (lgID, divID) REFERENCES LeagueDivision(lgID, divID)
+    CONSTRAINT fk_awdshr_lg FOREIGN KEY (lgID) REFERENCES LeagueDivision(lgID)
     );
 
 --creates the allstarfull table that holds information about all-star game players
@@ -224,7 +224,7 @@ CREATE TABLE allStarFull (
     ID int(12) NOT NULL AUTO_INCREMENT, 
     playerID varchar(9) NOT NULL, 
     lgID char(2) NOT NULL, 
-    divID char(2) NOT NULL, 
+-- divID char(2) NOT NULL, 
     yearID smallint(6) NOT NULL, 
     gameNum smallint(6), 
     gameID varchar(12), 
@@ -232,7 +232,7 @@ CREATE TABLE allStarFull (
     startingPos smallint(6), 
     CONSTRAINT pk_allstar PRIMARY KEY (ID), 
     CONSTRAINT fk_allstar_peo FOREIGN KEY (playerID) REFERENCES People(playerID),
-    CONSTRAINT fk_allstar_lg FOREIGN KEY (lgID, divID) REFERENCES LeagueDivision(lgID, divID)
+    CONSTRAINT fk_allstar_lg FOREIGN KEY (lgID) REFERENCES LeagueDivision(lgID)
     );
 
 --creates the salary table that holds salary information for players, teams, and leagues
@@ -242,7 +242,7 @@ CREATE TABLE salary (
     playerID varchar(9) NOT NULL, 
     `teamID` char(3) NOT NULL,
     lgId char(2) NOT NULL, 
-    divId char(2) NOT NULL, 
+ --   divId char(2) NOT NULL, 
     yearId smallint(6) NOT NULL, 
     salary double, 
     CONSTRAINT pk_salary PRIMARY KEY (ID), 
@@ -251,7 +251,7 @@ CREATE TABLE salary (
 
 ALTER TABLE salary ADD CONSTRAINT `fk_sal_peo` FOREIGN KEY (playerID) REFERENCES People(playerID);
 ALTER TABLE salary ADD CONSTRAINT `fk_sal_tea` FOREIGN KEY (`teamID`) REFERENCES Team(`teamID`);
-ALTER TABLE salary ADD CONSTRAINT `fk_sal_lg` FOREIGN KEY (lgId, divId) REFERENCES LeagueDivision(lgID, divID);
+ALTER TABLE salary ADD CONSTRAINT `fk_sal_lg` FOREIGN KEY (lgId) REFERENCES LeagueDivision(lgID);
 
 --create the batting table that holds data for batters during a stint
 --PK: ID, FK: playerID, teamID
