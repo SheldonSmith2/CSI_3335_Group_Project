@@ -1,0 +1,70 @@
+Baseball Central User Guide
+
+Guest Home Page
+ - When the user is not logged in, the home page will show the winner of the latest world series as well as
+	a list of the top ten highest salaries for the latest year.  The user can change the year by typing the
+	year into the search bar. 
+
+Login Page
+ - User's with an account can log into the application through this page.  They must enter their email and
+	password in order to be logged it.
+
+Forgot Password Button
+ - If the user does not remember their password, they can navigate to this page from the login page.  They enter
+	their email into the text box and an email will be sent to that email with a token in order for them to 
+	reset their password (This is disabled currently, since I have to hard code a gmail password/username into
+	the application).
+
+Register Page
+ - If a user would like to register for an account, they must enter a username, email, favorite team, and a password.
+	They must confirm their password to ensure that they are the same.  Once a user registers, they are redirected
+	to the login page.
+
+Main Homepage
+ - When a logged in user navigates to the home page, they are presented with their favorite teams roster for the 
+	current year.  They can change the year of the roster by typing their desired year into the text box above
+	the roster.  To see some of the player's stats for the year, the user can click the "more" button which will
+	display a sidebar with their stats for the year.
+
+Account Page
+ - If the user would like to modify their account, they can navigate to the account page on the navigation bar.
+	In this page, the user can see their current username, email, favorite team, and favorite player.  The 
+	user can change any of these through the input boxes.
+
+Logout Button
+ - To log out of their account, the user can click the logout button on the navigate bar and they will be logged out
+	of their account and sent to the guest homepage.
+
+Standings Page
+ - The standings page displays the division standings of all of the teams for the given year.  The page also
+	shows all of the postseason results, such as wildcard games, division championships, conference championships,
+	and the world series.
+
+Managers Page
+ - The managers page shows the last 10 managers of the user's favorite team as well as their overall win percentage.
+	The user can also see all of the awards, their favorite team's managers awards.
+
+PostSeason Page
+ - The postseason page shows the postseason information about the user's favorite team.  This page displays how many
+	times the team won their division, their conference, and the world series.
+
+Career Stats Page
+ - The career stats page shows the list of state by stint for the user's favorite player if they have one.
+	The table also shows the totals of their career on the last row.
+
+Career Postseason Stats Page
+ - The career postseason stats page shows the list of state by stint for the user's favorite player if they have one.
+	The table also shows the postseason totals of their career on the last row.
+
+Player Awards Page
+ - The player awards shows the winner of specific awards for the given year.  The user can change the year through
+	the text bar on the top of the page.
+
+Hall of Fame Page
+ - The hall of fame page shows all of the people that were inducted into the hall of fame on the given year.
+	The user can change the year through the text bar.
+
+Allstar Page
+ - The allstar page shows all of the player on the user's favorite team that made the allstar game on the given
+	year.  The user can change the year through the text bar.
+
