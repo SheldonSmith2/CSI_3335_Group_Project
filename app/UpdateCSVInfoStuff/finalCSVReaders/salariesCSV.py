@@ -1,4 +1,8 @@
 import csv
+
+# usage:
+# sql = teamsCSVUpdate()
+# cur.execute(sql)
 def salariesCSVUpdate():
     sql = "INSERT INTO salary(playerID, teamID, lgId, yearId, salary) VALUES ("
     with open("Salaries.csv", mode='r') as csvfile:

@@ -1,8 +1,13 @@
 import csv
+
+# usage:
+# sql = teamsCSVUpdate()
+# cur.execute(sql)
 def teamsCSVUpdate():
-    sql = "INSERT INTO Team(teamID, yearID, lgID, divID, franchID, team_name, teamRank, G, G_home, W, L, DivWin, WCWin,"
-    sql += "LgWin, WSWin, R, AB, H, team_2B, team_3B, team_HR, team_ BB, team_SO, team_SB, team_CS, team_HBP,team_SF,"
-    sql += "team_RA, team_ER, team_ERA, team_CG, team_SHO, team_SV, team_IPouts, team_HA, team_HRA, team_BBA, team_SOA)"
+    sql = "INSERT INTO Team(teamID, yearID, lgID, divID, franchID, name, teamRank, team_G, team_G_home, team_W, team_L"
+    sql += ", DivWin, WCWin,LgWin, WSWin, team_R, team_AB, team_H,team_2B, team_3B,team_HR,team_ BB, team_SO, team_SB, "
+    sql += " team_CS, team_HBP,team_SF,team_RA, team_ER, team_ERA, team_CG, team_SHO, team_SV, team_IPouts,team_HA, "
+    sql += " team_HRA, team_BBA, team_SOA)"
     sql += " VALUES"
     with open("Teams.csv", mode='r') as csvfile:
         teamsreader = csv.DictReader(csvfile)

@@ -1,6 +1,10 @@
 import csv
+
+# usage:
+# sql = teamsCSVUpdate()
+# cur.execute(sql)
 def pitchingCSVUpdate():
-    sql = "INSERT INTO salary(playerID,yearId,teamID,stint, p_W, p_L, p_G,p_GS, p_CG, p_SHO,p_SV, p_IPOuts, p_H, p_ER, p_HR,"
+    sql = "INSERT INTO salary(playerID,yearId,teamID,stint,p_W,p_L,p_G,p_GS,p_CG,p_SHO,p_SV, p_IPOuts, p_H, p_ER, p_HR,"
     sql += "p_BB, p_SO, p_BAOpp, p_ERA, p_IBB, p_WP, p_ HBP, p_BK, p_BFP, p_GF, p_R, p_SH, p_SF, p_GIDP) VALUES"
     with open("Pitching.csv", mode='r') as csvfile:
         teamsreader = csv.DictReader(csvfile)
