@@ -9,7 +9,7 @@ def peopleCSVUpdate():
                     (playerID,birthYear,birthMonth,birthDay,birthCountry,birthState,birthCity,deathYear,deathMonth,
                     deathDay,deathCountry,deathState,deathCity,nameFirst,nameLast,nameGiven,weight,height,bats,throws,debutDate,finalGameDate) VALUES '''
         for row in teamsreader:
-            sql += "("
+            sql += " ("
             sql += "'" + row['playerID'] + "',"
             if row['birthYear'] == "":
                 sql += "NULL,"
