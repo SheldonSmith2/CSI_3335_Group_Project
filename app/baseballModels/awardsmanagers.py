@@ -1,11 +1,11 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, Integer, String
 
 Base = declarative_base()
 
 
-class AwardsManagers(Base):
-	__tablename__ = "awardsmanagers" # required
+class AwardsManagers(Base): # Awards(Base)
+	__tablename__ = "awardsmanagers" # required # "awards"
 
 	ID = Column(Integer, primary_key=True)  # required
 	playerID = Column(String(10))

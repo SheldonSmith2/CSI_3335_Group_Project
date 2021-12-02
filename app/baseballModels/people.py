@@ -7,7 +7,7 @@ Base = declarative_base()
 class People(Base):
 	__tablename__ = "people" # required
 
-	playerid = Column(String(9),primary_key=True)
+	playerid = Column(String(9),primary_key=True)  # playerID = Column(String(9),primary_key=True)
 	birthYear = Column(Integer)
 	birthMonth = Column(Integer)
 	birthDay = Column(Integer)
@@ -27,4 +27,4 @@ class People(Base):
 	height = Column(Integer)
 	bats = Column(String(255))
 	throws = Column(String(255))
-	debut = Column(String(255))
+	debut = Column(String(255)) # Remove

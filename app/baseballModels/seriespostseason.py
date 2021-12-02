@@ -11,9 +11,9 @@ class SeriesPost(Base):
 	yearID = Column(Integer)
 	round = Column(String(5))
 	teamIDwinner = Column(String(3))
-	lgIDwinner = Column(String(2))
+	lgIDwinner = Column(String(2)) # Remove
 	teamIDloser = Column(String(3))
-	lgIDloser = Column(String(2))
+	lgIDloser = Column(String(2)) # Remove
 	wins = Column(Integer)
-	losses = Column(Integer)
+	losses = Column(Integer)  # loses = Column(Integer)
 	ties = Column(Integer)

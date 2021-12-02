@@ -29,6 +29,9 @@ def getRoster(team, year):
     players = session.query(People, Batting, Teams).distinct(People.playerid) \
         .filter(People.playerid == Batting.playerid, Teams.teamID == Batting.teamID, Teams.yearID == Batting.yearID,
                 Teams.name == team, Batting.yearID == year).order_by(People.playerid).all()
+    #players = session.query(People, Batting, Teams).distinct(People.playerID) \
+    #    .filter(People.playerID == Batting.playerID, Teams.teamID == Batting.teamID, Teams.yearID == Batting.yearId,
+    #            Teams.name == team, Batting.yearId == year).order_by(People.playerID).all()
     session.close()
     return players
 
@@ -40,6 +43,10 @@ def getAppearances(team, year):
         .filter(People.playerid == Appearances.playerid, Teams.teamID == Appearances.teamID,
                 Teams.yearID == Appearances.yearID,
                 Teams.name == team, Appearances.yearID == year).order_by(People.playerid).all()
+    #players = session.query(Appearances).distinct(People.playerID) \
+    #    .filter(People.playerID == Appearances.playerID, Teams.teamID == Appearances.teamId,
+    #            Teams.yearID == Appearances.yearID,
+    #            Teams.name == team, Appearances.yearID == year).order_by(People.playerID).all()
     session.close()
     return players
 
@@ -51,6 +58,10 @@ def getManagers(team):
                              People, func.sum(Managers.G)) \
         .filter(Managers.teamID == Teams.teamID, Teams.name == team, People.playerid == Managers.playerid) \
         .group_by(Managers.playerid).order_by(func.max(Managers.yearID).desc()).limit(10).all()
+    #managers = session.query(Managers, func.max(Managers.yearID), func.min(Managers.yearID), func.sum(Managers.manager_W),
+    #                         People, func.sum(Managers.manager_G)) \
+    #    .filter(Managers.teamID == Teams.teamID, Teams.name == team, People.playerID == Managers.playerID) \
+    #    .group_by(Managers.playerID).order_by(func.max(Managers.yearID).desc()).limit(10).all()
     session.close()
     return managers
 
@@ -63,6 +74,11 @@ def getTopSalaries(year):
                 Teams.teamID == Salaries.teamID, Fielding.teamID == Teams.teamID, Teams.yearID == Fielding.yearID,
                 Fielding.playerid == Salaries.playerid, Fielding.G > 10) \
         .order_by(Salaries.salary.desc()).limit(10).all()
+    #salaries = session.query(People, Salaries, Teams, Fielding) \
+    #    .filter(Salaries.playerID == People.playerID, Salaries.yearID == year, Teams.yearID == Salaries.yearID,
+    #            Teams.teamID == Salaries.teamID, Fielding.teamID == Teams.teamID, Teams.yearID == Fielding.yearID,
+    #            Fielding.playerID == Salaries.playerID, Fielding.G > 10) \
+    #    .order_by(Salaries.salary.desc()).limit(10).all()
     session.close()
     return salaries
 
@@ -74,6 +90,10 @@ def getStats(plyr_id, year, team):
         .filter(Batting.yearID == year, Batting.playerid == plyr_id, Batting.teamID == Teams.teamID,
                 Batting.yearID == Teams.yearID,
                 Teams.name == team, Batting.playerid == People.playerid).limit(1)
+    #stats = session.query(Batting, People.nameFirst, People.nameLast) \
+    #    .filter(Batting.yearId == year, Batting.playerID == plyr_id, Batting.teamID == Teams.teamID,
+    #            Batting.yearId == Teams.yearID,
+    #            Teams.name == team, Batting.playerID == People.playerID).limit(1)
     session.close()
     return stats
 
@@ -84,6 +104,9 @@ def getPitchingInfo(team, year):
     players = session.query(Pitching)\
         .filter(Pitching.yearID == year, Pitching.teamID == Teams.teamID, Teams.name == team)\
         .order_by(Pitching.playerid).all()
+    #players = session.query(Pitching) \
+    #    .filter(Pitching.yearID == year, Pitching.teamID == Teams.teamID, Teams.name == team) \
+    #    .order_by(Pitching.playerID).all()
     session.close()
     return players
 
@@ -92,4 +115,5 @@ def getPitchingInfo(team, year):
 def getPlayers():
     session = createConnection()
     players = session.query(People).distinct(People.playerid)
+    # players = session.query(People).distinct(People.playerID)
     return players

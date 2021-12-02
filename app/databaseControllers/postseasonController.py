@@ -14,6 +14,10 @@ def getRound(year, rd):
         .filter(SeriesPost.yearID == year, SeriesPost.round == rd, SeriesPost.teamIDwinner == teamWin.teamID,
                 SeriesPost.teamIDloser == teamLoss.teamID, SeriesPost.yearID == teamWin.yearID,
                 SeriesPost.yearID == teamLoss.yearID)
+    #roundResults = session.query(SeriesPost, teamWin, teamLoss) \
+    #    .filter(SeriesPost.yearID == year, SeriesPost.round == rd, SeriesPost.teamIDwinner == teamWin.teamID,
+    #            SeriesPost.teamIDloser == teamLoss.teamID, SeriesPost.yearID == teamWin.yearID,
+    #            SeriesPost.yearID == teamLoss.yearID)
     session.close()
     return roundResults
 
