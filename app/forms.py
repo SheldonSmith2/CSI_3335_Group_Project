@@ -101,7 +101,7 @@ class ResetPasswordForm(FlaskForm):
 # The form that is used in order to change the year in many of the pages
 class ChangeYearForm(FlaskForm):
     changeYear = IntegerField('Year', validators=[DataRequired(message="Must enter a year"),
-                                                  NumberRange(min=1870, max=2020, message="Date must be within 1870-2020")])
+                                                  NumberRange(min=1900, max=2020, message="Date must be within 1900-2020")])
     submit = SubmitField('Change Year')
 
 

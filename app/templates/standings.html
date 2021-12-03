@@ -16,6 +16,7 @@
         {% endfor %}
         <!-- The section that controls the division standings -->
         <ul class="list-group">
+            {% if WSChamp.count() != 0 %}
             <li class="list-group-item list-group-item-light">
                 <div>The <strong>{{ WSChamp[0][1].name }}</strong> won the <strong>World Series</strong> against the {{ WSChamp[0][2].name }}</div>
             </li>
@@ -35,12 +36,15 @@
             <li class="list-group-item list-group-item-light">
                 <div>The <strong>{{ ALWC[0][1].name }}</strong> defeated the {{ ALWC[0][2].name }} in the <strong>AL Wild Card</strong></div>
                 <div>The <strong>{{ NLWC[0][1].name }}</strong> defeated the {{ NLWC[0][2].name }} in the <strong>NL Wild Card</strong></div>
-            </li>
+            </li>{% endif %}
+            {% else %}
+                <div>No data for that year</div>
             {% endif %}
         </ul>
     <br>
     <div class="row">
         <div class="col-sm-6">
+        {% if ALWest.length != 0 %}
         <h5>American League West</h5>
         <table class="table table-striped">
           <thead><tr>
@@ -60,8 +64,10 @@
             </tr>{% endfor %}
           </tbody>
         </table>
+        {% endif %}
         </div>
         <div class="col-sm-6">
+        {% if NLWest.length != 0 %}
         <h5>National League West</h5>
         <table class="table table-striped">
           <thead><tr>
@@ -83,9 +89,11 @@
             </tr>{% endfor %}
           </tbody>
         </table>
+        {% endif %}
     </div></div>
     <div class="row">
         <div class="col-sm-6">
+        {% if ALEast.length != 0 %}
         <h5>American League East</h5>
         <table class="table table-striped">
           <thead><tr>
@@ -105,8 +113,10 @@
             </tr>{% endfor %}
           </tbody>
         </table>
+        {% endif %}
         </div>
         <div class="col-sm-6">
+        {% if NLEast.length != 0 %}
         <h5>National League East</h5>
         <table class="table table-striped">
           <thead><tr>
@@ -126,9 +136,11 @@
             </tr>{% endfor %}
           </tbody>
         </table>
+        {% endif %}
     </div></div>
     <div class="row">
         <div class="col-sm-6">
+        {% if ALCentral.length != 0 %}
         <h5>American League Central</h5>
         <table class="table table-striped">
           <thead><tr>
@@ -148,8 +160,10 @@
             </tr>{% endfor %}
           </tbody>
         </table>
+        {% endif %}
         </div>
         <div class="col-sm-6">
+            {% if NLCentral.size != 0 %}
             <h5>National League Central</h5>
             <table class="table table-striped">
             <thead><tr>
@@ -169,6 +183,7 @@
             </tr>{% endfor %}
           </tbody>
         </table>
+        {% endif %}
         </div>
     </div>
     </div>

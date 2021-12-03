@@ -1,4 +1,4 @@
-The directory "app" is the application
+Project by Sheldon Smith, Zachary Scherer, and Jason Wu
 
 Imported Python Modules (pip install)
  - flask: the main structure for the project
