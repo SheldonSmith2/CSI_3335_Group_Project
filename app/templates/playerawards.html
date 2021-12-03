@@ -8,42 +8,49 @@
             {{ form.hidden_tag() }}
             {{ form.changeYear(class="form-control me-2") }}
             {{ form.submit(class="btn btn-outline-success") }}
-        </form><br>
+        </form>
+        {% for error in form.changeYear.errors %}
+            <span style="color: red;">[{{ error }}]</span><br>
+        {% endfor %}
+        <br><div class="container">
         <div class="row">
-            <div class="col-sm-6">
-        <h5>Most Valuable Player</h5>
-            <div>National League: {{ mvp[1][0].nameFirst }} {{ mvp[1][0].nameLast }}</div>
-            <div>American League: {{ mvp[0][0].nameFirst }} {{ mvp[0][0].nameLast }}</div><br>
+            <div class="col">
+                <h5>Most Valuable Player</h5>{% if mvp.count() > 0 %}
+                <div>National League: {{ mvp[1][0].nameFirst }} {{ mvp[1][0].nameLast }}</div>
+                <div>American League: {{ mvp[0][0].nameFirst }} {{ mvp[0][0].nameLast }}</div>
+                {% else %}<div style="color: red">Sorry, there is no data for that year</div>{% endif %}<br>
             </div>
-            <div class="col-sm-6">
-        <h5>Cy Young Award</h5>
-            <div>National League: {{ cyyoung[1][0].nameFirst }} {{ cyyoung[1][0].nameLast }}</div>
-            <div>American League: {{ cyyoung[0][0].nameFirst }} {{ cyyoung[0][0].nameLast }}</div><br>
+            <div class="col">
+                <h5>Cy Young Award</h5>{% if cyyoung.count() > 0 %}
+                <div>National League: {{ cyyoung[1][0].nameFirst }} {{ cyyoung[1][0].nameLast }}</div>
+                <div>American League: {{ cyyoung[0][0].nameFirst }} {{ cyyoung[0][0].nameLast }}</div>
+                {% else %}<div style="color: red">Sorry, there is no data for that year</div>{% endif %}<br>
+            </div><div class="w-100"></div>
+            <div class="col">
+                <h5>Hank Aaron Award</h5>{% if hankaaron.count() > 0 %}
+                <div>National League: {{ hankaaron[1][0].nameFirst }} {{ hankaaron[1][0].nameLast }}</div>
+                <div>American League: {{ hankaaron[0][0].nameFirst }} {{ hankaaron[0][0].nameLast }}</div>
+                {% else %}<div style="color: red">Sorry, there is no data for that year</div>{% endif %}<br>
             </div>
-            <div class="row">
-                <div class="col-sm-6">
-        <h5>Hank Aaron Award</h5>
-            <div>National League: {{ hankaaron[1][0].nameFirst }} {{ hankaaron[1][0].nameLast }}</div>
-            <div>American League: {{ hankaaron[0][0].nameFirst }} {{ hankaaron[0][0].nameLast }}</div><br>
-                </div>
-                <div class="col-sm-6">
-        <h5>Comeback player of the Year</h5>
-            <div>National League: {{ comeback[1][0].nameFirst }} {{ comeback[1][0].nameLast }}</div>
-            <div>American League: {{ comeback[0][0].nameFirst }} {{ comeback[0][0].nameLast }}</div><br>
-                </div>
-                 <div class="row">
-                <div class="col-sm-6">
-        <h5>Rookie of the Year</h5>
-            <div>National League: {{ rookie[1][0].nameFirst }} {{ rookie[1][0].nameLast }}</div>
-            <div>American League: {{ rookie[0][0].nameFirst }} {{ rookie[0][0].nameLast }}</div>
-                </div>
-                <div class="col-sm-6">
-        <h5>Reliever of the Year</h5>
-            <div>National League: {{ reliever[1][0].nameFirst }} {{ reliever[1][0].nameLast }}</div>
-            <div>American League: {{ reliever[0][0].nameFirst }} {{ reliever[0][0].nameLast }}</div>
-                </div>
-                 </div>
-                </div>
-        </div><br>
+            <div class="col">
+                <h5>Comeback player of the Year</h5>{% if comeback.count() > 0 %}
+                <div>National League: {{ comeback[1][0].nameFirst }} {{ comeback[1][0].nameLast }}</div>
+                <div>American League: {{ comeback[0][0].nameFirst }} {{ comeback[0][0].nameLast }}</div>
+                {% else %}<div style="color: red">Sorry, there is no data for that year</div>{% endif %}<br>
+            </div><div class="w-100"></div>
+            <div class="col">
+                <h5>Rookie of the Year</h5>{% if rookie.count() > 0 %}
+                <div>National League: {{ rookie[1][0].nameFirst }} {{ rookie[1][0].nameLast }}</div>
+                <div>American League: {{ rookie[0][0].nameFirst }} {{ rookie[0][0].nameLast }}</div>
+                {% else %}<div style="color: red">Sorry, there is no data for that year</div>{% endif %}<br>
+            </div>
+            <div class="col">
+                <h5>Reliever of the Year</h5> {% if reliever.count() > 0 %}
+                <div>National League: {{ reliever[1][0].nameFirst }} {{ reliever[1][0].nameLast }}</div>
+                <div>American League: {{ reliever[0][0].nameFirst }} {{ reliever[0][0].nameLast }}</div>
+                {% else %}<div style="color: red">Sorry, there is no data for that year</div>{% endif %}<br>
+            </div>
+        </div>
+        </div>
     </div>
 {% endblock %}

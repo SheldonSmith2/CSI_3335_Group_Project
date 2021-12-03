@@ -5,16 +5,16 @@ Base = declarative_base()
 
 
 class Managers(Base):
-	__tablename__ = "managers" # required
+	__tablename__ = "manager" # required # Change to "manager"
 
 	ID = Column(Integer, primary_key=True)  # required
-	playerid = Column(String(9))
+	playerID = Column(String(9))  # playerID = Column(String(9))
 	yearID = Column(Integer)
 	teamID = Column(String(3))
-	lgID = Column(String(2))
-	inseason = Column(Integer)
-	G = Column(Integer)
-	W = Column(Integer)
-	L = Column(Integer)
+	#lgID = Column(String(2)) # Remove
+	inSeason = Column(Integer) # inSeason = Column(Integer)
+	manager_G = Column(Integer)  # manager_G = Column(Integer)
+	manager_W = Column(Integer)  # manager_W = Column(Integer)
+	manager_L = Column(Integer)  # manager_L = Column(Integer)
 	teamRank = Column(Integer)
 	plyrMgr = Column(String(1))

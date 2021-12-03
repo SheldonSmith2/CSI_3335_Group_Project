@@ -1,5 +1,4 @@
 # The file to control the different routes within the application
-from itsdangerous import json
 
 from app import app, db, bcrypt, mail
 from app.forms import LoginForm, RegisterForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm, \
@@ -8,9 +7,16 @@ from flask import render_template, flash, redirect, url_for, request
 from app.userModel import User
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
-from app.baseballModels.modelConnection import getRoster, getStandings, getManagers, getTopSalaries, \
-    getManagerAward, getRound, getWLofDivision, getWSWins, getStats, getLgWins, getDivWins, getWSWinInfo, \
-    getHallofFame, getAllstar, getPlayerAwards, getCurrentTeams
+
+# Import all of the function to get information from database
+from app.databaseControllers.standingsController import getStandings, getWLofDivision, getCurrentTeams
+from app.databaseControllers.awardsController import getPlayerAwards, getAllstar, getHallofFame, getManagerAward
+from app.databaseControllers.postseasonController import getLgWins, getDivWins, getPostInfo, getWSWins, getRound
+from app.databaseControllers.generalController import getRoster, getManagers, getTopSalaries, \
+    getAppearances, getPitchingInfo
+from app.databaseControllers.favPlayerController import careerBattingPost, careerPitchingPost, careerPitchingStats, \
+    careerBattingStats, battingStats, battingPost, postAppearancesBatting, postAppearancesPitching, pitchingPost, \
+    pitchingStats, getSumAppearances
 
 
 # The main page for the website
@@ -19,31 +25,33 @@ from app.baseballModels.modelConnection import getRoster, getStandings, getManag
 def dashboard():
     form = ChangeYearForm()
     formSalary = ChangeYearForm()
+    # Set the correct year
     if form.validate_on_submit():
         year = form.changeYear.data
     elif request.method == 'GET':
-        year = 2019
+        year = 2020
+    else:
+        year = 2020
+    # Load the dashboard with the correct roster
     if current_user.is_authenticated:
         roster = getRoster(current_user.fav_team, year)
+        appearances = getAppearances(current_user.fav_team, year)
+        pitchingInfo = getPitchingInfo(current_user.fav_team, year)
     else:
         roster = ""
+        appearances = ""
+        pitchingInfo = ""
     if formSalary.validate_on_submit():
         yearSalary = formSalary.changeYear.data
     elif request.method == 'GET':
         yearSalary = 2016
+    else:
+        yearSalary = 2016
     salaries = getTopSalaries(yearSalary)
-    wschamp = getRound(2019, "WS")
-    return render_template('dashboard.html', title='Home', roster=roster, form=form,
+    wschamp = getRound(2020, "WS")
+    return render_template('dashboard.html', title='Home', roster=roster, form=form, appearances=appearances,
                            year=year, salaries=salaries, yearSalary=yearSalary, formSalary=formSalary,
-                           wschamp=wschamp, **request.args)
-
-
-@app.route('/getinfo/<id>/<year>', methods=['GET', 'POST'])
-def stats(id, year):
-    flash("Player " + id + " " + year, 'success')
-    player_stats = getStats(id, year, current_user.fav_team)
-    toggle = ".show"
-    return redirect(url_for('dashboard', toggle=toggle, player_stats=player_stats))
+                           wschamp=wschamp, pitchingInfo=pitchingInfo)
 
 
 # The route to control the login functionality
@@ -77,7 +85,8 @@ def register():
         # Hash the password before storing it
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         # Create a new User and add to the database
-        user = User(username=form.username.data, email=form.email.data, password=hashed_password, fav_team=form.fav_team.data)
+        user = User(username=form.username.data, email=form.email.data, password=hashed_password,
+                    fav_team=form.fav_team.data, fav_player=None)
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created!  You are now able to log in', 'success')
@@ -103,6 +112,11 @@ def account():
         current_user.username = form.username.data
         current_user.email = form.email.data
         current_user.fav_team = form.fav_team.data
+        # Check if the user has a favorite player
+        if form.fav_player.data == "":
+            current_user.fav_player = None
+        else:
+            current_user.fav_player = form.fav_player.data
         db.session.commit()
         flash('Your account has been updated!', 'success')
         return redirect(url_for('account'))
@@ -111,6 +125,8 @@ def account():
         form.username.data = current_user.username
         form.email.data = current_user.email
         form.fav_team.data = current_user.fav_team
+        if current_user.fav_player is not None:
+            form.fav_player.data = current_user.fav_player
     teams = getCurrentTeams()
     return render_template('account.html', title='Account', form=form, teams=teams)
 
@@ -121,35 +137,48 @@ def about():
     return render_template('about.html', title='About')
 
 
+# The route that contains all the allstar information based on year
 @app.route('/allstar', methods=['GET', 'POST'])
 def allstar():
     form = ChangeYearForm()
+    # Set the correct year
     if form.validate_on_submit():
         year = form.changeYear.data
     elif request.method == 'GET':
-        year = 2019
+        year = 2020
+    else:
+        year = 2020
     allstarInfo = getAllstar(current_user.fav_team, year)
     return render_template('allstar.html', title='All Star', form=form, year=year, allstarInfo=allstarInfo)
 
 
+# The route that contains all of hall of fame information based on year
 @app.route('/halloffame', methods=['GET', 'POST'])
 def halloffame():
     form = ChangeYearForm()
+    # Set the correct year
     if form.validate_on_submit():
         year = form.changeYear.data
     elif request.method == 'GET':
+        year = 2018
+    else:
         year = 2018
     halloffame = getHallofFame(year)
     return render_template('halloffame.html', title='Hall of Fame', halloffame=halloffame, form=form, year=year)
 
 
+# The route that controls the player awards base on year
 @app.route('/playerawards', methods=['GET', 'POST'])
 def playerawards():
     form = ChangeYearForm()
+    # Set the correct year
     if form.validate_on_submit():
         year = form.changeYear.data
     elif request.method == 'GET':
         year = 2017
+    else:
+        year = 2017
+    # Get the correct data from the database
     mvp = getPlayerAwards(year, "Most Valuable Player")
     cyyoung = getPlayerAwards(year, "Cy Young Award")
     rookie = getPlayerAwards(year, "Rookie of the Year")
@@ -160,32 +189,66 @@ def playerawards():
                            rookie=rookie, comeback=comeback, hankaaron=hankaaron, reliever=reliever)
 
 
+# The route that controls the manager information for a team
 @app.route('/managers')
 def managers():
+    # Get the data from the database
     tsnAwards = getManagerAward(current_user.fav_team, "TSN Manager of the Year")
     bbwaaAwards = getManagerAward(current_user.fav_team, "BBWAA Manager of the Year")
     managerList = getManagers(current_user.fav_team)
-    return render_template('managers.html', title='Managers', managerList=managerList,
-                           tsnAwards=tsnAwards, bbwaaAwards=bbwaaAwards)
+    return render_template('managers.html', title='Managers', managerList=managerList, tsnAwards=tsnAwards,
+                           bbwaaAwards=bbwaaAwards)
 
 
+# The route to control the career stats of the user's favorite player
+@app.route('/careerstats')
+def careerstats():
+    careerPitching = careerPitchingStats(current_user.fav_player)
+    pitching = pitchingStats(current_user.fav_player)
+    careerBatting = careerBattingStats(current_user.fav_player)
+    batting = battingStats(current_user.fav_player)
+    appearances = getSumAppearances(current_user.fav_player)
+    return render_template('careerstats.html', title='Career Stats', careerPitching=careerPitching, careerBatting=careerBatting,
+                           appearances=appearances, pitching=pitching, batting=batting)
+
+
+# The route that controls the career postseason stats of the user's favorite player
+@app.route('/careerpostseason')
+def careerpostseason():
+    # Get all the information from the database
+    careerPitching = careerPitchingPost(current_user.fav_player)
+    pitching = pitchingPost(current_user.fav_player)
+    careerBatting = careerBattingPost(current_user.fav_player)
+    batting = battingPost(current_user.fav_player)
+    appearances = getSumAppearances(current_user.fav_player)
+    postBatting = postAppearancesBatting(current_user.fav_player)
+    postPitching = postAppearancesPitching(current_user.fav_player)
+    return render_template('careerpostseason.html', title='Postseason Stats', postPitching=postPitching,
+                           careerPitching=careerPitching, careerBatting=careerBatting,
+                           appearances=appearances, pitching=pitching, batting=batting, postBatting=postBatting)
+
+
+# The route that controls the postseason information for the user's favorite team
 @app.route('/postseason')
 def postseason():
     countWS = getWSWins(current_user.fav_team)
     countDiv = getDivWins(current_user.fav_team)
     countLg = getLgWins(current_user.fav_team)
-    WSWinInfo = getWSWinInfo(current_user.fav_team)
+    PostInfo = getPostInfo(current_user.fav_team)
     return render_template('postseason.html', title='Post Season Stats', countWS=countWS, countLg=countLg,
-                           countDiv=countDiv, WSWinInfo=WSWinInfo)
+                           countDiv=countDiv, PostInfo=PostInfo)
 
 
+# The route that controls the division standings per year
 @app.route('/standings', methods=['GET', 'POST'])
 def standings():
     form = ChangeYearForm()
     if form.validate_on_submit():
         year = form.changeYear.data
     elif request.method == 'GET':
-        year = 2019
+        year = 2020
+    else:
+        year = 2020
     ALWest = getStandings(year, "AL", "W")
     ALWestWL = getWLofDivision(year, "AL", "W")
     ALEast = getStandings(year, "AL", "E")
@@ -198,6 +261,7 @@ def standings():
     NLEastWL = getWLofDivision(year, "NL", "E")
     NLCentral = getStandings(year, "NL", "C")
     NLCentralWL = getWLofDivision(year, "NL", "C")
+    # Get the postseason round information
     WSChamp = getRound(year, "WS")
     ALCS = getRound(year, "ALCS")
     NLCS = getRound(year, "NLCS")
@@ -208,10 +272,10 @@ def standings():
     ALWC = getRound(year, "ALWC")
     NLWC = getRound(year, "NLWC")
     return render_template('standings.html', title='Standings', ALWest=ALWest, form=form, year=year, ALWestWL=ALWestWL,
-                           ALEast=ALEast, ALEastWL=ALEastWL, ALCentralWL=ALCentralWL, ALCentral=ALCentral, NLWest=NLWest,
-                           NLWestWL=NLWestWL, NLEast=NLEast, NLEastWL=NLEastWL, NLCentral=NLCentral, NLCentralWL=NLCentralWL,
-                           WSChamp=WSChamp, ALCS=ALCS, NLCS=NLCS, ALDS1=ALDS1, ALDS2=ALDS2, NLDS1=NLDS1, NLDS2=NLDS2,
-                           ALWC=ALWC, NLWC=NLWC)
+                           ALEast=ALEast, ALEastWL=ALEastWL, ALCentralWL=ALCentralWL, ALCentral=ALCentral,
+                           NLWest=NLWest, NLWestWL=NLWestWL, NLEast=NLEast, NLEastWL=NLEastWL, NLCentral=NLCentral,
+                           NLCentralWL=NLCentralWL, WSChamp=WSChamp, ALCS=ALCS, NLCS=NLCS, ALDS1=ALDS1, ALDS2=ALDS2,
+                           NLDS1=NLDS1, NLDS2=NLDS2, ALWC=ALWC, NLWC=NLWC)
 
 
 # The function to send the reset password email

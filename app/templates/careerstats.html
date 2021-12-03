@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="content-section">
+        <h3 style="text-align: center">Career Stats for {{ current_user.fav_player }}</h3><br>
+
+        {% if appearances[0][1]/appearances[0][2] > 20 %}
+            <h6>Career MLB Batting Stats</h6>
+            <table class="table table-striped">
+              <thead><tr>
+                  <th scope="col">Year</th>
+                  <th scope="col">Team</th>
+                  <th scope="col">At Bats</th>
+                  <th scope="col">Runs</th>
+                  <th scope="col">Hits</th>
+                  <th scope="col">Home Runs</th>
+                  <th scope="col">RBIs</th>
+                  <th scope="col">Stolen Bases</th>
+                  <th scope="col">Batting Avg</th>
+              </tr></thead>
+              <tbody>
+                {% for stint in batting %}<tr>
+                    <th scope="row">{{ stint.yearId }}</th>
+                    <td>{{ stint.teamID }}</td>
+                    <td>{{ stint.b_AB }}</td>
+                    <td>{{ stint.b_R }}</td>
+                    <td>{{ stint.b_H }} </td>
+                    <td>{{ stint.b_HR }}</td>
+                    <td>{{ stint.b_RBI }} </td>
+                    <td>{{ stint.b_SB }} </td>
+                    <td>{{ "{:.3f}".format(stint.b_H/stint.b_AB,2) }} </td>
+                </tr>{% endfor %}
+                <tr class="table-success"><th scope="row" colspan="2">{{ appearances[0][2] }} Years</th>
+                <th>{{ careerBatting[0][0] }}</th>
+                <th>{{ careerBatting[0][1] }} </th>
+                <th>{{ careerBatting[0][2] }}</th>
+                <th>{{ careerBatting[0][3] }} </th>
+                <th>{{ careerBatting[0][4] }} </th>
+                <th>{{ careerBatting[0][5] }} </th>
+                <th>{{ "{:.3f}".format(careerBatting[0][2]/careerBatting[0][0],2) }} </th></tr>
+              </tbody>
+            </table>
+        {% endif %}
+
+
+        {% if appearances[0][0]/appearances[0][2] > 3 %}
+            <h6>Career MLB Pitching Stats</h6>
+            <table class="table table-striped">
+              <thead><tr>
+                  <th scope="col">Year</th>
+                  <th scope="col">Team</th>
+                  <th scope="col">Wins</th>
+                  <th scope="col">Losses</th>
+                  <th scope="col">ERA</th>
+                  <th scope="col">Innings Pitched</th>
+                  <th scope="col">Strike Outs</th>
+                  <th scope="col">WHIP</th>
+              </tr></thead>
+              <tbody>
+                {% for stint in pitching %}<tr>
+                    <th scope="row">{{ stint.yearID }}</th>
+                    <td>{{ stint.teamID }}</td>
+                    <td>{{ stint.p_W }}</td>
+                    <td>{{ stint.p_L }} </td>
+                    <td>{{ "{:.2f}".format(27*stint.p_ER/stint.p_IPouts,2) }}</td>
+                    <td>{{ stint.p_IPouts//3 }}.{{ stint.p_IPouts%3 }} </td>
+                    <td>{{ stint.p_SO }} </td>
+                    <td>{{ "{:.3f}".format(3*(stint.p_BB + stint.p_H)/stint.p_IPouts,2) }} </td>
+                </tr>{% endfor %}
+                <tr class="table-success"><th colspan="2" scope="row">{{ appearances[0][2] }} Years</th>
+                <th>{{ careerPitching[0][0] }}</th>
+                <th>{{ careerPitching[0][1] }} </th>
+                <th>{{ "{:.2f}".format(27*careerPitching[0][4]/careerPitching[0][2],2) }}</th>
+                <th>{{ careerPitching[0][2]//3 }}.{{ careerPitching[0][2]%3 }} </th>
+                <th>{{ careerPitching[0][3] }} </th>
+                <th>{{ "{:.3f}".format(3*(careerPitching[0][5] + careerPitching[0][6])/careerPitching[0][2],2) }} </th></tr>
+              </tbody>
+            </table>
+        {% endif %}
+
+
+    </div>
+{% endblock %}

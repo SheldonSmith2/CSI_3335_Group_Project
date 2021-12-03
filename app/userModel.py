@@ -16,6 +16,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     fav_team = db.Column(db.String(), nullable=False)
+    fav_player = db.Column(db.String())
 
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(app.config['SECRET_KEY'], expires_sec)
@@ -31,4 +32,4 @@ class User(db.Model, UserMixin):
         return User.query.get(user_id)
 
     def __repr__(self):
-        return f"User('{self.username}', '{self.email}', '{self.fav_team}')"
+        return f"User('{self.username}', '{self.email}', '{self.fav_team}', '{self.fav_player}')"

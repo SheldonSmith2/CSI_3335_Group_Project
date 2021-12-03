@@ -12,11 +12,14 @@
             {{ form.changeYear(class="form-control me-2") }}
             {{ form.submit(class="btn btn-outline-success") }}
         </form>
+        {% for error in form.changeYear.errors %}
+            <span style="color: red;">[{{ error }}]</span><br>
+        {% endfor %}
         <!-- The section to control the team's roster -->
         <h4>Team Roster for the {{ current_user.fav_team }}</h4>
         <h6>Current Year: {{ year }}</h6>
         <table class="table table-striped">
-          <thead>
+            <thead>
             <tr>
               <th scope="col">Name</th>
               <th scope="col">Pitcher</th>
@@ -27,17 +30,15 @@
               <th scope="col">Birth Place</th>
               <th scope="col">Stats</th>
             </tr>
-          </thead>
-          <tbody>
-          {% for player in roster %}
-            <tr>
-              <th scope="row">{{ player[0].nameFirst }} {{ player[0].nameLast }}</th>
-                <td>X</td>
-                <td>X</td>
-                <td>{% if player[0].deathYear != None %}
-                        Died
-                    {% else %}
-                        {{ 2021 - player[0].birthYear }}
+            </thead>
+            <tbody>
+            {% for player in roster %}
+                <tr>
+                <th scope="row">{{ player[0].nameFirst }} {{ player[0].nameLast }}</th>
+                <td>{% if appearances[loop.index0].G_p > 1%} Y {% else %} N {% endif %}</td>
+                <td>{% if appearances[loop.index0].G_batting > 10%} Y {% else %} N {% endif %}</td>
+                <td>{% if player[0].deathYear != None %}Died
+                    {% else %} {{ 2021 - player[0].birthYear }}
                     {% endif %}
                 </td>
                 <td>{{ player[0].height//12 }}' {{ player[0].height%12 }}"</td>
@@ -49,82 +50,101 @@
                     {% endif %}
                 </td>
                 <td>
-                <button class="btn btn-outline-success btn-sm" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" id={{ loop.index0 }} onclick="setID()" aria-controls="offcanvasExample">
+                <button class="btn btn-outline-success btn-sm" data-bs-toggle="offcanvas" href="#offcanvasExample{{ loop.index0 }}"
+                        role="button" id={{ loop.index0 }} aria-controls="offcanvasExample">
                   More
                 </button>
                 </td>
-            </tr>
-        {% endfor %}
+                </tr>
+                <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasExample{{ loop.index0 }}" aria-labelledby="offcanvasExampleLabel">
+                    <div class="offcanvas-header">
+                        <h4 class="offcanvas-title">{{ year }} Stats for {{ roster[loop.index0][0].nameFirst }} {{ roster[loop.index0][0].nameLast }}</h4>
+                        <div id="demo"></div>
+                        <a type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></a>
+                    </div>
+                    <div class="offcanvas-body">
+                        {% if appearances[loop.index0].G_batting > 10%}
+                        <h6>Batting Stats</h6>
+                        <ul class="list-group">
+                            <li class="list-group-item">Runs: {{ roster[loop.index0][1].b_R }}</li>
+                            <li class="list-group-item">Hits: {{ roster[loop.index0][1].b_H }}</li>
+                            <li class="list-group-item">Doubles: {{ roster[loop.index0][1].b_2B }}</li>
+                            <li class="list-group-item">Triples: {{ roster[loop.index0][1].b_3B }}</li>
+                            <li class="list-group-item">Home Runs: {{ roster[loop.index0][1].b_HR }}</li>
+                            <li class="list-group-item">RBIs: {{ roster[loop.index0][1].b_RBI }}</li>
+                            <li class="list-group-item">Batting Average:
+                                {% if roster[loop.index0][1].b_AB > 0 %}{{ "{:.3f}".format(roster[loop.index0][1].b_H/roster[loop.index0][1].b_AB,2) }}
+                                {% else %}N/A{% endif %}</li>
+                            <li class="list-group-item">At Bats: {{ roster[loop.index0][1].b_AB }}</li>
+                            <li class="list-group-item">Stolen Bases: {{ roster[loop.index0][1].b_SB }}</li>
+                            <li class="list-group-item">Walks: {{ roster[loop.index0][1].b_BB }}</li>
+                        </ul><br>{% endif %}
+                        {% if appearances[loop.index0].G_p > 1%}
+                            {% for pitcher in pitchingInfo %}
+                                {% if pitcher.playerID == player[1].playerID %}
+                                <h6>Pitching Stats</h6>
+                                <ul class="list-group">
+                                    <li class="list-group-item">Wins: {{ pitcher.p_W }}</li>
+                                    <li class="list-group-item">Losses: {{ pitcher.p_L }}</li>
+                                    <li class="list-group-item">Win/Loss %: {% if pitcher.p_L > 0 %}
+                                        {{ "{:.3f}".format(pitcher.p_W/(pitcher.p_L+pitcher.p_W),2) }}
+                                        {% elif pitcher.p_L == 0 and pitcher.p_W == 0 %}N/A
+                                        {% else %}1.000
+                                        {% endif %}
+                                    </li>
+                                    <li class="list-group-item">ERA: {{ "{:.2f}".format(27*pitcher.p_ER/pitcher.p_IPouts,2) }}</li>
+                                    <li class="list-group-item">WHIP: {{ "{:.3f}".format(3*(pitcher.p_BB + pitcher.p_H)/pitcher.p_IPouts,2) }}</li>
+                                    <li class="list-group-item">Strike Outs: {{ pitcher.p_SO }}</li>
+                                    <li class="list-group-item">Innings Pitched: {{ pitcher.p_IPouts//3 }}.{{ pitcher.p_IPouts%3 }}</li>
+                                    <li class="list-group-item">Games: {{ pitcher.p_G }}</li>
+                                    <li class="list-group-item">Saves: {{ pitcher.p_SV }}</li>
+                                </ul>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+          {% endfor %}
           </tbody>
         </table>
-
         <!-- The section to control the more information button for each player on roster -->
-            <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-                <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasExampleLabel">{{ year }} Stats for</h5>
-                <div id="demo"></div>
-                <a type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></a>
-              </div>
-              <div class="offcanvas-body">
-              <h6>Batting Stats</h6>
-              <ul class="list-group">
-                 <li class="list-group-item">Runs: <div id="playerRuns"></div></li>
-                 <li class="list-group-item">Hits: <div id="playerHits"></div></li>
-                 <li class="list-group-item">Doubles: <div id="playerDoubles"></div></li>
-                 <li class="list-group-item">Triples: <div id="playerTriples"></div></li>
-                 <li class="list-group-item">Home Runs: <div id="playerHRs"></div></li>
-                 <li class="list-group-item">RBIs: <div id="playerRBIs"></div></li>
-              </ul><br>
-              <h6>Pitching Stats</h6>
-              <ul class="list-group">
-                 <li class="list-group-item">Wins</li>
-                 <li class="list-group-item">ERA</li>
-                 <li class="list-group-item">WHIP</li>
-                 <li class="list-group-item">Strike Outs</li>
-              </ul>
-          </div>
-        </div>
-
     {% else %}
         <!-- The homepage if the user is not logged in -->
         <h1 style="text-align: center">Guest Home</h1><br>
         <h4 style="text-align: center"><u>Current World Series Champion</u></h4>
         {% for team in wschamp %}
-        <h5 style="text-align: center">The {{ team[1].name }} defeated the {{ team[2].name }} in {{ team[0].wins + team[0].losses }} games</h5>
+            <h5 style="text-align: center">The {{ team[1].name }} defeated the {{ team[2].name }} in {{ team[0].wins + team[0].loses }} games</h5>
         {% endfor %}
-        <h5 style="text-align: center">World Series MVP: Corey Seager (MIGHT DELETE)</h5>
         <hr>
         <!-- Display the top highest salaries in current year -->
-        <h4>Top 5 Highest Salaries in {{ yearSalary }}</h4>
+        <h4>Top 10 Highest Salaries in {{ yearSalary }}</h4>
         <h6>Change Year</h6>
         <form method="POST" action="" class="d-flex">
             {{ formSalary.hidden_tag() }}
             {{ formSalary.changeYear(class="form-control me-2") }}
             {{ formSalary.submit(class="btn btn-outline-success") }}
         </form>
+        {% for error in formSalary.changeYear.errors %}
+            <span style="color: red;">[{{ error }}]</span><br>
+        {% endfor %}
         <table class="table table-striped">
-          <thead>
-            <tr>
+          <thead><tr>
               <th scope="col">Name</th>
               <th scope="col">Team</th>
               <th scope="col">Position</th>
               <th scope="col">Age</th>
               <th scope="col">Salary</th>
-            </tr>
-          </thead>
+          </tr></thead>
           <tbody>
-            {% for player in salaries %}
-            <tr>
+            {% for player in salaries %}<tr>
               <th scope="row">{{ player[0].nameFirst }} {{ player[0].nameLast }}</th>
               <td>{{ player[2].name }}</td>
               <td>{{ player[3].POS }}</td>
               <td>{{ 2021 - player[0].birthYear }}</td>
               <td>${{ "{:.1f}".format(player[1].salary/1000000)}} Million</td>
-            </tr>
-        {% endfor %}
+            </tr>{% endfor %}
           </tbody>
         </table>
     {% endif %}
     </div>
-
 {% endblock %}

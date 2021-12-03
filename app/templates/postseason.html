@@ -7,25 +7,25 @@
         <h5>Number of Times Won Division: {{ countDiv[0][0] }}</h5>
         <h5>Number of Times Won Conference: {{ countLg[0][0] }}</h5>
         <h5>World Series Wins: {{ countWS[0][0] }} </h5><br>
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th scope="col">Year</th>
-                  <th scope="col">Opponent</th>
-                  <th scope="col"># Games in Series</th>
-                  <th scope="col">World Series MVP</th>
-                </tr>
-              </thead>
-              <tbody>
-              {% for win in WSWinInfo %}
-                  <tr>
-                  <th scope="row">{{ win[0].yearID }}</th>
-                  <td>{{ win[1].name }}</td>
-                  <td>{{ win[0].wins + win[0].losses + win[0].ties }}</td>
-                  <td>Not Known</td>
-                </tr>
-              {% endfor %}
-              </tbody>
-            </table>
+        <h6>Post Season Wins for Past 5 years</h6>
+        <table class="table table-striped">
+            <thead><tr>
+                <th scope="col">Year</th>
+                <th scope="col">Opponent</th>
+                <th scope="col">Round</th>
+                <th scope="col"># Games in Series</th>
+            </tr></thead>
+            <tbody>
+            {% for win in PostInfo %}<tr>
+                <th scope="row">{{ win[0].yearID }}</th>
+                <td>{{ win[1].name }}</td>
+                <td>{% if win[0].round == "WS" %}World Series
+                    {% elif win[0].round == "ALDS1" or win[0].round == "ALDS2"%}ALDS
+                    {% elif win[0].round == "NLDS1" or win[0].round == "NLDS2"%}NLDS
+                    {% else %} {{ win[0].round }}{% endif %}</td>
+                <td>{{ win[0].wins + win[0].loses + win[0].ties }}</td>
+            </tr>{% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}

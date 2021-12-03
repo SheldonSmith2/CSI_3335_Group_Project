@@ -34,14 +34,22 @@
                     <!-- If the user is authenticated, then print out links for user -->
                     <li class="nav-item dropdown">
                     <a class="nav-item nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Team Info
+                        Baseball Info
                       </a>
                       <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{{ url_for('managers') }}">Managers</a></li>
-                        <li><a class="dropdown-item" href="{{ url_for('postseason') }}">Post Season</a></li>
+                          <li><h6> Favorite Team</h6></li>
+                          <li><a class="dropdown-item" href="{{ url_for('managers') }}">Managers</a></li>
+                          <li><a class="dropdown-item" href="{{ url_for('postseason') }}">Post Season</a></li>
                           <li><a class="dropdown-item" href="{{ url_for('allstar') }}">All Star Games</a></li>
+                        {% if current_user.fav_player != None %}
+                          <li><hr class="dropdown-divider"></li>
+                          <li><h6> Favorite Player Info</h6></li>
+                          <li><a class="dropdown-item" href="{{ url_for('careerstats') }}">Career Stats</a></li>
+                          <li><a class="dropdown-item" href="{{ url_for('careerpostseason') }}">Postseason Stats</a></li>
+                        {% endif %}
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{ url_for('playerawards') }}">Player Awards</a></li>
+                          <li><h6> General Info</h6></li>
+                          <li><a class="dropdown-item" href="{{ url_for('playerawards') }}">Player Awards</a></li>
                           <li><a class="dropdown-item" href="{{ url_for('halloffame') }}">Hall of Fame</a></li>
                       </ul>
                     </li>
@@ -58,7 +66,7 @@
       </nav>
     </header>
     <main role="main" class="container">
-      <div class="row">
+      <div class="row justify-content-md-center">
         <div class="col-md-8">
         <!-- Section to control the flash messages if there are any -->
             {% with messages = get_flashed_messages(with_categories=true) %}
@@ -72,6 +80,7 @@
             {% endwith %}
             {% block content %}{% endblock %}
         </div>
+<<<<<<< HEAD
         <div class="col-md-4">
           <div class="content-section">
             <!-- Section to control the sidebar -->
@@ -91,6 +100,9 @@
             </p>
           </div>
         </div>
+=======
+
+>>>>>>> 7a7ebf51cd02739fbe4ec29ed79010604beb11e1
       </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
