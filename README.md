@@ -1,3 +1,5 @@
+The directory "app" is the application
+
 Imported Python Modules (pip install)
  - flask: the main structure for the project
  - flask-wtf: to manage the forms
@@ -9,5 +11,10 @@ Imported Python Modules (pip install)
  - pymysql
 
 Instructions to Run Application
- - need to include a dbconfig.py file in baseballModels directory with valid (host, user, password, and db)
+ - need to include a mariadbconfig.py file in baseballModels directory with valid (user and password)
+ - You also need to have the database running
  - execute: python run.py
+
+To run the createDatabase.sql, just do \. createDatabase.sql in mariadb
+To run the loadDatabase.py, you need to have the csv files in the same directory as the file, a mariadbconfig.py file
+  that has a valid user and password for the database, and be in an environment that has pymysql
