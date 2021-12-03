@@ -19,20 +19,24 @@
             <li class="list-group-item list-group-item-light">
                 <div>The <strong>{{ WSChamp[0][1].name }}</strong> won the <strong>World Series</strong> against the {{ WSChamp[0][2].name }}</div>
             </li>
+            {% if ALCS.count() != 0 %}
             <li class="list-group-item list-group-item-light">
                 <div>The <strong>{{ ALCS[0][1].name }}</strong> defeated the {{ ALCS[0][2].name }} in the <strong>ALCS</strong></div>
                 <div>The <strong>{{ NLCS[0][1].name }}</strong> defeated the {{ NLCS[0][2].name }} in the <strong>NLCS</strong></div>
-            </li>
+            </li> {% endif %}
+            {% if ALDS1.count() != 0 %}
             <li class="list-group-item list-group-item-light">
                 <div>The <strong>{{ ALDS1[0][1].name }}</strong> defeated the {{ ALDS1[0][2].name }} in the <strong>ALDS</strong></div>
                 <div>The <strong>{{ ALDS2[0][1].name }}</strong> defeated the {{ ALDS2[0][2].name }} in the <strong>ALDS</strong></div>
                 <div>The <strong>{{ NLDS1[0][1].name }}</strong> defeated the {{ NLDS1[0][2].name }} in the <strong>NLDS</strong></div>
                 <div>The <strong>{{ NLDS2[0][1].name }}</strong> defeated the {{ NLDS2[0][2].name }} in the <strong>NLDS</strong></div>
-            </li>
+            </li> {% endif %}
+            {% if ALWC.count() != 0 %}
             <li class="list-group-item list-group-item-light">
                 <div>The <strong>{{ ALWC[0][1].name }}</strong> defeated the {{ ALWC[0][2].name }} in the <strong>AL Wild Card</strong></div>
                 <div>The <strong>{{ NLWC[0][1].name }}</strong> defeated the {{ NLWC[0][2].name }} in the <strong>NL Wild Card</strong></div>
             </li>
+            {% endif %}
         </ul>
     <br>
     <div class="row">
@@ -49,10 +53,10 @@
           <tbody>
             {% for team in ALWest %}<tr>
               <th scope="row">{{ team.name }}</th>
-              <td>{{ team.W }}</td>
-              <td>{{ team.L }}</td>
-              <td>{{ "{:.3f}".format(team.W/team.G,2) }}</td>
-              <td>{{ ((ALWestWL[0].W - team.W) + (team.L - ALWestWL[0].L))/2 }}</td>
+              <td>{{ team.team_W }}</td>
+              <td>{{ team.team_L }}</td>
+              <td>{{ "{:.3f}".format(team.team_W/team.team_G,2) }}</td>
+              <td>{{ ((ALWestWL[0].team_W - team.team_W) + (team.team_L - ALWestWL[0].team_L))/2 }}</td>
             </tr>{% endfor %}
           </tbody>
         </table>
@@ -70,11 +74,11 @@
           <tbody>
             {% for team in NLWest %}<tr>
               <th scope="row">{{ team.name }}</th>
-              <td>{{ team.W }}</td>
-              <td>{{ team.L }}</td>
-              <td>{{ "{:.3f}".format(team.W/team.G,2) }}</td>
+              <td>{{ team.team_W }}</td>
+              <td>{{ team.team_L }}</td>
+              <td>{{ "{:.3f}".format(team.team_W/team.team_G,2) }}</td>
               <td>
-                {{ ((NLWestWL[0].W - team.W) + (team.L - NLWestWL[0].L))/2 }}
+                {{ ((NLWestWL[0].team_W - team.team_W) + (team.team_L - NLWestWL[0].team_L))/2 }}
               </td>
             </tr>{% endfor %}
           </tbody>
@@ -94,10 +98,10 @@
           <tbody>
             {% for team in ALEast %}<tr>
               <th scope="row">{{ team.name }}</th>
-              <td>{{ team.W }}</td>
-              <td>{{ team.L }}</td>
-              <td>{{ "{:.3f}".format(team.W/team.G,2) }}</td>
-                <td>{{ ((ALEastWL[0].W - team.W) + (team.L - ALEastWL[0].L))/2 }}</td>
+              <td>{{ team.team_W }}</td>
+              <td>{{ team.team_L }}</td>
+              <td>{{ "{:.3f}".format(team.team_W/team.team_G,2) }}</td>
+                <td>{{ ((ALEastWL[0].team_W - team.team_W) + (team.team_L - ALEastWL[0].team_L))/2 }}</td>
             </tr>{% endfor %}
           </tbody>
         </table>
@@ -115,10 +119,10 @@
           <tbody>
             {% for team in NLEast %}<tr>
               <th scope="row">{{ team.name }}</th>
-              <td>{{ team.W }}</td>
-              <td>{{ team.L }}</td>
-              <td>{{ "{:.3f}".format(team.W/team.G,2) }}</td>
-               <td>{{ ((NLEastWL[0].W - team.W) + (team.L - NLEastWL[0].L))/2 }}</td>
+              <td>{{ team.team_W }}</td>
+              <td>{{ team.team_L }}</td>
+              <td>{{ "{:.3f}".format(team.team_W/team.team_G,2) }}</td>
+               <td>{{ ((NLEastWL[0].team_W - team.team_W) + (team.team_L - NLEastWL[0].team_L))/2 }}</td>
             </tr>{% endfor %}
           </tbody>
         </table>
@@ -137,10 +141,10 @@
           <tbody>
             {% for team in ALCentral %}<tr>
               <th scope="row">{{ team.name }}</th>
-              <td>{{ team.W }}</td>
-              <td>{{ team.L }}</td>
-              <td>{{ "{:.3f}".format(team.W/team.G,2) }}</td>
-              <td>{{ ((ALCentralWL[0].W - team.W) + (team.L - ALCentralWL[0].L))/2 }}</td>
+              <td>{{ team.team_W }}</td>
+              <td>{{ team.team_L }}</td>
+              <td>{{ "{:.3f}".format(team.team_W/team.team_G,2) }}</td>
+              <td>{{ ((ALCentralWL[0].team_W - team.team_W) + (team.team_L - ALCentralWL[0].team_L))/2 }}</td>
             </tr>{% endfor %}
           </tbody>
         </table>
@@ -158,10 +162,10 @@
           <tbody>
             {% for team in NLCentral %}<tr>
               <th scope="row">{{ team.name }}</th>
-              <td>{{ team.W }}</td>
-              <td>{{ team.L }}</td>
-              <td>{{ "{:.3f}".format(team.W/team.G,2) }}</td>
-              <td>{{ ((NLCentralWL[0].W - team.W) + (team.L - NLCentralWL[0].L))/2 }}</td>
+              <td>{{ team.team_W }}</td>
+              <td>{{ team.team_L }}</td>
+              <td>{{ "{:.3f}".format(team.team_W/team.team_G,2) }}</td>
+              <td>{{ ((NLCentralWL[0].team_W - team.team_W) + (team.team_L - NLCentralWL[0].team_L))/2 }}</td>
             </tr>{% endfor %}
           </tbody>
         </table>

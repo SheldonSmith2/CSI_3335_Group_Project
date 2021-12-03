@@ -8,7 +8,7 @@ class AllstarFull(Base):
 	__tablename__ = "allstarfull" # required
 
 	ID = Column(Integer, primary_key=True)  # required
-	playerid = Column(String(9))
+	playerID = Column(String(9))
 	yearID = Column(Integer)
 	gameNum = Column(String(12))
 	teamID = Column(String(3))

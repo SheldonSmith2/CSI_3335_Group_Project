@@ -22,9 +22,8 @@
                 <td>{% if win[0].round == "WS" %}World Series
                     {% elif win[0].round == "ALDS1" or win[0].round == "ALDS2"%}ALDS
                     {% elif win[0].round == "NLDS1" or win[0].round == "NLDS2"%}NLDS
-                    {% elif win[0].round == "ALWC" or win[0].round == "NLWC"%}Wild Card Match
                     {% else %} {{ win[0].round }}{% endif %}</td>
-                <td>{{ win[0].wins + win[0].losses + win[0].ties }}</td>
+                <td>{{ win[0].wins + win[0].loses + win[0].ties }}</td>
             </tr>{% endfor %}
             </tbody>
         </table>

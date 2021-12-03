@@ -9,9 +9,9 @@ class Appearances(Base):
 
     ID = Column(Integer, primary_key=True)  # required
     yearID = Column(Integer)
-    teamID = Column(String(3))  # teamId = Column(String(3))
-    lgID = Column(String(2))
-    playerid = Column(String(9))  # playerID = Column(String(9))
+    teamId = Column(String(3))  # teamId = Column(String(3))
+    #lgID = Column(String(2))
+    playerID = Column(String(9))  # playerID = Column(String(9))
     G_all = Column(Integer)
     GS = Column(Integer)
     G_batting = Column(Integer)
@@ -24,7 +24,7 @@ class Appearances(Base):
     G_ss = Column(Integer)
     G_lf = Column(Integer)
     G_cf = Column(Integer)
-    G_rf = Column(Integer)
+    #G_rf = Column(Integer)
     G_of = Column(Integer)
     G_dh = Column(Integer)
     G_ph = Column(Integer)

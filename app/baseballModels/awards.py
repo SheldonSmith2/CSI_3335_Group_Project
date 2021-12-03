@@ -4,8 +4,8 @@ from sqlalchemy import Column, Integer, String
 Base = declarative_base()
 
 
-class AwardsManagers(Base): # Awards(Base)
-	__tablename__ = "awardsmanagers" # required # "awards"
+class Awards(Base): # Awards(Base)
+	__tablename__ = "awards" # required # "awards"
 
 	ID = Column(Integer, primary_key=True)  # required
 	playerID = Column(String(10))

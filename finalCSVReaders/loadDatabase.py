@@ -427,7 +427,7 @@ def awardsCSVUpdate():
 def allStarFullCSVUpdate():
     with open("AllstarFull.csv", mode='r') as csvfile:
         teamsreader = csv.DictReader(csvfile)
-        sql = "INSERT INTO `allstarfull` (playerID,lgID,yearID,gameNum,gameID,GP,startingPos) VALUES "
+        sql = "INSERT INTO `allstarfull` (playerID,lgID,teamID,yearID,gameNum,gameID,GP,startingPos) VALUES "
         for row in teamsreader:
             sql += "("
             sql += "'" + row['playerID'] + "',"
@@ -435,6 +435,10 @@ def allStarFullCSVUpdate():
                 sql += "NULL,"
             else:
                 sql += "'" + row['lgID'] + "',"
+            if row['teamID'] == "":
+                sql += "NULL,"
+            else:
+                sql += "'" + row['teamID'] + "',"
             if row['yearID'] == "":
                 sql += "NULL,"
             else:
@@ -1320,8 +1324,8 @@ def appearancesCSVUpdate():
     return sql
 
 
-con = pymysql.connect(host=cfg.root['host'], user=cfg.root['user'], password=cfg.root['password'],
-                      database=cfg.root['database'])
+con = pymysql.connect(host="localhost", user=cfg.mysql['user'], password=cfg.mysql['password'],
+                      database="group3")
 
 try:
     cur = con.cursor()

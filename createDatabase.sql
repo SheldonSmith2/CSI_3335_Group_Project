@@ -5,8 +5,8 @@
  */
 
 -- creates new database
-CREATE DATABASE IF NOT EXISTS Newbaseball;
-USE Newbaseball;
+CREATE DATABASE IF NOT EXISTS group3
+USE group3
 
 --drop tables in order to start fresh
 SET FOREIGN_KEY_CHECKS=0;

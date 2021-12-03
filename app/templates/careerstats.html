@@ -20,15 +20,15 @@
               </tr></thead>
               <tbody>
                 {% for stint in batting %}<tr>
-                    <th scope="row">{{ stint.yearID }}</th>
+                    <th scope="row">{{ stint.yearId }}</th>
                     <td>{{ stint.teamID }}</td>
-                    <td>{{ stint.AB }}</td>
-                    <td>{{ stint.R }}</td>
-                    <td>{{ stint.H }} </td>
-                    <td>{{ stint.HR }}</td>
-                    <td>{{ stint.RBI }} </td>
-                    <td>{{ stint.SB }} </td>
-                    <td>{{ "{:.3f}".format(stint.H/stint.AB,2) }} </td>
+                    <td>{{ stint.b_AB }}</td>
+                    <td>{{ stint.b_R }}</td>
+                    <td>{{ stint.b_H }} </td>
+                    <td>{{ stint.b_HR }}</td>
+                    <td>{{ stint.b_RBI }} </td>
+                    <td>{{ stint.b_SB }} </td>
+                    <td>{{ "{:.3f}".format(stint.b_H/stint.b_AB,2) }} </td>
                 </tr>{% endfor %}
                 <tr class="table-success"><th scope="row" colspan="2">{{ appearances[0][2] }} Years</th>
                 <th>{{ careerBatting[0][0] }}</th>
@@ -60,12 +60,12 @@
                 {% for stint in pitching %}<tr>
                     <th scope="row">{{ stint.yearID }}</th>
                     <td>{{ stint.teamID }}</td>
-                    <td>{{ stint.W }}</td>
-                    <td>{{ stint.L }} </td>
-                    <td>{{ "{:.2f}".format(27*stint.ER/stint.IPouts,2) }}</td>
-                    <td>{{ stint.IPouts//3 }}.{{ stint.IPouts%3 }} </td>
-                    <td>{{ stint.SO }} </td>
-                    <td>{{ "{:.3f}".format(3*(stint.BB + stint.H)/stint.IPouts,2) }} </td>
+                    <td>{{ stint.p_W }}</td>
+                    <td>{{ stint.p_L }} </td>
+                    <td>{{ "{:.2f}".format(27*stint.p_ER/stint.p_IPouts,2) }}</td>
+                    <td>{{ stint.p_IPouts//3 }}.{{ stint.p_IPouts%3 }} </td>
+                    <td>{{ stint.p_SO }} </td>
+                    <td>{{ "{:.3f}".format(3*(stint.p_BB + stint.p_H)/stint.p_IPouts,2) }} </td>
                 </tr>{% endfor %}
                 <tr class="table-success"><th colspan="2" scope="row">{{ appearances[0][2] }} Years</th>
                 <th>{{ careerPitching[0][0] }}</th>

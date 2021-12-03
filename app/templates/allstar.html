@@ -41,6 +41,6 @@
             </tbody>
         </table>
         {% if allstarInfo.count() == 0 %}
-        <div style="color: red">Sorry, there is no data for that year</div>{% endif %}
+        <div style="color: red">Sorry, no players from the {{ current_user.fav_team }} were in the allstar game</div>{% endif %}
     </div>
 {% endblock %}

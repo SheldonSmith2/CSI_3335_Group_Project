@@ -1,6 +1,6 @@
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine, func, distinct
-import app.baseballModels.dbconfig as cfg
+import app.baseballModels.mariadbconfig as cfg
 from app.baseballModels.people import People
 from app.baseballModels.batting import Batting
 from app.baseballModels.appearances import Appearances
@@ -11,8 +11,7 @@ from app.baseballModels.pitchingpost import PitchingPost
 
 # Create a connection to the database
 def createConnection():
-    enginestr = "mysql+pymysql://" + cfg.mysql['user'] + ":" + cfg.mysql['password'] + "@" + cfg.mysql[
-        'host'] + ":3306/" + cfg.mysql['db']
+    enginestr = "mysql+pymysql://" + cfg.mysql['user'] + ":" + cfg.mysql['password'] + "@localhost:3306/group3"
 
     engine = create_engine(enginestr)
 
@@ -25,12 +24,9 @@ def createConnection():
 def careerBattingStats(playerName):
     splitName = playerName.split()
     session = createConnection()
-    stats = session.query(func.sum(Batting.AB), func.sum(Batting.R), func.sum(Batting.H), func.sum(Batting.HR),
-                          func.sum(Batting.RBI), func.sum(Batting.SO))\
-        .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1], People.playerid == Batting.playerid)
-    #stats = session.query(func.sum(Batting.b_AB), func.sum(Batting.b_R), func.sum(Batting.b_H), func.sum(Batting.b_HR),
-    #                      func.sum(Batting.b_RBI), func.sum(Batting.b_SO)) \
-    #    .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1], People.playerID == Batting.playerID)
+    stats = session.query(func.sum(Batting.b_AB), func.sum(Batting.b_R), func.sum(Batting.b_H), func.sum(Batting.b_HR),
+                          func.sum(Batting.b_RBI), func.sum(Batting.b_SO)) \
+        .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1], People.playerID == Batting.playerID)
     return stats
 
 
@@ -38,12 +34,9 @@ def careerBattingStats(playerName):
 def battingStats(playerName):
     splitName = playerName.split()
     session = createConnection()
-    stats = session.query(Batting)\
-        .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1], People.playerid == Batting.playerid)\
-        .order_by(Batting.yearID, Batting.stint)
-    #stats = session.query(Batting) \
-    #    .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1], People.playerID == Batting.playerID) \
-    #    .order_by(Batting.yearId, Batting.stint)
+    stats = session.query(Batting) \
+        .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1], People.playerID == Batting.playerID) \
+        .order_by(Batting.yearId, Batting.stint)
     return stats
 
 
@@ -51,12 +44,9 @@ def battingStats(playerName):
 def careerPitchingStats(playerName):
     splitName = playerName.split()
     session = createConnection()
-    stats = session.query(func.sum(Pitching.W), func.sum(Pitching.L), func.sum(Pitching.IPouts), func.sum(Pitching.SO),
-                          func.sum(Pitching.ER), func.sum(Pitching.BB), func.sum(Pitching.H))\
-        .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1], People.playerid == Pitching.playerid)
-    #stats = session.query(func.sum(Pitching.p_W), func.sum(Pitching.p_L), func.sum(Pitching.p_IPouts), func.sum(Pitching.p_SO),
-    #                      func.sum(Pitching.p_ER), func.sum(Pitching.p_BB), func.sum(Pitching.p_H)) \
-    #    .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1], People.playerID == Pitching.playerID)
+    stats = session.query(func.sum(Pitching.p_W), func.sum(Pitching.p_L), func.sum(Pitching.p_IPouts), func.sum(Pitching.p_SO),
+                          func.sum(Pitching.p_ER), func.sum(Pitching.p_BB), func.sum(Pitching.p_H)) \
+        .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1], People.playerID == Pitching.playerID)
     return stats
 
 
@@ -64,12 +54,9 @@ def careerPitchingStats(playerName):
 def pitchingStats(playerName):
     splitName = playerName.split()
     session = createConnection()
-    stats = session.query(Pitching)\
-        .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1], People.playerid == Pitching.playerid)\
+    stats = session.query(Pitching) \
+        .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1], People.playerID == Pitching.playerID) \
         .order_by(Pitching.yearID, Pitching.stint)
-    #stats = session.query(Pitching) \
-    #    .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1], People.playerID == Pitching.playerID) \
-    #    .order_by(Pitching.yearID, Pitching.stint)
     return stats
 
 
@@ -77,12 +64,10 @@ def pitchingStats(playerName):
 def getSumAppearances(playerName):
     splitName = playerName.split()
     session = createConnection()
-    stats = session.query(func.sum(Appearances.G_p), func.sum(Appearances.G_batting), func.count(distinct(Appearances.yearID)))\
-        .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1], People.playerid == Appearances.playerid)
-    #stats = session.query(func.sum(Appearances.G_p), func.sum(Appearances.G_batting),
-    #                      func.count(distinct(Appearances.yearID))) \
-    #    .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1],
-    #            People.playerID == Appearances.playerID)
+    stats = session.query(func.sum(Appearances.G_p), func.sum(Appearances.G_batting),
+                          func.count(distinct(Appearances.yearID))) \
+        .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1],
+                People.playerID == Appearances.playerID)
     return stats
 
 
@@ -90,13 +75,10 @@ def getSumAppearances(playerName):
 def careerBattingPost(playerName):
     splitName = playerName.split()
     session = createConnection()
-    stats = session.query(func.sum(BattingPost.AB), func.sum(BattingPost.R), func.sum(BattingPost.H), func.sum(BattingPost.HR),
-                          func.sum(BattingPost.RBI), func.sum(BattingPost.SO))\
-        .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1], People.playerid == BattingPost.playerid)
-    #stats = session.query(func.sum(BattingPost.b_AB), func.sum(BattingPost.b_R), func.sum(BattingPost.b_H),
-    #                      func.sum(BattingPost.b_HR), func.sum(BattingPost.b_RBI), func.sum(BattingPost.b_SO)) \
-    #    .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1],
-    #            People.playerID == BattingPost.playerID)
+    stats = session.query(func.sum(BattingPost.b_AB), func.sum(BattingPost.b_R), func.sum(BattingPost.b_H),
+                          func.sum(BattingPost.b_HR), func.sum(BattingPost.b_RBI), func.sum(BattingPost.b_SO)) \
+        .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1],
+                People.playerID == BattingPost.playerID)
     return stats
 
 
@@ -104,13 +86,10 @@ def careerBattingPost(playerName):
 def battingPost(playerName):
     splitName = playerName.split()
     session = createConnection()
-    stats = session.query(BattingPost)\
-        .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1], People.playerid == BattingPost.playerid)\
-        .order_by(BattingPost.yearID, BattingPost.round)
-    #stats = session.query(BattingPost) \
-    #    .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1],
-    #            People.playerID == BattingPost.playerID) \
-    #    .order_by(BattingPost.yearId, BattingPost.round)
+    stats = session.query(BattingPost) \
+        .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1],
+                People.playerID == BattingPost.playerID) \
+        .order_by(BattingPost.yearId, BattingPost.round)
     return stats
 
 
@@ -118,13 +97,10 @@ def battingPost(playerName):
 def careerPitchingPost(playerName):
     splitName = playerName.split()
     session = createConnection()
-    stats = session.query(func.sum(PitchingPost.W), func.sum(PitchingPost.L), func.sum(PitchingPost.IPouts), func.sum(PitchingPost.SO),
-                          func.sum(PitchingPost.ER), func.sum(PitchingPost.BB), func.sum(PitchingPost.H))\
-        .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1], People.playerid == PitchingPost.playerid)
-    #stats = session.query(func.sum(PitchingPost.p_W), func.sum(PitchingPost.p_L), func.sum(PitchingPost.p_IPouts),
-    #                      func.sum(PitchingPost.p_SO), func.sum(PitchingPost.p_ER), func.sum(PitchingPost.p_BB), func.sum(PitchingPost.p_H)) \
-    #    .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1],
-    #            People.playerID == PitchingPost.playerID)
+    stats = session.query(func.sum(PitchingPost.p_W), func.sum(PitchingPost.p_L), func.sum(PitchingPost.p_IPouts),
+                          func.sum(PitchingPost.p_SO), func.sum(PitchingPost.p_ER), func.sum(PitchingPost.p_BB), func.sum(PitchingPost.p_H)) \
+        .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1],
+                People.playerID == PitchingPost.playerID)
     return stats
 
 
@@ -132,13 +108,10 @@ def careerPitchingPost(playerName):
 def pitchingPost(playerName):
     splitName = playerName.split()
     session = createConnection()
-    stats = session.query(PitchingPost)\
-        .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1], People.playerid == PitchingPost.playerid)\
+    stats = session.query(PitchingPost) \
+        .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1],
+                People.playerID == PitchingPost.playerID) \
         .order_by(PitchingPost.yearID, PitchingPost.round)
-    #stats = session.query(PitchingPost) \
-    #    .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1],
-    #            People.playerID == PitchingPost.playerID) \
-    #    .order_by(PitchingPost.yearID, PitchingPost.round)
     return stats
 
 
@@ -146,12 +119,9 @@ def pitchingPost(playerName):
 def postAppearancesBatting(playerName):
     splitName = playerName.split()
     session = createConnection()
-    stats = session.query(func.count(BattingPost.yearID), func.count(distinct(BattingPost.yearID))) \
+    stats = session.query(func.count(BattingPost.yearId), func.count(distinct(BattingPost.yearId))) \
         .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1],
-                People.playerid == BattingPost.playerid)
-    #stats = session.query(func.count(BattingPost.yearId), func.count(distinct(BattingPost.yearId))) \
-    #    .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1],
-    #            People.playerID == BattingPost.playerID)
+                People.playerID == BattingPost.playerID)
     return stats
 
 
@@ -161,8 +131,5 @@ def postAppearancesPitching(playerName):
     session = createConnection()
     stats = session.query(func.count(PitchingPost.yearID), func.count(distinct(PitchingPost.yearID))) \
         .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1],
-                People.playerid == PitchingPost.playerid)
-    #stats = session.query(func.count(PitchingPost.yearID), func.count(distinct(PitchingPost.yearID))) \
-    #    .filter(People.nameFirst == splitName[0], People.nameLast == splitName[1],
-    #            People.playerID == PitchingPost.playerID)
+                People.playerID == PitchingPost.playerID)
     return stats
