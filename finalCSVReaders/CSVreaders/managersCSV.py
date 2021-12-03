@@ -5,13 +5,12 @@ import mariadbconfig as cfg
 def managersCSVUpdate():
     with open("Managers.csv", mode='r') as csvfile:
         reader = csv.DictReader(csvfile)
-        sql = "INSERT INTO `manager` (playerID,yearID,teamID,lgID,inSeason,manager_G,manager_W,manager_L,teamRank,plyrMgr) VALUES "
+        sql = "INSERT INTO `manager` (playerID,yearID,teamID,inSeason,manager_G,manager_W,manager_L,teamRank,plyrMgr) VALUES "
         for row in reader:
             sql += "("
             sql += "'" + row['playerID'] + "',"
             sql += row['yearID'] + ","
             sql += "'" + row['teamID'] + "',"
-            sql += "'" + row['lgID'] + "',"
             sql += row['inseason'] + ","
             sql += row['G'] + ","
             sql += row['W'] + ","

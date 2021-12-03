@@ -148,7 +148,8 @@ def allstar():
         year = 2019
     else:
         year = 2019
-    allstarInfo = getAllstar(current_user.fav_team, year)
+    #allstarInfo = getAllstar(current_user.fav_team, year)
+    allstarInfo = ""
     return render_template('allstar.html', title='All Star', form=form, year=year, allstarInfo=allstarInfo)
 
 
@@ -163,7 +164,8 @@ def halloffame():
         year = 2018
     else:
         year = 2018
-    halloffame = getHallofFame(year)
+    #halloffame = getHallofFame(year)
+    halloffame = ""
     return render_template('halloffame.html', title='Hall of Fame', halloffame=halloffame, form=form, year=year)
 
 
@@ -179,12 +181,18 @@ def playerawards():
     else:
         year = 2017
     # Get the correct data from the database
-    mvp = getPlayerAwards(year, "Most Valuable Player")
-    cyyoung = getPlayerAwards(year, "Cy Young Award")
-    rookie = getPlayerAwards(year, "Rookie of the Year")
-    comeback = getPlayerAwards(year, "Comeback Player of the Year")
-    hankaaron = getPlayerAwards(year, "Hank Aaron Award")
-    reliever = getPlayerAwards(year, "Reliever of the Year Award")
+    #mvp = getPlayerAwards(year, "Most Valuable Player")
+    #cyyoung = getPlayerAwards(year, "Cy Young Award")
+    #rookie = getPlayerAwards(year, "Rookie of the Year")
+    #comeback = getPlayerAwards(year, "Comeback Player of the Year")
+    #hankaaron = getPlayerAwards(year, "Hank Aaron Award")
+    #reliever = getPlayerAwards(year, "Reliever of the Year Award")
+    mvp = ""
+    cyyoung = ""
+    rookie = ""
+    comeback = ""
+    hankaaron = ""
+    reliever = ""
     return render_template('playerawards.html', title='Player Awards', year=year, form=form, mvp=mvp, cyyoung=cyyoung,
                            rookie=rookie, comeback=comeback, hankaaron=hankaaron, reliever=reliever)
 
@@ -193,9 +201,12 @@ def playerawards():
 @app.route('/managers')
 def managers():
     # Get the data from the database
-    tsnAwards = getManagerAward(current_user.fav_team, "TSN Manager of the Year")
-    bbwaaAwards = getManagerAward(current_user.fav_team, "BBWAA Manager of the Year")
-    managerList = getManagers(current_user.fav_team)
+    #tsnAwards = getManagerAward(current_user.fav_team, "TSN Manager of the Year")
+    #bbwaaAwards = getManagerAward(current_user.fav_team, "BBWAA Manager of the Year")
+    #managerList = getManagers(current_user.fav_team)
+    tsnAwards = ""
+    bbwaaAwards = ""
+    managerList = ""
     return render_template('managers.html', title='Managers', managerList=managerList, tsnAwards=tsnAwards,
                            bbwaaAwards=bbwaaAwards)
 
@@ -203,11 +214,16 @@ def managers():
 # The route to control the career stats of the user's favorite player
 @app.route('/careerstats')
 def careerstats():
-    careerPitching = careerPitchingStats(current_user.fav_player)
-    pitching = pitchingStats(current_user.fav_player)
-    careerBatting = careerBattingStats(current_user.fav_player)
-    batting = battingStats(current_user.fav_player)
-    appearances = getSumAppearances(current_user.fav_player)
+    #careerPitching = careerPitchingStats(current_user.fav_player)
+    #pitching = pitchingStats(current_user.fav_player)
+    #careerBatting = careerBattingStats(current_user.fav_player)
+    #batting = battingStats(current_user.fav_player)
+    #appearances = getSumAppearances(current_user.fav_player)
+    careerPitching = ""
+    pitching = ""
+    careerBatting = ""
+    batting = ""
+    appearances = ""
     return render_template('careerstats.html', title='Career Stats', careerPitching=careerPitching, careerBatting=careerBatting,
                            appearances=appearances, pitching=pitching, batting=batting)
 
@@ -216,13 +232,20 @@ def careerstats():
 @app.route('/careerpostseason')
 def careerpostseason():
     # Get all the information from the database
-    careerPitching = careerPitchingPost(current_user.fav_player)
-    pitching = pitchingPost(current_user.fav_player)
-    careerBatting = careerBattingPost(current_user.fav_player)
-    batting = battingPost(current_user.fav_player)
-    appearances = getSumAppearances(current_user.fav_player)
-    postBatting = postAppearancesBatting(current_user.fav_player)
-    postPitching = postAppearancesPitching(current_user.fav_player)
+    #careerPitching = careerPitchingPost(current_user.fav_player)
+    #pitching = pitchingPost(current_user.fav_player)
+    #careerBatting = careerBattingPost(current_user.fav_player)
+    #batting = battingPost(current_user.fav_player)
+    #appearances = getSumAppearances(current_user.fav_player)
+    #postBatting = postAppearancesBatting(current_user.fav_player)
+    #postPitching = postAppearancesPitching(current_user.fav_player)
+    careerPitching = ""
+    pitching = ""
+    careerBatting = ""
+    batting = ""
+    appearances = ""
+    postBatting = ""
+    postPitching = ""
     return render_template('careerpostseason.html', title='Postseason Stats', postPitching=postPitching,
                            careerPitching=careerPitching, careerBatting=careerBatting,
                            appearances=appearances, pitching=pitching, batting=batting, postBatting=postBatting)
@@ -231,10 +254,14 @@ def careerpostseason():
 # The route that controls the postseason information for the user's favorite team
 @app.route('/postseason')
 def postseason():
-    countWS = getWSWins(current_user.fav_team)
-    countDiv = getDivWins(current_user.fav_team)
-    countLg = getLgWins(current_user.fav_team)
-    PostInfo = getPostInfo(current_user.fav_team)
+    #countWS = getWSWins(current_user.fav_team)
+    #countDiv = getDivWins(current_user.fav_team)
+    #countLg = getLgWins(current_user.fav_team)
+    #PostInfo = getPostInfo(current_user.fav_team)
+    countWS = ""
+    countDiv = ""
+    countLg = ""
+    PostInfo = ""
     return render_template('postseason.html', title='Post Season Stats', countWS=countWS, countLg=countLg,
                            countDiv=countDiv, PostInfo=PostInfo)
 
