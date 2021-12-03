@@ -1,11 +1,12 @@
 # The program to load the baseball database with the data from the csv files
-# Please have a file called "mariadbconfig.py" that contains your connection information
+# Please have a file called "csi3335fall2021.py" that contains your connection information
 
 import csv
 import pymysql
-import mariadbconfig as cfg
+import csi3335fall2021 as cfg
 
 
+# Load the people data into table
 def peopleCSVUpdate():
     with open("People.csv", mode='r') as csvfile:
         teamsreader = csv.DictReader(csvfile)
@@ -87,6 +88,7 @@ def peopleCSVUpdate():
     return sql
 
 
+# Load the school data into table
 def schoolsCSVUpdate():
     with open("Schools.csv", mode='r') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -103,6 +105,7 @@ def schoolsCSVUpdate():
     return sql
 
 
+# Load the park data into table
 def parksCSVUpdate():
     with open("Parks.csv", mode='r') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -138,6 +141,7 @@ def parksCSVUpdate():
     return sql
 
 
+# Load the manager data into table
 def managersCSVUpdate():
     with open("Managers.csv", mode='r') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -161,6 +165,7 @@ def managersCSVUpdate():
     return sql
 
 
+# Load the hall of fame data into table
 def hallOfFameCSVUpdate():
     with open("HallOfFame.csv", mode='r') as csvfile:
         teamsreader = csv.DictReader(csvfile)
@@ -196,6 +201,7 @@ def hallOfFameCSVUpdate():
     return sql
 
 
+# Load the franchise data into table
 def franchisesCSVUpdate():
     with open("TeamsFranchises.csv", mode='r') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -214,6 +220,7 @@ def franchisesCSVUpdate():
     return sql
 
 
+# Load the fielding data into table
 def fieldingCSVUpdate():
     with open("Fielding.csv", mode='r') as csvfile:
         teamsreader = csv.DictReader(csvfile)
@@ -278,6 +285,7 @@ def fieldingCSVUpdate():
     return sql
 
 
+# Load the fielding post data into table
 def fieldingPostCSVUpdate():
     with open("FieldingPost.csv", mode='r') as csvfile:
         teamsreader = csv.DictReader(csvfile)
@@ -334,6 +342,7 @@ def fieldingPostCSVUpdate():
     return sql
 
 
+# Load the awards share data into table
 def awardsShareCSVUpdate():
     with open("AwardsSharePlayers.csv", mode='r') as csvfile:
         teamsreader = csv.DictReader(csvfile)
@@ -382,6 +391,7 @@ def awardsShareCSVUpdate():
     return sql
 
 
+# Load the award data into table
 def awardsCSVUpdate():
     with open("AwardsPlayers.csv", mode='r') as csvfile:
         teamsreader = csv.DictReader(csvfile)
@@ -424,6 +434,7 @@ def awardsCSVUpdate():
     return sql
 
 
+# Load the allstar data into table
 def allStarFullCSVUpdate():
     with open("AllstarFull.csv", mode='r') as csvfile:
         teamsreader = csv.DictReader(csvfile)
@@ -461,6 +472,7 @@ def allStarFullCSVUpdate():
     return sql
 
 
+# Load the seriespost data into table
 def seriesPostCSVUpdate():
     with open("SeriesPost.csv", mode='r') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -479,6 +491,7 @@ def seriesPostCSVUpdate():
     return sql
 
 
+# Load the homegames data into table
 def homeGamesCSVUpdate():
     with open("HomeGames.csv", mode='r') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -497,6 +510,8 @@ def homeGamesCSVUpdate():
     sql = sql[:-1] + ";"
     return sql
 
+
+# Load the team data into table
 def teamsCSVUpdate():
     sql = "INSERT INTO `team` (teamID, yearID, lgID, divID, franchID, name, teamRank, team_G, team_G_home, team_W, team_L"
     sql += ", DivWin, WCWin,LgWin, WSWin, team_R, team_AB, team_H,team_2B, team_3B,team_HR,team_BB, team_SO, team_SB, "
@@ -700,6 +715,8 @@ def teamsCSVUpdate():
     sql = sql[:-1] + ";"
     return sql
 
+
+# Load the salary data into table
 def salariesCSVUpdate():
     sql = "INSERT INTO salary(playerID, teamID, lgId, yearId, salary) VALUES "
     with open("Salaries.csv", mode='r') as csvfile:
@@ -730,6 +747,8 @@ def salariesCSVUpdate():
     sql = sql[:-1] + ";"
     return sql
 
+
+# Load the pitching post data into table
 def pitchingPostCSVUpdate():
     sql = "INSERT INTO pitchingpost (playerID,yearId,teamID,round, p_W, p_L, p_G,p_GS, p_CG,p_SHO,p_SV,p_IPOuts,p_H,p_ER,p_HR,"
     sql += "p_BB, p_SO, p_BAOpp, p_ERA, p_IBB, p_WP, p_HBP, p_BK, p_BFP, p_GF, p_R, p_SH, p_SF, p_GIDP) VALUES"
@@ -875,6 +894,8 @@ def pitchingPostCSVUpdate():
     sql = sql[:-1] + ";"
     return sql
 
+
+# Load the pitching data into table
 def pitchingCSVUpdate():
     sql = "INSERT INTO pitching (playerID,yearId,teamID,stint,p_W,p_L,p_G,p_GS,p_CG,p_SHO,p_SV, p_IPOuts, p_H, p_ER, p_HR,"
     sql += "p_BB, p_SO, p_BAOpp, p_ERA, p_IBB, p_WP, p_HBP, p_BK, p_BFP, p_GF, p_R, p_SH, p_SF, p_GIDP) VALUES"
@@ -1021,6 +1042,8 @@ def pitchingCSVUpdate():
     sql = sql[:-1] + ";"
     return sql
 
+
+# Load the batting post data into table
 def battingPostCSVUpdate():
     sql = "INSERT INTO battingpost (playerID, yearId, teamID, round, b_G, b_AB, b_R, b_H, b_2B, b_3B, b_HR, b_RBI,b_SB,b_CS,"
     sql +=      "b_BB, b_SO, b_IBB, b_HBP, b_SH, b_SF, b_GIDP) VALUES"
@@ -1125,6 +1148,8 @@ def battingPostCSVUpdate():
     sql = sql[:-1] + ";"
     return sql
 
+
+# Load the batting data into table
 def battingCSVUpdate():
     sql = "INSERT INTO batting (playerID, yearId, teamID, stint, b_G, b_AB, b_R, b_H, b_2B, b_3B, b_HR, b_RBI,b_SB,b_CS,"
     sql +=      "b_BB, b_SO, b_IBB, b_HBP, b_SH, b_SF, b_GIDP) VALUES"
@@ -1229,6 +1254,8 @@ def battingCSVUpdate():
     sql = sql[:-1] + ";"
     return sql
 
+
+# Load the appearances data into table
 def appearancesCSVUpdate():
     sql = "INSERT INTO appearances (playerID, yearID, teamID, G_all, GS, G_batting, G_defense, G_p, G_c, G_1b,"
     sql += " G_2b, G_3b, G_ss, G_lf, G_cf, G_of, G_dh, G_ph, G_pr) VALUES "
@@ -1324,9 +1351,11 @@ def appearancesCSVUpdate():
     return sql
 
 
+# Create the connection to the database
 con = pymysql.connect(host="localhost", user=cfg.mysql['user'], password=cfg.mysql['password'],
                       database="group3")
 
+# Try to load in the data
 try:
     cur = con.cursor()
     finalSql = peopleCSVUpdate()
@@ -1409,10 +1438,13 @@ try:
     cur.execute(finalSql)
     print("Appearances table loaded")
 except:
+    # If exeception occurs, rollback changes
     con.rollback()
     print("Database exception")
     raise
 else:
+    # If all good, commit changes
     con.commit()
 finally:
+    # Close connection
     con.close()

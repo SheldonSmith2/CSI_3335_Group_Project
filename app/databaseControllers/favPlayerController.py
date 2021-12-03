@@ -1,6 +1,6 @@
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine, func, distinct
-import app.baseballModels.mariadbconfig as cfg
+import app.baseballModels.csi3335fall2021 as cfg
 from app.baseballModels.people import People
 from app.baseballModels.batting import Batting
 from app.baseballModels.appearances import Appearances
