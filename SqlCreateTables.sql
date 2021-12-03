@@ -1,22 +1,17 @@
-/*  File: SqlCreateTables
-    Purpose: To create the tables for information to be saved in.
-                Does not add any rows, only the tables
-
- */
 
 -- creates new database
 CREATE DATABASE IF NOT EXISTS Newbaseball;
 USE Newbaseball;
 
 --drop tables in order to start fresh
+SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS People;
 DROP TABLE IF EXISTS Team;
 DROP TABLE IF EXISTS Awards;
 DROP TABLE IF EXISTS AwardsShare;
 DROP TABLE IF EXISTS AllStarFull;
-DROP TABLE IF EXISTS LeagueDivisions;
 DROP TABLE IF EXISTS HallOfFame;
-DROP TABLE IF EXISTS Franchise;
+DROP TABLE IF EXISTS Franchises;
 DROP TABLE IF EXISTS School;
 DROP TABLE IF EXISTS Manager;
 DROP TABLE IF EXISTS Salary;
@@ -30,6 +25,7 @@ DROP TABLE IF EXISTS Appearances;
 DROP TABLE IF EXISTS SeriesPost;
 DROP TABLE IF EXISTS HomeGames;
 DROP TABLE IF EXISTS Park;
+SET FOREIGN_KEY_CHECKS=1;
 
 --create the people table with personal information about the person
 --PK: playerID
@@ -58,17 +54,6 @@ CREATE TABLE People (
     CONSTRAINT pk_people PRIMARY KEY (playerID)
     );
 
---create the league/division table. This is the combination all leagues and divisions
--- PK: lgID, divID
-CREATE TABLE LeagueDivision (
-    lgID char(2) NOT NULL, 
-    divID char(2) NOT NULL, 
-    leagueName varchar(50) NOT NULL,
-    divisionName varchar(50) NOT NULL, 
-    active char(1), 
-    CONSTRAINT pk_league PRIMARY KEY (lgID, divID)
-    );
-
 --create the teams table with information about the team in a year
 --PK: ID, FK: lgID, divID, franchID
 CREATE TABLE Team (
@@ -78,19 +63,19 @@ CREATE TABLE Team (
     `lgID` char(2),
     `divID` char(1), 
     `franchID` varchar(3), 
-    `team_name` VARCHAR(50), 
+    `name` VARCHAR(50), 
     `teamRank` smallint(6), 
-    `G` smallint(6), 
-    `G_home` smallint(6),
-    `W` smallint(6), 
-    `L` smallint(6), 
+    `team_G` smallint(6), 
+    `team_G_home` smallint(6),
+    `team_W` smallint(6), 
+    `team_L` smallint(6), 
     `DivWin` varchar(1), 
     `WCWin` varchar(1), 
     `LgWin` varchar(1), 
     `WSWin` varchar(1), 
-    `R` smallint(6),
-    `AB` smallint(6), 
-    `H` smallint(6), 
+    `team_R` smallint(6),
+    `team_AB` smallint(6), 
+    `team_H` smallint(6), 
     `team_2B` smallint(6), 
     `team_3B` smallint(6), 
     `team_HR` smallint(6), 
@@ -115,13 +100,13 @@ CREATE TABLE Team (
     );
 
 ALTER TABLE Team ADD CONSTRAINT `fk_team_franch` FOREIGN KEY (`franchID`) REFERENCES franchises(`franchID`);
-ALTER TABLE Team ADD CONSTRAINT `fk_team_league` FOREIGN KEY (`lgID`, `divID`) REFERENCES LeagueDivision(`lgID`, `divID`);
 
 --create the hallOfFame table with information about the members of the hall of fame
 --PK: ID, FK: playerID
 CREATE TABLE hallOfFame (
     ID INT(12) NOT NULL AUTO_INCREMENT, 
     playerID varchar(9) NOT NULL, 
+    `yearID` smallint(6) NOT NULL,
     votedBy varchar(64) NOT NULL,
     ballots smallint(6), 
     needed smallint(6), 
@@ -146,12 +131,12 @@ CREATE TABLE franchises (
 --create the school table that hold the information the schools players attended
 --PK: schoolID
 CREATE TABLE school (
-    schoolID varchar(15) NOT NULL, 
+    schoolId varchar(15) NOT NULL, 
     name varchar(255), 
     city varchar(55), 
     state varchar(55),
     country varchar(55), 
-    CONSTRAINT pk_school PRIMARY KEY (schoolID)
+    CONSTRAINT pk_school PRIMARY KEY (schoolId)
     );
 
 --create the park table with information about the parks
@@ -173,6 +158,7 @@ CREATE TABLE manager (
     ID int(12) NOT NULL AUTO_INCREMENT, 
     playerID varchar(9) NOT NULL, 
     yearID smallint(6) NOT NULL,
+    teamID char(3) NOT NULL,
     inSeason smallint(6) NOT NULL, 
     manager_G smallint(6), 
     manager_W smallint(6), 
@@ -190,14 +176,11 @@ CREATE TABLE awards (
     awardID varchar(255) NOT NULL, 
     yearID smallint(6) NOT NULL,
     playerID varchar(9) NOT NULL, 
-    lgID char(2) NOT NULL, 
--- neither AwardsPlayers nor AwardsManagers has divID, so I'm changing this    
---divID char(2) NOT NULL, 
+    lgID char(2) NOT NULL,  
     tie varchar(1), 
     notes varchar(100),
     CONSTRAINT pk_awd PRIMARY KEY (ID), 
-    CONSTRAINT fk_awd_peo FOREIGN KEY (playerID) REFERENCES People(playerID),
-    CONSTRAINT fk_awd_lg FOREIGN KEY (lgID) REFERENCES LeagueDivision(lgID)
+    CONSTRAINT fk_awd_peo FOREIGN KEY (playerID) REFERENCES People(playerID)
     );
 
 --creates the shared awards table that holds information about everyone nominated for an award
@@ -208,14 +191,12 @@ CREATE TABLE awardsShare (
     yearID smallInt(6) NOT NULL,
     playerID varchar(9) NOT NULL, 
     lgID char(2) NOT NULL, 
---    same issue as with the awards table
---    divID char(2) NOT NULL, 
+    divID char(2) NOT NULL, 
     pointsWon double, 
     pointsMax smallint,
     votesFirst double, 
     CONSTRAINT pk_awdshr PRIMARY KEY (ID), 
-    CONSTRAINT fk_awdshr_peo FOREIGN KEY (playerID) REFERENCES People(playerID),
-    CONSTRAINT fk_awdshr_lg FOREIGN KEY (lgID) REFERENCES LeagueDivision(lgID)
+    CONSTRAINT fk_awdshr_peo FOREIGN KEY (playerID) REFERENCES People(playerID)
     );
 
 --creates the allstarfull table that holds information about all-star game players
@@ -224,15 +205,14 @@ CREATE TABLE allStarFull (
     ID int(12) NOT NULL AUTO_INCREMENT, 
     playerID varchar(9) NOT NULL, 
     lgID char(2) NOT NULL, 
--- divID char(2) NOT NULL, 
+    teamID char(3) NOT NULL, 
     yearID smallint(6) NOT NULL, 
     gameNum smallint(6), 
     gameID varchar(12), 
     GP smallint(6), 
     startingPos smallint(6), 
     CONSTRAINT pk_allstar PRIMARY KEY (ID), 
-    CONSTRAINT fk_allstar_peo FOREIGN KEY (playerID) REFERENCES People(playerID),
-    CONSTRAINT fk_allstar_lg FOREIGN KEY (lgID) REFERENCES LeagueDivision(lgID)
+    CONSTRAINT fk_allstar_peo FOREIGN KEY (playerID) REFERENCES People(playerID)
     );
 
 --creates the salary table that holds salary information for players, teams, and leagues
@@ -242,7 +222,7 @@ CREATE TABLE salary (
     playerID varchar(9) NOT NULL, 
     `teamID` char(3) NOT NULL,
     lgId char(2) NOT NULL, 
- --   divId char(2) NOT NULL, 
+    divId char(2) NOT NULL, 
     yearId smallint(6) NOT NULL, 
     salary double, 
     CONSTRAINT pk_salary PRIMARY KEY (ID), 
@@ -251,7 +231,6 @@ CREATE TABLE salary (
 
 ALTER TABLE salary ADD CONSTRAINT `fk_sal_peo` FOREIGN KEY (playerID) REFERENCES People(playerID);
 ALTER TABLE salary ADD CONSTRAINT `fk_sal_tea` FOREIGN KEY (`teamID`) REFERENCES Team(`teamID`);
-ALTER TABLE salary ADD CONSTRAINT `fk_sal_lg` FOREIGN KEY (lgId) REFERENCES LeagueDivision(lgID);
 
 --create the batting table that holds data for batters during a stint
 --PK: ID, FK: playerID, teamID
@@ -359,7 +338,7 @@ CREATE TABLE appearances (
     ID int(12) NOT NULL AUTO_INCREMENT, 
     playerID varchar(9) NOT NULL, 
     yearID smallint(6) NOT NULL,
-    teamId char(3) NOT NULL, 
+    teamID char(3) NOT NULL, 
     G_all smallint(6), 
     GS smallint(6), 
     G_batting smallint(6), 
@@ -512,10 +491,9 @@ CREATE TABLE homeGames (
     firstGame date, lastGame date, 
     games int(11), openings int(11), 
     attendence int(11),
-    CONSTRAINT pk_hg PRIMARY KEY (ID), 
-    KEY k_hg_team (teamID), 
+    CONSTRAINT pk_hg PRIMARY KEY (ID),  
     KEY k_hg_park (parkID)
     );
 
-ALTER TABLE homeGames ADD CONSTRAINT fk_hg_team FOREIGN KEY (teamID) REFERENCES Team(teamID);
-ALTER TABLE homeGames ADD CONSTRAINT fk_hg_park FOREIGN KEY (parkID) REFERENCES park(parkID);
+ALTER TABLE `homeGames` ADD FOREIGN KEY (`teamID`) REFERENCES `team` (`teamID`);
+ALTER TABLE `homeGames` ADD CONSTRAINT fk_hg_park FOREIGN KEY (`parkID`) REFERENCES `park` (`parkID`);
