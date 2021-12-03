@@ -104,7 +104,6 @@ CREATE TABLE Team (
     CONSTRAINT pk_team PRIMARY KEY (`ID`)
     );
 
-ALTER TABLE Team ADD CONSTRAINT `fk_team_franch` FOREIGN KEY (`franchID`) REFERENCES franchises(`franchID`);
 
 --create the hallOfFame table with information about the members of the hall of fame
 --PK: ID, FK: playerID
@@ -234,9 +233,6 @@ CREATE TABLE salary (
     KEY `key_team` (teamID)
     );
 
-ALTER TABLE salary ADD CONSTRAINT `fk_sal_peo` FOREIGN KEY (playerID) REFERENCES People(playerID);
-ALTER TABLE salary ADD CONSTRAINT `fk_sal_tea` FOREIGN KEY (`teamID`) REFERENCES Team(`teamID`);
-
 --create the batting table that holds data for batters during a stint
 --PK: ID, FK: playerID, teamID
 CREATE TABLE batting (
@@ -265,9 +261,6 @@ CREATE TABLE batting (
     CONSTRAINT pk_batting PRIMARY KEY (ID), 
     KEY k_bat_team (teamID)
     );
-
-ALTER TABLE batting ADD CONSTRAINT fk_bat_peo FOREIGN KEY (playerID) REFERENCES people(playerID);
-ALTER TABLE batting ADD CONSTRAINT fk_bat_team FOREIGN KEY (teamID) REFERENCES Team(teamID);
 
 --create the pitching table that holds data for pitchers during a stint
 --PK: ID, FK: playerID, teamID
@@ -306,9 +299,6 @@ CREATE TABLE pitching (
     KEY k_pit_team (teamID)
     );
 
-ALTER TABLE pitching ADD CONSTRAINT fk_pit_team FOREIGN KEY (teamID) REFERENCES Team(teamID);
-ALTER TABLE pitching ADD CONSTRAINT fk_pit_peo FOREIGN KEY (playerID) REFERENCES People(playerID);
-
 --creates the fielding table that holds data for fielders during a stint
 --PK: ID, FK: playerID, teamID
 CREATE TABLE fielding (
@@ -333,9 +323,6 @@ CREATE TABLE fielding (
     CONSTRAINT pk_field PRIMARY KEY (ID), 
     KEY k_fie_team (teamID)
     );
-
-ALTER TABLE fielding ADD CONSTRAINT fk_fie_peo FOREIGN KEY (playerID) REFERENCES People(playerID);
-ALTER TABLE fielding ADD CONSTRAINT fk_fie_team FOREIGN KEY (teamID) REFERENCES Team(teamID);
 
 --creates the appearances table which tracks the number of times a player has been in each position
 --PK: ID, FK: playerID, teamID
@@ -363,9 +350,6 @@ CREATE TABLE appearances (
     CONSTRAINT pk_appe PRIMARY KEY (ID), 
     KEY k_app_team (teamID)
     );
-
-ALTER TABLE appearances ADD CONSTRAINT fk_app_peo FOREIGN KEY (playerID) REFERENCES People(playerID);
-ALTER TABLE appearances ADD CONSTRAINT fk_app_team FOREIGN KEY (teamId) REFERENCES Team(teamID);
 
 --creates the batting Post-season table which tracks the batting data for the post-season
 --PK: ID, FK: playerID, teamID
@@ -395,9 +379,6 @@ CREATE TABLE battingPost (
     CONSTRAINT pk_batting PRIMARY KEY (ID), 
     KEY k_bp_team (teamID)
     );
-
-ALTER TABLE battingPost ADD CONSTRAINT fk_bp_peo FOREIGN KEY (playerID) REFERENCES People(playerID);
-ALTER TABLE battingPost ADD CONSTRAINT fk_bp_team FOREIGN KEY (teamID) REFERENCES Team(teamID);
 
 --creates the pitching post-season table which tracks the pitching data for the post-season
 --PK: ID, FK: playerID, teamID
@@ -436,8 +417,6 @@ CREATE TABLE pitchingPost (
     KEY k_pp_team (teamID)
     );
 
-ALTER TABLE pitchingPost ADD CONSTRAINT fk_pp_peo FOREIGN KEY (playerID) REFERENCES People(playerID);
-ALTER TABLE pitchingPost ADD CONSTRAINT fk_pp_team FOREIGN KEY (teamID) REFERENCES Team(teamID);
 
 --creates the fielding post-season table which tracks the fielding data for the post-season
 --PK: ID, FK: playerID, teamID
@@ -464,8 +443,6 @@ CREATE TABLE fieldingPost (
     KEY k_fp_team (teamID)
     );
 
-ALTER TABLE fieldingPost ADD CONSTRAINT fk_fp_peo FOREIGN KEY (playerID) REFERENCES People(playerID);
-ALTER TABLE fieldingPost ADD CONSTRAINT fk_fp_team FOREIGN KEY (teamID) REFERENCES Team(teamID);
 
 --creates the seriesPost table that tracks teams wins in a series
 --PK: ID, FK: teamIDWinner (teamID), teamIDLosser (teamID)
@@ -483,8 +460,6 @@ CREATE TABLE seriesPost (
     KEY k_sp_tl (teamIDloser)
     );
 
-ALTER TABLE seriesPost ADD CONSTRAINT fk_sp_tw FOREIGN KEY (teamIDwinner) REFERENCES Team(teamID);
-ALTER TABLE seriesPost ADD CONSTRAINT fk_sp_tl FOREIGN KEY (teamIDloser) REFERENCES Team(teamID);
 
 --creates the home games tables that holds information about the park and its relation to the team
 --PK: ID, FK: teamID, parkID
@@ -499,6 +474,3 @@ CREATE TABLE homeGames (
     CONSTRAINT pk_hg PRIMARY KEY (ID),  
     KEY k_hg_park (parkID)
     );
-
-ALTER TABLE `homeGames` ADD FOREIGN KEY (`teamID`) REFERENCES `team` (`teamID`);
-ALTER TABLE `homeGames` ADD CONSTRAINT fk_hg_park FOREIGN KEY (`parkID`) REFERENCES `park` (`parkID`);
