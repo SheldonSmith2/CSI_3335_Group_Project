@@ -9,6 +9,7 @@ from flask_mail import Mail
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '7b91985318be6c19764edaf03d7c30ad'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 # create variables to the project
 db = SQLAlchemy(app)
